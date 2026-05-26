@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Arqueología del Trabajo</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: #F5F0E8;
+  color: #1a1a1a;
+  min-height: 100vh;
+}
+.app {
+  max-width: 680px;
+  margin: 0 auto;
+  padding-bottom: 3rem;
+}
+
+/* HERO */
+.hero {
+  background: linear-gradient(135deg, #412402 0%, #633806 40%, #854F0B 100%);
+  padding: 2rem 1.5rem 1.75rem;
+  border-radius: 0 0 24px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(255,255,255,0.03) 8px, rgba(255,255,255,0.03) 16px);
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(250,199,117,0.2);
+  border: 1px solid rgba(250,199,117,0.4);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #FAC775;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  position: relative;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  color: #FAC775;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 6px;
+  position: relative;
+}
+.hero-sub {
+  color: rgba(250,199,117,0.75);
+  font-size: 13.5px;
+  position: relative;
+}
+.hero-icon {
+  position: absolute;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 60px;
+  opacity: 0.2;
+}
+
+/* MAP */
+.map-section { padding: 1.25rem 1rem 0.5rem; }
+.map-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 10px;
+}
+.stations-row {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  gap: 0;
+}
+.station-dot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.dot {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  font-weight: 700;
+  border: 2px solid transparent;
+  transition: transform 0.2s;
+}
+.dot-done { background: #1D9E75; color: white; border-color: #1D9E75; }
+.dot-active {
+  background: #412402;
+  color: #FAC775;
+  border-color: #BA7517;
+  box-shadow: 0 0 0 4px rgba(186,117,23,0.25);
+  animation: pulse 2s infinite;
+}
+.dot-locked { background: #E8E0D0; color: #aaa; border-color: #ddd; }
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(186,117,23,0.2); }
+  50% { box-shadow: 0 0 0 8px rgba(186,117,23,0.08); }
+}
+.dot-num { font-size: 10px; color: #999; font-weight: 600; }
+.connector {
+  flex: 1;
+  height: 2px;
+  min-width: 16px;
+  background: #ddd;
+  margin-bottom: 16px;
+  transition: background 0.4s;
+}
+.connector-done { background: #1D9E75; }
+
+/* XP */
+.xp-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 1rem 1rem;
+}
+.xp-label { font-size: 12px; font-weight: 700; color: #BA7517; min-width: 48px; }
+.xp-track {
+  flex: 1;
+  height: 8px;
+  background: #E8E0D0;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+.xp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #BA7517, #FAC775);
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.xp-pts { font-size: 12px; font-weight: 700; color: #888; min-width: 52px; text-align: right; }
+
+/* CARD */
+.card {
+  margin: 0 1rem 1rem;
+  background: #fff;
+  border: 1px solid #E0D8CC;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.card-header {
+  padding: 1rem 1.25rem 0.75rem;
+  border-bottom: 1px solid #E8E0D0;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.station-badge {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.card-titles { flex: 1; }
+.card-subtitle {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.2;
+}
+.diff-pill {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.diff-low { background: #EAF3DE; color: #27500A; }
+.diff-med { background: #FAEEDA; color: #633806; }
+.diff-high { background: #FAECE7; color: #712B13; }
+
+.text-box {
+  margin: 1rem 1.25rem 0;
+  padding: 0.875rem 1rem;
+  background: #FAEEDA;
+  border-left: 3px solid #BA7517;
+  border-radius: 0 8px 8px 0;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: #412402;
+  font-style: italic;
+}
+.text-box-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #BA7517;
+  margin-bottom: 5px;
+  font-style: normal;
+}
+.paper-note {
+  margin: 0.75rem 1.25rem 0;
+  padding: 0.75rem 1rem;
+  background: #F5F0E8;
+  border: 1px solid #E0D8CC;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #666;
+  line-height: 1.55;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.consigna {
+  padding: 1rem 1.25rem 0.25rem;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.5;
+}
+
+/* OPTIONS */
+.options { padding: 0.75rem 1.25rem 1.25rem; display: flex; flex-direction: column; gap: 8px; }
+.option-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border: 1.5px solid #E0D8CC;
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  color: #1a1a1a;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+  width: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+.option-btn:hover, .option-btn:active { border-color: #BA7517; background: #FAEEDA; }
+.option-btn.selected-correct { border-color: #1D9E75; background: #E1F5EE; }
+.option-btn.selected-wrong { border-color: #D85A30; background: #FAECE7; }
+.option-key {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: #F5F0E8;
+  border: 1px solid #E0D8CC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  color: #888;
+  transition: background 0.15s;
+}
+.selected-correct .option-key { background: #1D9E75; color: white; border-color: #1D9E75; }
+.selected-wrong .option-key { background: #D85A30; color: white; border-color: #D85A30; }
+
+/* MATCHING */
+.match-container { padding: 0.75rem 1.25rem 1.25rem; }
+.match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.match-col-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+.match-item {
+  padding: 9px 10px;
+  border: 1.5px solid #E0D8CC;
+  border-radius: 8px;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  background: #fff;
+  color: #1a1a1a;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+  -webkit-tap-highlight-color: transparent;
+  line-height: 1.4;
+}
+.match-item:hover, .match-item:active { border-color: #BA7517; background: #FAEEDA; }
+.match-item.selected { border-color: #534AB7; background: #EEEDFE; }
+.match-item.matched-correct { border-color: #1D9E75; background: #E1F5EE; pointer-events: none; }
+.match-item.matched-wrong { border-color: #D85A30; background: #FAECE7; }
+
+/* FEEDBACK */
+.feedback {
+  margin: 0 1.25rem 1rem;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  display: none;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.5;
+}
+.feedback.show { display: flex; }
+.feedback-correct { background: #E1F5EE; color: #085041; border: 1px solid #1D9E75; }
+.feedback-wrong { background: #FAECE7; color: #4A1B0C; border: 1px solid #D85A30; }
+
+/* ACTIONS */
+.card-actions { padding: 0 1.25rem 1.25rem; display: flex; gap: 8px; }
+.btn-primary {
+  padding: 12px 22px;
+  background: #412402;
+  color: #FAC775;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-primary:hover { background: #633806; }
+.btn-primary:active { transform: scale(0.97); }
+.btn-primary:disabled { background: #E8E0D0; color: #aaa; cursor: not-allowed; }
+
+/* OPEN TEXTAREA */
+.textarea-ans {
+  width: 100%;
+  min-height: 90px;
+  padding: 10px 12px;
+  border: 1.5px solid #E0D8CC;
+  border-radius: 10px;
+  background: #fff;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  color: #1a1a1a;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.textarea-ans:focus { border-color: #BA7517; }
+
+/* LOCKED */
+.locked-card {
+  margin: 0 1rem 1rem;
+  padding: 1.25rem;
+  border: 1.5px dashed #E0D8CC;
+  border-radius: 16px;
+  text-align: center;
+  color: #aaa;
+  background: #faf7f2;
+}
+.locked-card .lock-icon { font-size: 28px; margin-bottom: 6px; opacity: 0.4; }
+
+/* RESUMEN */
+.resumen-card {
+  margin: 0 1rem;
+  background: linear-gradient(135deg, #26215C, #534AB7);
+  border-radius: 16px;
+  padding: 1.5rem;
+  color: white;
+  box-shadow: 0 4px 20px rgba(83,74,183,0.3);
+}
+.resumen-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #CECBF6;
+  margin-bottom: 1rem;
+}
+.resumen-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: flex-start; }
+.resumen-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #AFA9EC;
+  min-width: 90px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-top: 1px;
+  flex-shrink: 0;
+}
+.resumen-val { font-size: 13px; color: #EEEDFE; flex: 1; line-height: 1.5; }
+.resumen-sintesis {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  font-size: 13px;
+  color: #CECBF6;
+  line-height: 1.6;
+}
+.copy-btn {
+  margin-top: 1rem;
+  padding: 11px 18px;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 10px;
+  color: white;
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.copy-btn:hover, .copy-btn:active { background: rgba(255,255,255,0.25); }
+
+.celebration {
+  text-align: center;
+  padding: 2rem 1rem 1rem;
+}
+.celebration-icon { font-size: 56px; margin-bottom: 10px; }
+.celebration-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #BA7517;
+  margin-bottom: 6px;
+}
+.celebration-sub { font-size: 14px; color: #888; margin-bottom: 4px; }
+.stars { font-size: 28px; letter-spacing: 4px; margin-bottom: 1.5rem; }
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">Historia del Trabajo · 6to Año</div>
+    <h1>Arqueología del Trabajo</h1>
+    <p class="hero-sub">Desenterrá los significados del trabajo a través del tiempo</p>
+    <div class="hero-icon">⛏️</div>
+  </div>
+
+  <!-- MAP -->
+  <div class="map-section">
+    <div class="map-label">Mapa de la misión</div>
+    <div class="stations-row" id="stationsRow"></div>
+  </div>
+  <div class="xp-row">
+    <span class="xp-label" id="xpLabel">XP 0</span>
+    <div class="xp-track"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
+    <span class="xp-pts" id="xpPts">0 / 500 pts</span>
+  </div>
+
+  <div id="activitiesContainer"></div>
+</div>
+
+<script>
+const stations = [
+  { icon: '🔤', label: 'Etimología', color: '#412402' },
+  { icon: '📜', label: 'Diccionario', color: '#0C447C' },
+  { icon: '💭', label: 'Identidad', color: '#0F6E56' },
+  { icon: '⏳', label: 'Historia', color: '#534AB7' },
+  { icon: '🖼️', label: 'Imagen', color: '#712B13' },
+  { icon: '📋', label: 'Resumen', color: '#3B6D11' },
+];
+
+const activities = [
+  {
+    id: 1, icon: '🔤', subtitle: 'Estación 1', title: 'El secreto del nombre', diff: 'Baja', type: 'mc', xp: 80,
+    fragment: '"Trabajar proviene de tripalium, que en latín significa \'tres palos\', y que hace referencia a una atadura compuesta por tres palos cruzados donde los prisioneros eran amarrados e inmovilizados mientras se los azotaba. El vocablo derivó... a tripaliare, que significa \'torturar\'."',
+    consigna: 'Leé el fragmento sobre el origen de la palabra. ¿Qué significaba originalmente la palabra tripalium?',
+    options: ['Un premio', 'Un instrumento de tortura', 'Una herramienta de construcción'],
+    correct: 1,
+    feedbackOk: '¡Hallazgo desbloqueado! Tripalium era un instrumento de tortura. De ahí nació la palabra "trabajo". ¡Primera pista descubierta!',
+    feedbackFail: 'Revisá el fragmento. La palabra tripalium estaba relacionada con prisioneros y azotes...',
+  },
+  {
+    id: 2, icon: '📜', subtitle: 'Estación 2', title: 'Rastreando en el papel', diff: 'Media', type: 'mc', xp: 100,
+    note: '📌 Buscá en la página 11 de tu cuadernillo (pág. 1 del PDF) el párrafo que habla sobre la Real Academia Española. Subrayá las palabras que relacionan el trabajo con algo negativo.',
+    consigna: '¿Cuál de estas palabras aparece en ese párrafo como algo negativo relacionado al trabajo?',
+    options: ['Diversión', 'Molestia', 'Vacaciones'],
+    correct: 1,
+    feedbackOk: '¡Correcto! La RAE incluye "molestia" entre las acepciones del trabajo. La palabra carga con un peso negativo desde sus orígenes.',
+    feedbackFail: 'Revisá el texto subrayado. Pensá en algo desagradable que el trabajo pueda provocar...',
+  },
+  {
+    id: 3, icon: '💭', subtitle: 'Estación 3', title: '¿Cómo nos sentimos?', diff: 'Media', type: 'mc', xp: 100,
+    fragment: '"La mayoría de los individuos sin trabajo ven menoscabada su autoestima y se sienten frustrados en su rol de adultos activos."',
+    consigna: '¿Cuál de estas frases dice lo mismo que el texto, pero con otras palabras?',
+    options: [
+      'No tener trabajo puede hacer que una persona se sienta mal consigo misma.',
+      'El trabajo no es importante para las personas.',
+      'Todas las personas prefieren no trabajar.',
+    ],
+    correct: 0,
+    feedbackOk: '¡Excelente paráfrasis! Reformular ideas con tus palabras es una habilidad clave. El trabajo está ligado a nuestra autoestima e identidad.',
+    feedbackFail: 'Volvé a leer. ¿Qué le pasa a las personas que no tienen trabajo, según el texto?',
+  },
+  {
+    id: 4, icon: '⏳', subtitle: 'Estación 4', title: 'La máquina del tiempo', diff: 'Alta', type: 'match', xp: 140,
+    consigna: 'Tocá una época y luego la forma de trabajo que le corresponde para unirlas.',
+    correct: { 0: 1, 1: 2, 2: 0 },
+    feedbackOk: '¡Máquina del tiempo activada! Las tres etapas históricas conectadas correctamente. El trabajo fue cambiando junto con la sociedad.',
+    feedbackFail: 'Revisá cada época. La Revolución Industrial es la más reciente. La esclavitud fue la primera forma.',
+  },
+  {
+    id: 5, icon: '🖼️', subtitle: 'Estación 5', title: 'El trabajo en el dibujo', diff: 'Media', type: 'open', xp: 80,
+    note: '🖼️ Mirá la imagen de la página 12 de tu cuadernillo. Los hombres están moviendo bloques de hielo (Diego Rivera, 1956).',
+    hint: '💡 Pista: pensá en movimiento, esfuerzo y transformación.',
+    consigna: '¿Qué están haciendo estos trabajadores? Escribí tu respuesta con tus palabras.',
+    modelAnswer: 'Realizando un esfuerzo físico para mover el hielo: están transformando una situación con su trabajo.',
+    feedbackOk: '¡Hallazgo visual confirmado! El trabajo como proceso, esfuerzo y transformación está reflejado en la imagen.',
+  },
+];
+
+let currentStation = 0;
+let xp = 0;
+const totalXp = 500;
+let matchState = {};
+let selectedLeft = null, selectedRight = null;
+
+function renderMap() {
+  const row = document.getElementById('stationsRow');
+  row.innerHTML = '';
+  stations.forEach((s, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'station-dot';
+    const cls = i < currentStation ? 'dot-done' : i === currentStation ? 'dot-active' : 'dot-locked';
+    dot.innerHTML = '<div class="dot ' + cls + '">' + (i < currentStation ? '✓' : s.icon) + '</div><span class="dot-num">' + (i+1) + '</span>';
+    row.appendChild(dot);
+    if (i < stations.length - 1) {
+      const conn = document.createElement('div');
+      conn.className = 'connector' + (i < currentStation ? ' connector-done' : '');
+      row.appendChild(conn);
+    }
+  });
+}
+
+function updateXp(pts) {
+  xp = Math.min(xp + pts, totalXp);
+  document.getElementById('xpLabel').textContent = 'XP ' + xp;
+  document.getElementById('xpFill').style.width = (xp / totalXp * 100) + '%';
+  document.getElementById('xpPts').textContent = xp + ' / ' + totalXp + ' pts';
+}
+
+function diffClass(d) {
+  return d === 'Baja' ? 'diff-low' : d === 'Alta' ? 'diff-high' : 'diff-med';
+}
+
+function renderActivities() {
+  const container = document.getElementById('activitiesContainer');
+  container.innerHTML = '';
+
+  activities.forEach((act, idx) => {
+    if (idx > currentStation) {
+      const locked = document.createElement('div');
+      locked.className = 'locked-card';
+      locked.innerHTML = '<div class="lock-icon">🔒</div><div style="font-size:13px;">Estación ' + (idx+1) + ': <strong>' + act.title + '</strong><br>Completá la anterior para desbloquear.</div>';
+      container.appendChild(locked);
+      return;
+    }
+
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.id = 'card-' + idx;
+
+    let inner = '<div class="card-header">' +
+      '<div class="station-badge" style="background:' + stations[idx].color + '22;">' + act.icon + '</div>' +
+      '<div class="card-titles">' +
+        '<div class="card-subtitle" style="color:' + stations[idx].color + ';">' + act.subtitle + '</div>' +
+        '<div class="card-title">' + act.title + '</div>' +
+      '</div>' +
+      '<span class="diff-pill ' + diffClass(act.diff) + '">' + act.diff + '</span>' +
+    '</div>';
+
+    if (act.fragment) {
+      inner += '<div class="text-box"><div class="text-box-label">Fragmento del texto</div>' + act.fragment + '</div>';
+    }
+    if (act.note) {
+      inner += '<div class="paper-note">' + act.note + '</div>';
+    }
+
+    inner += '<div class="consigna">' + act.consigna + '</div>';
+
+    if (act.type === 'mc') {
+      inner += '<div class="options">';
+      act.options.forEach(function(opt, oi) {
+        inner += '<button class="option-btn" data-act="' + idx + '" data-opt="' + oi + '" id="opt-' + idx + '-' + oi + '">' +
+          '<span class="option-key">' + ['A','B','C'][oi] + '</span>' + opt +
+        '</button>';
+      });
+      inner += '</div>';
+    } else if (act.type === 'match') {
+      inner += renderMatchUI(idx);
+    } else if (act.type === 'open') {
+      if (act.hint) inner += '<div class="paper-note">' + act.hint + '</div>';
+      inner += '<div class="options"><textarea class="textarea-ans" id="open-' + idx + '" placeholder="Escribí tu respuesta aquí..."></textarea></div>';
+    }
+
+    inner += '<div class="feedback" id="fb-' + idx + '"></div>';
+
+    const isCurrent = idx === currentStation;
+    const btnLabel = act.type === 'open' ? 'Confirmar respuesta' : act.type === 'match' ? 'Verificar uniones' : 'Verificar hallazgo';
+    inner += '<div class="card-actions">' +
+      '<button class="btn-primary" id="btn-' + idx + '" ' + (!isCurrent ? 'disabled' : '') + ' onclick="handleSubmit(' + idx + ')">' + btnLabel + '</button>' +
+    '</div>';
+
+    card.innerHTML = inner;
+    container.appendChild(card);
+  });
+
+  if (currentStation >= activities.length) {
+    renderResumen(container);
+  }
+
+  attachMatchListeners();
+  attachMcListeners();
+}
+
+function renderMatchUI(idx) {
+  const epochs = ['Antigüedad', 'Edad Media', 'Revolución Industrial'];
+  const defs = ['Obreros que cobran salario', 'Esclavitud de prisioneros de guerra', 'Siervos que trabajan la tierra del señor feudal'];
+  let html = '<div class="match-container"><div class="match-grid"><div><div class="match-col-label">Época</div>';
+  epochs.forEach(function(e, i) {
+    html += '<div class="match-item" data-match-left="' + idx + '-' + i + '" data-act="' + idx + '">' + e + '</div>';
+  });
+  html += '</div><div><div class="match-col-label">Forma de trabajo</div>';
+  defs.forEach(function(d, i) {
+    html += '<div class="match-item" data-match-right="' + idx + '-' + i + '" data-act="' + idx + '">' + d + '</div>';
+  });
+  html += '</div></div></div>';
+  return html;
+}
+
+function attachMcListeners() {
+  document.querySelectorAll('.option-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const actIdx = parseInt(btn.dataset.act);
+      if (actIdx !== currentStation) return;
+      const fb = document.getElementById('fb-' + actIdx);
+      if (fb && fb.classList.contains('show')) return;
+      document.querySelectorAll('[data-act="' + actIdx + '"].option-btn').forEach(function(b) {
+        b.classList.remove('selected-correct', 'selected-wrong');
+      });
+      btn.classList.add('selected-correct');
+    });
+  });
+}
+
+function attachMatchListeners() {
+  document.querySelectorAll('[data-match-left]').forEach(function(el) {
+    el.addEventListener('click', function() {
+      const actIdx = parseInt(el.dataset.act);
+      if (actIdx !== currentStation) return;
+      document.querySelectorAll('[data-match-left]').forEach(function(e) {
+        if (!e.classList.contains('matched-correct')) e.classList.remove('selected');
+      });
+      if (!el.classList.contains('matched-correct')) {
+        el.classList.add('selected');
+        selectedLeft = el.dataset.matchLeft;
+        tryMatch();
+      }
+    });
+  });
+  document.querySelectorAll('[data-match-right]').forEach(function(el) {
+    el.addEventListener('click', function() {
+      const actIdx = parseInt(el.dataset.act);
+      if (actIdx !== currentStation) return;
+      document.querySelectorAll('[data-match-right]').forEach(function(e) {
+        if (!e.classList.contains('matched-correct')) e.classList.remove('selected');
+      });
+      if (!el.classList.contains('matched-correct')) {
+        el.classList.add('selected');
+        selectedRight = el.dataset.matchRight;
+        tryMatch();
+      }
+    });
+  });
+}
+
+function tryMatch() {
+  if (!selectedLeft || !selectedRight) return;
+  const actIdx = parseInt(selectedLeft.split('-')[0]);
+  const leftIdx = parseInt(selectedLeft.split('-')[1]);
+  const rightIdx = parseInt(selectedRight.split('-')[1]);
+  if (!matchState[actIdx]) matchState[actIdx] = {};
+  const act = activities[actIdx];
+  const leftEl = document.querySelector('[data-match-left="' + selectedLeft + '"]');
+  const rightEl = document.querySelector('[data-match-right="' + selectedRight + '"]');
+  if (act.correct[leftIdx] === rightIdx) {
+    leftEl.classList.add('matched-correct');
+    rightEl.classList.add('matched-correct');
+    matchState[actIdx][leftIdx] = rightIdx;
+  } else {
+    leftEl.classList.add('matched-wrong');
+    rightEl.classList.add('matched-wrong');
+    setTimeout(function() {
+      leftEl.classList.remove('matched-wrong', 'selected');
+      rightEl.classList.remove('matched-wrong', 'selected');
+    }, 800);
+  }
+  selectedLeft = null;
+  selectedRight = null;
+  if (matchState[actIdx] && Object.keys(matchState[actIdx]).length === 3) {
+    document.getElementById('btn-' + actIdx).disabled = false;
+  }
+}
+
+function handleSubmit(idx) {
+  const act = activities[idx];
+  const fb = document.getElementById('fb-' + idx);
+  if (act.type === 'mc') {
+    const sel = document.querySelector('[data-act="' + idx + '"].option-btn.selected-correct');
+    if (!sel) return;
+    const optIdx = parseInt(sel.dataset.opt);
+    if (optIdx === act.correct) {
+      fb.className = 'feedback show feedback-correct';
+      fb.innerHTML = '<span style="font-size:16px;flex-shrink:0;">✓</span><span>' + act.feedbackOk + '</span>';
+      advanceStation(idx, act.xp);
+    } else {
+      sel.classList.remove('selected-correct');
+      sel.classList.add('selected-wrong');
+      fb.className = 'feedback show feedback-wrong';
+      fb.innerHTML = '<span style="font-size:16px;flex-shrink:0;">✗</span><span>' + act.feedbackFail + '</span>';
+    }
+  } else if (act.type === 'match') {
+    fb.className = 'feedback show feedback-correct';
+    fb.innerHTML = '<span style="font-size:16px;flex-shrink:0;">✓</span><span>' + act.feedbackOk + '</span>';
+    advanceStation(idx, act.xp);
+  } else if (act.type === 'open') {
+    const ta = document.getElementById('open-' + idx);
+    if (!ta || ta.value.trim().length < 10) {
+      fb.className = 'feedback show feedback-wrong';
+      fb.innerHTML = '<span style="font-size:16px;flex-shrink:0;">✗</span><span>Escribí al menos una frase completa para continuar.</span>';
+      return;
+    }
+    fb.className = 'feedback show feedback-correct';
+    fb.innerHTML = '<span style="font-size:16px;flex-shrink:0;">✓</span><span>' + act.feedbackOk + '<br><em style="font-size:12px;opacity:0.8;font-weight:400;">Respuesta modelo: ' + act.modelAnswer + '</em></span>';
+    advanceStation(idx, act.xp);
+  }
+  document.getElementById('btn-' + idx).disabled = true;
+  fb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function advanceStation(idx, pts) {
+  updateXp(pts);
+  setTimeout(function() {
+    currentStation = idx + 1;
+    renderMap();
+    renderActivities();
+    setTimeout(function() {
+      const next = document.getElementById('card-' + (idx+1));
+      if (next) next.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      else {
+        const res = document.getElementById('resumen-section');
+        if (res) res.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  }, 1400);
+}
+
+function renderResumen(container) {
+  const div = document.createElement('div');
+  div.id = 'resumen-section';
+  div.innerHTML =
+    '<div class="celebration">' +
+      '<div class="celebration-icon">🏆</div>' +
+      '<div class="celebration-title">¡Misión completada!</div>' +
+      '<div class="celebration-sub">Obtuviste ' + xp + ' puntos de experiencia</div>' +
+      '<div class="stars">⭐⭐⭐</div>' +
+    '</div>' +
+    '<div class="resumen-card">' +
+      '<div class="resumen-title">📋 Resumen para copiar en tu carpeta</div>' +
+      '<div class="resumen-row"><span class="resumen-label">Tema</span><span class="resumen-val">El concepto de Trabajo y su evolución histórica.</span></div>' +
+      '<div class="resumen-row"><span class="resumen-label">Objetivo</span><span class="resumen-val">Entender que el trabajo es una actividad humana que ha cambiado a lo largo del tiempo.</span></div>' +
+      '<div class="resumen-row"><span class="resumen-label">Actividad</span><span class="resumen-val">Misión de Arqueología del Trabajo (Análisis de texto e imágenes).</span></div>' +
+      '<div class="resumen-row"><span class="resumen-label">Conceptos clave</span><span class="resumen-val">Tripalium (tortura), Esclavitud, Siervos, Salario, Autoestima.</span></div>' +
+      '<div class="resumen-sintesis"><strong style="color:#CECBF6;">Síntesis:</strong> El trabajo empezó siendo visto como un castigo o tortura (tripalium). Con el tiempo, pasó de ser esclavitud a ser un derecho por el cual se recibe un salario. Es fundamental para nuestra identidad y para sentirnos parte de la sociedad.</div>' +
+      '<button class="copy-btn" onclick="copyResumen()">📋 Copiar resumen</button>' +
+    '</div>' +
+    '<div style="height:2rem;"></div>';
+  container.appendChild(div);
+}
+
+function copyResumen() {
+  const text = 'RESUMEN: El concepto de Trabajo y su evolución histórica\n\nTema: El concepto de Trabajo y su evolución histórica.\nObjetivo: Entender que el trabajo es una actividad humana que ha cambiado a lo largo del tiempo.\nActividad realizada: Misión de Arqueología del Trabajo (Análisis de texto e imágenes).\nConceptos clave: Tripalium (tortura), Esclavitud, Siervos, Salario, Autoestima.\nSíntesis: El trabajo empezó siendo visto como un castigo o tortura (tripalium). Con el tiempo, pasó de ser esclavitud a ser un derecho por el cual se recibe un salario. Es fundamental para nuestra identidad y para sentirnos parte de la sociedad.';
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).catch(function(){});
+  }
+  const btn = document.querySelector('.copy-btn');
+  if (btn) {
+    btn.textContent = '✓ ¡Copiado!';
+    setTimeout(function() { btn.innerHTML = '📋 Copiar resumen'; }, 2500);
+  }
+}
+
+renderMap();
+renderActivities();
+</script>
+</body>
+</html>
