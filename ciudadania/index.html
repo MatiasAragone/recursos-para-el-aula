@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Los Fundadores de la Comunidad</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap');
+
+  :root {
+    --bg: #f0f4f8;
+    --card: #ffffff;
+    --primary: #3b5bdb;
+    --primary-light: #e7f0ff;
+    --secondary: #f59f00;
+    --secondary-light: #fff9db;
+    --success: #2f9e44;
+    --success-light: #ebfbee;
+    --danger: #e03131;
+    --paper: #fff8ee;
+    --paper-border: #f0a500;
+    --text: #1a1a2e;
+    --text-soft: #555577;
+    --shield-off: #dde3ec;
+    --shield-on: #f59f00;
+    --radius: 18px;
+    --shadow: 0 4px 24px rgba(59,91,219,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 0 48px 0;
+  }
+
+  /* HEADER */
+  .header {
+    width: 100%;
+    background: var(--primary);
+    padding: 20px 24px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 16px rgba(59,91,219,0.18);
+  }
+  .header h1 {
+    font-family: 'Fredoka One', cursive;
+    color: #fff;
+    font-size: 1.7rem;
+    text-align: center;
+    line-height: 1.2;
+    letter-spacing: 0.5px;
+  }
+  .header .subtitle {
+    color: #c5d3ff;
+    font-size: 0.9rem;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  /* PROGRESS SHIELDS */
+  .shields-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+    align-items: center;
+  }
+  .shield {
+    width: 36px;
+    height: 42px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    transition: all 0.4s;
+    filter: grayscale(1) opacity(0.4);
+    position: relative;
+  }
+  .shield.earned {
+    filter: none;
+    animation: shieldPop 0.5s ease;
+  }
+  .shield-label {
+    font-size: 0.55rem;
+    color: #fff;
+    font-weight: 800;
+    margin-top: 1px;
+    letter-spacing: 0.3px;
+  }
+  @keyframes shieldPop {
+    0% { transform: scale(0.5); }
+    70% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+  }
+
+  /* MAIN CONTAINER */
+  .main {
+    width: 100%;
+    max-width: 680px;
+    padding: 28px 20px 0;
+  }
+
+  /* SCREEN */
+  .screen {
+    display: none;
+    animation: fadeIn 0.35s ease;
+  }
+  .screen.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* CARD */
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 28px 24px 24px;
+    margin-bottom: 18px;
+  }
+
+  .challenge-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--primary-light);
+    color: var(--primary);
+    border-radius: 999px;
+    padding: 5px 14px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    margin-bottom: 14px;
+    letter-spacing: 0.3px;
+  }
+
+  .card h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.35rem;
+    color: var(--primary);
+    margin-bottom: 8px;
+    line-height: 1.25;
+  }
+
+  .card .objective {
+    font-size: 0.85rem;
+    color: var(--text-soft);
+    margin-bottom: 18px;
+    font-weight: 600;
+  }
+
+  /* TEXT FRAGMENT */
+  .fragment {
+    background: #f7f9ff;
+    border-left: 4px solid var(--primary);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  .fragment .highlight {
+    background: #fff176;
+    padding: 1px 3px;
+    border-radius: 4px;
+    font-weight: 700;
+  }
+
+  /* CONSIGNA */
+  .consigna {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+
+  /* OPTIONS */
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option-btn {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #f7f9ff;
+    border: 2.5px solid #d0d8f0;
+    border-radius: 14px;
+    padding: 14px 16px;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+    text-align: left;
+    transition: all 0.2s;
+    line-height: 1.4;
+    width: 100%;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    transform: translateX(4px);
+  }
+  .option-btn .opt-letter {
+    min-width: 28px;
+    height: 28px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 0.85rem;
+    margin-top: 1px;
+    flex-shrink: 0;
+  }
+  .option-btn.correct {
+    border-color: var(--success);
+    background: var(--success-light);
+  }
+  .option-btn.correct .opt-letter {
+    background: var(--success);
+  }
+  .option-btn.wrong {
+    border-color: #ccc;
+    background: #f5f5f5;
+    opacity: 0.6;
+  }
+  .option-btn:disabled { cursor: default; }
+
+  /* FEEDBACK */
+  .feedback {
+    display: none;
+    border-radius: 14px;
+    padding: 16px 18px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-top: 16px;
+    line-height: 1.5;
+    animation: fadeIn 0.3s ease;
+  }
+  .feedback.show { display: block; }
+  .feedback.success {
+    background: var(--success-light);
+    border: 2px solid var(--success);
+    color: var(--success);
+  }
+  .feedback.retry {
+    background: #fff9e6;
+    border: 2px solid #f0c040;
+    color: #7a5c00;
+  }
+  .feedback .retry-fragment {
+    margin-top: 10px;
+    background: #fff176;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #4a3800;
+    line-height: 1.6;
+  }
+
+  /* PAPER BLOCK */
+  .paper-block {
+    display: none;
+    background: var(--paper);
+    border: 3px solid var(--paper-border);
+    border-radius: var(--radius);
+    padding: 22px 20px;
+    margin-bottom: 16px;
+    text-align: center;
+    animation: fadeIn 0.3s ease;
+  }
+  .paper-block.show { display: block; }
+  .paper-block .stop-icon { font-size: 2.2rem; margin-bottom: 8px; display: block; }
+  .paper-block h3 {
+    font-family: 'Fredoka One', cursive;
+    color: #b36b00;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+  }
+  .paper-block p {
+    color: #7a5000;
+    font-size: 0.92rem;
+    font-weight: 600;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .paper-btn {
+    background: var(--paper-border);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    padding: 12px 28px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .paper-btn:hover { background: #d07b00; transform: scale(1.04); }
+
+  /* DRAG DROP */
+  .dragdrop-area {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .concept-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .concept-label {
+    background: var(--primary);
+    color: #fff;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-weight: 800;
+    font-size: 0.95rem;
+    min-width: 110px;
+    text-align: center;
+  }
+  .drop-zone {
+    flex: 1;
+    min-height: 54px;
+    border: 2.5px dashed #b0bcd8;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    color: #aaa;
+    font-weight: 600;
+    transition: border-color 0.2s, background 0.2s;
+    padding: 8px;
+    text-align: center;
+  }
+  .drop-zone.dragover {
+    border-color: var(--primary);
+    background: var(--primary-light);
+  }
+  .drop-zone.filled {
+    border-style: solid;
+    color: var(--text);
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+  .drop-zone.correct { border-color: var(--success); background: var(--success-light); color: var(--success); }
+  .drop-zone.wrong-match { border-color: var(--danger); background: #fff0f0; color: var(--danger); }
+
+  .drag-tokens {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .drag-token {
+    background: var(--secondary-light);
+    border: 2px solid var(--secondary);
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: grab;
+    transition: transform 0.15s, box-shadow 0.15s;
+    user-select: none;
+  }
+  .drag-token:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  .drag-token.used { opacity: 0.3; cursor: default; pointer-events: none; }
+
+  /* FILL BLANK */
+  .fill-sentence {
+    background: #f7f9ff;
+    border-radius: 12px;
+    padding: 16px 18px;
+    font-size: 1rem;
+    line-height: 1.9;
+    margin-bottom: 14px;
+    color: var(--text);
+    font-weight: 600;
+  }
+  .blank-word {
+    display: inline-block;
+    min-width: 80px;
+    border-bottom: 3px solid var(--primary);
+    padding: 2px 6px;
+    margin: 0 4px;
+    color: var(--primary);
+    font-weight: 900;
+    font-size: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .blank-word.filled {
+    background: var(--primary-light);
+    border-radius: 6px;
+  }
+  .blank-word.correct { color: var(--success); border-color: var(--success); background: var(--success-light); border-radius: 6px; }
+  .blank-word.wrong-fill { color: var(--danger); border-color: var(--danger); background: #fff0f0; border-radius: 6px; }
+
+  /* NEXT BTN */
+  .next-btn {
+    display: none;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    padding: 14px 36px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100%;
+    transition: background 0.2s, transform 0.15s;
+    letter-spacing: 0.3px;
+  }
+  .next-btn:hover { background: #2c46b8; transform: scale(1.02); }
+  .next-btn.show { display: block; }
+
+  /* CHECK BTN */
+  .check-btn {
+    background: var(--secondary);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    padding: 13px 32px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.97rem;
+    font-weight: 800;
+    cursor: pointer;
+    margin-top: 16px;
+    width: 100%;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .check-btn:hover { background: #d08700; transform: scale(1.02); }
+
+  /* SUMMARY SCREEN */
+  .summary-card {
+    background: var(--primary);
+    border-radius: var(--radius);
+    padding: 32px 24px;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 18px;
+  }
+  .summary-card h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.9rem;
+    margin-bottom: 10px;
+  }
+  .summary-card p { font-size: 0.95rem; font-weight: 600; opacity: 0.9; line-height: 1.6; }
+  .trophy { font-size: 3rem; margin-bottom: 12px; display: block; }
+
+  .summary-concepts {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 22px 20px;
+    box-shadow: var(--shadow);
+    margin-bottom: 18px;
+  }
+  .summary-concepts h3 {
+    font-family: 'Fredoka One', cursive;
+    color: var(--primary);
+    font-size: 1.15rem;
+    margin-bottom: 14px;
+  }
+  .concept-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: flex-start;
+  }
+  .concept-item .dot {
+    min-width: 10px;
+    height: 10px;
+    background: var(--secondary);
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+  .concept-item p { font-size: 0.9rem; line-height: 1.5; color: var(--text); }
+  .concept-item strong { color: var(--primary); }
+
+  .copy-box {
+    background: #fffbe6;
+    border: 2.5px solid var(--secondary);
+    border-radius: var(--radius);
+    padding: 22px 20px;
+    margin-bottom: 18px;
+  }
+  .copy-box .copy-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .copy-box h3 {
+    font-family: 'Fredoka One', cursive;
+    color: #b36b00;
+    font-size: 1.1rem;
+  }
+  .copy-box .stop-icon { font-size: 1.5rem; }
+  .copy-box p {
+    font-size: 0.88rem;
+    color: #7a5000;
+    font-weight: 700;
+    line-height: 1.7;
+    margin-bottom: 8px;
+  }
+  .copy-box ul {
+    list-style: none;
+    padding: 0;
+  }
+  .copy-box ul li {
+    font-size: 0.87rem;
+    color: #7a5000;
+    font-weight: 600;
+    line-height: 1.5;
+    padding: 5px 0;
+    border-bottom: 1px solid #f0d080;
+    display: flex;
+    gap: 8px;
+  }
+  .copy-box ul li::before { content: "✏️"; flex-shrink: 0; }
+
+  /* INTRO SCREEN */
+  .intro-card {
+    background: var(--primary);
+    border-radius: var(--radius);
+    padding: 30px 24px;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 18px;
+  }
+  .intro-card .emoji { font-size: 3rem; display: block; margin-bottom: 12px; }
+  .intro-card h2 { font-family: 'Fredoka One', cursive; font-size: 1.7rem; margin-bottom: 10px; }
+  .intro-card p { font-size: 0.95rem; font-weight: 600; opacity: 0.9; line-height: 1.6; margin-bottom: 6px; }
+
+  .start-btn {
+    background: var(--secondary);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    padding: 16px 48px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 900;
+    cursor: pointer;
+    margin-top: 22px;
+    width: 100%;
+    transition: background 0.2s, transform 0.15s;
+    letter-spacing: 0.5px;
+  }
+  .start-btn:hover { background: #d07b00; transform: scale(1.02); }
+
+  .intro-goals {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin-bottom: 18px;
+  }
+  .intro-goals h3 { font-family: 'Fredoka One', cursive; color: var(--primary); font-size: 1.05rem; margin-bottom: 12px; }
+  .goal-item { display: flex; gap: 10px; margin-bottom: 8px; align-items: flex-start; }
+  .goal-item .num {
+    min-width: 24px; height: 24px;
+    background: var(--primary); color: #fff;
+    border-radius: 50%; display: flex;
+    align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 900; flex-shrink: 0;
+  }
+  .goal-item p { font-size: 0.88rem; color: var(--text-soft); font-weight: 600; line-height: 1.4; }
+
+  @media (max-width: 480px) {
+    .header h1 { font-size: 1.4rem; }
+    .card { padding: 20px 16px; }
+    .main { padding: 20px 14px 0; }
+    .concept-row { flex-direction: column; align-items: flex-start; }
+    .drop-zone { min-height: 48px; width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>🏛️ Los Fundadores de la Comunidad</h1>
+  <div class="subtitle">¡Armá las leyes de tu barrio y desbloqueá tus Escudos!</div>
+  <div class="shields-row" id="shieldsRow">
+    <div class="shield" id="s1">🛡️<span class="shield-label">D1</span></div>
+    <div class="shield" id="s2">🛡️<span class="shield-label">D2</span></div>
+    <div class="shield" id="s3">🛡️<span class="shield-label">D3</span></div>
+    <div class="shield" id="s4">🛡️<span class="shield-label">D4</span></div>
+    <div class="shield" id="s5">🛡️<span class="shield-label">D5</span></div>
+    <div class="shield" id="s6">🛡️<span class="shield-label">D6</span></div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ===== SCREEN 0: INTRO ===== -->
+<div class="screen active" id="screen-intro">
+  <div class="intro-card">
+    <span class="emoji">🏘️</span>
+    <h2>¡Bienvenido, Organizador!</h2>
+    <p>Tu misión es organizar las leyes de tu comunidad.</p>
+    <p>Vas a resolver <strong>6 desafíos</strong>. Por cada uno que resuelvas, ganarás un <strong>🛡️ Escudo de Ley</strong>.</p>
+    <p>En algunos momentos, la pantalla va a hacer una pausa: ¡vas a necesitar tu cuadernillo y tu lápiz!</p>
+    <button class="start-btn" onclick="goto('screen-1')">🚀 ¡Empezar el juego!</button>
+  </div>
+  <div class="intro-goals">
+    <h3>📋 ¿Qué vas a aprender?</h3>
+    <div class="goal-item"><div class="num">1</div><p>Qué significa nacer en territorio argentino (Ius Soli)</p></div>
+    <div class="goal-item"><div class="num">2</div><p>Cómo pueden ser ciudadanos los hijos de argentinos nacidos afuera (Ius Sanguinis)</p></div>
+    <div class="goal-item"><div class="num">3</div><p>Las nuevas formas de obtener ciudadanía</p></div>
+    <div class="goal-item"><div class="num">4</div><p>La diferencia entre trabajo y empleo</p></div>
+    <div class="goal-item"><div class="num">5</div><p>Qué es el contrato social</p></div>
+    <div class="goal-item"><div class="num">6</div><p>Por qué la desigualdad dificulta la participación ciudadana</p></div>
+  </div>
+</div>
+
+<!-- ===== DESAFÍO 1 ===== -->
+<div class="screen" id="screen-1">
+  <div class="card">
+    <div class="challenge-badge">⚔️ Desafío 1 de 6</div>
+    <h2>El origen de las leyes</h2>
+    <p class="objective">🎯 Objetivo: Entender qué significa el derecho de suelo.</p>
+    <div class="fragment">
+      "Argentina adoptó como principio rector el <span class="highlight">Ius Soli (derecho de suelo)</span>. Según la ley, es argentino <strong>todo aquel nacido en el territorio de la República</strong>, sin importar la nacionalidad de sus padres."
+    </div>
+    <div class="consigna">📖 Leé el fragmento y elegí la opción correcta:<br><em>¿Qué significa Ius Soli?</em></div>
+    <div class="options" id="opts1">
+      <button class="option-btn" onclick="answer1(this,'A')"><span class="opt-letter">A</span>Sos argentino si naciste dentro del territorio de Argentina, aunque tus padres sean de otro país.</button>
+      <button class="option-btn" onclick="answer1(this,'B')"><span class="opt-letter">B</span>Sos argentino solo si tus padres nacieron en Argentina.</button>
+      <button class="option-btn" onclick="answer1(this,'C')"><span class="opt-letter">C</span>Tenés que comprar un terreno para ser ciudadano argentino.</button>
+    </div>
+    <div class="feedback" id="fb1"></div>
+    <button class="next-btn" id="next1" onclick="goto('screen-2')">Siguiente desafío →</button>
+  </div>
+</div>
+
+<!-- ===== DESAFÍO 2 ===== -->
+<div class="screen" id="screen-2">
+  <div class="card">
+    <!-- BLOQUEO PAPEL -->
+    <div class="paper-block show" id="paperBlock2">
+      <span class="stop-icon">🛑</span>
+      <h3>¡MOMENTO DE IR AL CUADERNILLO!</h3>
+      <p>Buscá en tu cuadernillo la hoja que habla sobre la <strong>Ley de Ciudadanía</strong>.<br><br>Encontrá la parte que dice algo sobre el <strong>Ius Sanguinis (derecho de sangre)</strong> y <strong>subrayala con tu lápiz</strong>.<br><br>Cuando termines, tocá el botón de abajo.</p>
+      <button class="paper-btn" onclick="unlockPaper2()">✏️ ¡Ya lo subrayé! Volver al juego</button>
+    </div>
+    <!-- CONTENIDO BLOQUEADO -->
+    <div id="content2" style="display:none">
+      <div class="challenge-badge">⚔️ Desafío 2 de 6</div>
+      <h2>El mapa y el papel</h2>
+      <p class="objective">🎯 Objetivo: Entender la excepción del derecho de sangre.</p>
+      <div class="fragment">
+        "La ley incluye una excepción basada en el <span class="highlight">Ius Sanguinis (derecho de sangre)</span>. Permite que los hijos de argentinos nativos nacidos en el extranjero puedan obtener la ciudadanía mediante un acto voluntario: <strong>la opción</strong>."
+      </div>
+      <div class="consigna">🤔 Si un hijo de argentinos nace en otro país, ¿qué necesita hacer para ser ciudadano argentino?</div>
+      <div class="options" id="opts2">
+        <button class="option-btn" onclick="answer2(this,'A')"><span class="opt-letter">A</span>Nada, la ciudadanía es automática al nacer en cualquier parte del mundo.</button>
+        <button class="option-btn" onclick="answer2(this,'B')"><span class="opt-letter">B</span>Debe realizar un acto voluntario que se llama "opción".</button>
+        <button class="option-btn" onclick="answer2(this,'C')"><span class="opt-letter">C</span>No puede ser ciudadano argentino bajo ninguna condición.</button>
+      </div>
+      <div class="feedback" id="fb2"></div>
+      <button class="next-btn" id="next2" onclick="goto('screen-3')">Siguiente desafío →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DESAFÍO 3 ===== -->
+<div class="screen" id="screen-3">
+  <div class="card">
+    <div class="challenge-badge">⚔️ Desafío 3 de 6</div>
+    <h2>Las nuevas reformas</h2>
+    <p class="objective">🎯 Objetivo: Entender el cambio con la ciudadanía por inversión.</p>
+    <div class="fragment">
+      "Reformas recientes, como el <span class="highlight">Decreto 366/2025</span>, incorporan una lógica nueva. Ya no se trata solo de la identidad cultural o del arraigo por el trabajo, sino de la <strong>ciudadanía como un activo económico</strong>: el Estado ofrece el estatus de ciudadano a cambio de <strong>inversiones de dinero</strong>."
+    </div>
+    <div class="consigna">📝 ¿Cuál de estas opciones dice lo mismo con palabras más sencillas?</div>
+    <div class="options" id="opts3">
+      <button class="option-btn" onclick="answer3(this,'A')"><span class="opt-letter">A</span>Ahora es obligatorio trabajar en un banco para ser argentino.</button>
+      <button class="option-btn" onclick="answer3(this,'B')"><span class="opt-letter">B</span>Las leyes de ciudadanía nunca cambiaron en los últimos 150 años.</button>
+      <button class="option-btn" onclick="answer3(this,'C')"><span class="opt-letter">C</span>Las nuevas leyes permiten que una persona extranjera obtenga la ciudadanía si realiza inversiones económicas importantes en el país.</button>
+    </div>
+    <div class="feedback" id="fb3"></div>
+    <button class="next-btn" id="next3" onclick="goto('screen-4')">Siguiente desafío →</button>
+  </div>
+</div>
+
+<!-- ===== DESAFÍO 4 ===== -->
+<div class="screen" id="screen-4">
+  <div class="card">
+    <div class="challenge-badge">⚔️ Desafío 4 de 6</div>
+    <h2>¿Hacemos el mismo trabajo?</h2>
+    <p class="objective">🎯 Objetivo: Diferenciar TRABAJO de EMPLEO.</p>
+
+    <div class="consigna">🔤 Leé las dos preguntas y elegí la respuesta correcta en cada una:</div>
+
+    <div style="margin-bottom:18px;">
+      <div style="font-weight:800; font-size:0.97rem; margin-bottom:10px; color:var(--primary);">① ¿Qué es el TRABAJO?</div>
+      <div class="options" id="opts4a">
+        <button class="option-btn" onclick="answer4a(this,'A')"><span class="opt-letter">A</span>Una actividad donde la persona hace un esfuerzo físico o mental, pero <strong>NO recibe dinero</strong> a cambio. (Ejemplo: limpiar tu propia casa).</button>
+        <button class="option-btn" onclick="answer4a(this,'B')"><span class="opt-letter">B</span>Una actividad laboral por la cual la persona <strong>recibe un pago o sueldo</strong>.</button>
+      </div>
+      <div class="feedback" id="fb4a"></div>
+    </div>
+
+    <div id="q4b" style="display:none; margin-bottom:8px;">
+      <div style="font-weight:800; font-size:0.97rem; margin-bottom:10px; color:var(--primary);">② ¿Qué es el EMPLEO?</div>
+      <div class="options" id="opts4b">
+        <button class="option-btn" onclick="answer4b(this,'A')"><span class="opt-letter">A</span>Una actividad donde la persona hace un esfuerzo físico o mental, pero <strong>NO recibe dinero</strong> a cambio.</button>
+        <button class="option-btn" onclick="answer4b(this,'B')"><span class="opt-letter">B</span>Una actividad laboral por la cual la persona <strong>recibe un pago o sueldo</strong>.</button>
+      </div>
+      <div class="feedback" id="fb4b"></div>
+    </div>
+
+    <button class="next-btn" id="next4" onclick="goto('screen-5')">Siguiente desafío →</button>
+  </div>
+</div>
+
+<!-- ===== DESAFÍO 5 ===== -->
+<div class="screen" id="screen-5">
+  <div class="card">
+    <div class="challenge-badge">⚔️ Desafío 5 de 6</div>
+    <h2>El pacto de convivencia</h2>
+    <p class="objective">🎯 Objetivo: Entender el Contrato Social.</p>
+
+    <div class="fragment">
+      "Los seres humanos comprendieron que el único modo de sobrevivir era haciéndolo en comunidad. Como necesitaban reglas de convivencia, acordaron un pacto: <span class="highlight">delegar al Estado la libertad natural</span> a cambio de ciertos <span class="highlight">derechos civiles, políticos y sociales</span>."
+    </div>
+
+    <div class="consigna">🧩 Arrastrá las palabras correctas para completar la frase:</div>
+
+    <div class="drag-tokens" id="tokens5">
+      <div class="drag-token" draggable="true" id="tok_estado" ondragstart="dragStart(event,'ESTADO')">ESTADO</div>
+      <div class="drag-token" draggable="true" id="tok_derechos" ondragstart="dragStart(event,'DERECHOS')">DERECHOS</div>
+      <div class="drag-token" draggable="true" id="tok_rey" ondragstart="dragStart(event,'REY')">REY</div>
+      <div class="drag-token" draggable="true" id="tok_regalos" ondragstart="dragStart(event,'REGALOS')">REGALOS</div>
+      <div class="drag-token" draggable="true" id="tok_mercado" ondragstart="dragStart(event,'MERCADO')">MERCADO</div>
+    </div>
+
+    <div class="fill-sentence">
+      "El Contrato Social ocurre cuando las personas se unen en comunidad y delegan su libertad al
+      <span class="blank-word" id="blank5a" ondragover="allowDrop(event)" ondrop="dropOn(event,'blank5a')" onclick="clearBlank('blank5a')">___</span>
+      a cambio de que este garantice sus
+      <span class="blank-word" id="blank5b" ondragover="allowDrop(event)" ondrop="dropOn(event,'blank5b')" onclick="clearBlank('blank5b')">___</span>."
+    </div>
+
+    <button class="check-btn" id="checkBtn5" onclick="check5()">✅ Comprobar respuesta</button>
+    <div class="feedback" id="fb5"></div>
+    <button class="next-btn" id="next5" onclick="goto('screen-6')">Siguiente desafío →</button>
+  </div>
+</div>
+
+<!-- ===== DESAFÍO 6 ===== -->
+<div class="screen" id="screen-6">
+  <div class="card">
+    <div class="challenge-badge">⚔️ Desafío 6 de 6</div>
+    <h2>El control de la igualdad</h2>
+    <p class="objective">🎯 Objetivo: Entender por qué la desigualdad dificulta la ciudadanía.</p>
+    <div class="fragment">
+      "Participar plenamente en la vida política es muy dificultoso, por ejemplo, para una persona que vive en una vivienda precaria, <span class="highlight">cuyos ingresos no le permiten brindar una alimentación adecuada a sus hijos</span>. Sus prioridades van a ubicarse en tratar de lograr, día a día, el sustento."
+    </div>
+    <div class="consigna">🤔 ¿Por qué es difícil participar en política para alguien en situación de pobreza?</div>
+    <div class="options" id="opts6">
+      <button class="option-btn" onclick="answer6(this,'A')"><span class="opt-letter">A</span>Porque su prioridad urgente de cada día es conseguir el alimento y sustento para su familia.</button>
+      <button class="option-btn" onclick="answer6(this,'B')"><span class="opt-letter">B</span>Porque las leyes le prohíben votar a la gente que no tiene dinero.</button>
+      <button class="option-btn" onclick="answer6(this,'C')"><span class="opt-letter">C</span>Porque prefiere quedarse en su casa en lugar de ir a participar.</button>
+    </div>
+    <div class="feedback" id="fb6"></div>
+    <button class="next-btn" id="next6" onclick="goto('screen-final')">🏆 Ver mi resumen final</button>
+  </div>
+</div>
+
+<!-- ===== PANTALLA FINAL ===== -->
+<div class="screen" id="screen-final">
+  <div class="summary-card">
+    <span class="trophy">🏆</span>
+    <h2>¡Lo lograste!</h2>
+    <p>Completaste todos los desafíos y construiste las leyes de tu comunidad. ¡Sos un verdadero organizador ciudadano!</p>
+    <div class="shields-row" style="justify-content:center; margin-top:16px;">
+      🛡️🛡️🛡️🛡️🛡️🛡️
+    </div>
+  </div>
+
+  <div class="summary-concepts">
+    <h3>📚 Conceptos que aprendiste hoy</h3>
+    <div class="concept-item"><div class="dot"></div><p><strong>Ius Soli:</strong> Es argentino todo el que nace dentro del territorio de Argentina, sin importar la nacionalidad de sus padres.</p></div>
+    <div class="concept-item"><div class="dot"></div><p><strong>Ius Sanguinis:</strong> Los hijos de argentinos nacidos en otro país pueden elegir ser argentinos mediante un acto voluntario llamado "opción".</p></div>
+    <div class="concept-item"><div class="dot"></div><p><strong>Ciudadanía por inversión (Decreto 366/2025):</strong> Una reforma reciente que permite obtener ciudadanía a cambio de inversiones económicas en el país.</p></div>
+    <div class="concept-item"><div class="dot"></div><p><strong>Trabajo:</strong> Esfuerzo físico o mental para producir algo, aunque no se reciba pago.</p></div>
+    <div class="concept-item"><div class="dot"></div><p><strong>Empleo:</strong> Trabajo por el cual se recibe una remuneración (dinero).</p></div>
+    <div class="concept-item"><div class="dot"></div><p><strong>Contrato Social:</strong> Pacto por el que las personas le ceden libertad al Estado a cambio de que este garantice sus derechos.</p></div>
+    <div class="concept-item"><div class="dot"></div><p><strong>Desigualdad y ciudadanía:</strong> Cuando una persona no puede cubrir sus necesidades básicas, le resulta muy difícil participar en la vida política.</p></div>
+  </div>
+
+  <div class="copy-box">
+    <div class="copy-header">
+      <span class="stop-icon">🛑</span>
+      <h3>AHORA: COPIÁ ESTO EN TU CARPETA</h3>
+    </div>
+    <p><strong>Tema:</strong> La ciudadanía, el trabajo y el contrato social en Argentina.</p>
+    <p><strong>Objetivo:</strong> Comprender las formas de obtener la ciudadanía (suelo, sangre o inversión) y diferenciar el trabajo del empleo.</p>
+    <p><strong>Conceptos clave:</strong></p>
+    <ul>
+      <li>Ius Soli: ser argentino por nacer en el territorio de Argentina.</li>
+      <li>Ius Sanguinis: ser argentino por opción, si tus padres son argentinos y naciste afuera.</li>
+      <li>Trabajo: actividad que realiza una persona, sea paga o no.</li>
+      <li>Empleo: trabajo que recibe remuneración (pago en dinero).</li>
+      <li>Contrato Social: pacto entre el ciudadano y el Estado para vivir en comunidad con derechos.</li>
+      <li>Desigualdad: cuando la falta de recursos básicos impide participar plenamente en la política.</li>
+    </ul>
+    <p style="margin-top:12px;"><strong>Síntesis:</strong> La ciudadanía en Argentina se obtiene por nacer en el suelo, por descendencia, o por inversión (Decreto 366/2025). Para ejercer esa ciudadanía plenamente, las personas necesitan condiciones dignas que se logran con el empleo. La desigualdad extrema dificulta la participación política.</p>
+  </div>
+</div>
+
+</div><!-- end main -->
+
+<script>
+// Navigation
+function goto(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// Earn shield
+function earnShield(n) {
+  const el = document.getElementById('s' + n);
+  if (el) el.classList.add('earned');
+}
+
+// Disable options
+function disableOpts(id) {
+  document.querySelectorAll('#' + id + ' .option-btn').forEach(b => b.disabled = true);
+}
+
+// Generic feedback
+function showSuccess(fbId, msg) {
+  const fb = document.getElementById(fbId);
+  fb.className = 'feedback success show';
+  fb.innerHTML = '✅ ' + msg;
+}
+function showRetry(fbId, hint) {
+  const fb = document.getElementById(fbId);
+  fb.className = 'feedback retry show';
+  fb.innerHTML = '🔄 Vamos a intentarlo de nuevo. Volvé a leer el fragmento que te ayuda a resolverlo:<div class="retry-fragment">' + hint + '</div>';
+}
+
+// ===== DESAFÍO 1 =====
+var tries1 = 0;
+function answer1(btn, opt) {
+  if (opt === 'A') {
+    btn.classList.add('correct');
+    disableOpts('opts1');
+    showSuccess('fb1', '¡Muy bien! Ius Soli significa que sos argentino por haber nacido en el territorio argentino, sin importar la nacionalidad de tus padres.');
+    document.getElementById('next1').classList.add('show');
+    earnShield(1);
+  } else {
+    tries1++;
+    btn.classList.add('wrong');
+    btn.disabled = true;
+    showRetry('fb1', '"...es argentino <strong>todo aquel nacido en el territorio de la República</strong>, sin importar la nacionalidad de sus padres."');
+  }
+}
+
+// ===== DESAFÍO 2 =====
+function unlockPaper2() {
+  document.getElementById('paperBlock2').style.display = 'none';
+  document.getElementById('content2').style.display = 'block';
+}
+var tries2 = 0;
+function answer2(btn, opt) {
+  if (opt === 'B') {
+    btn.classList.add('correct');
+    disableOpts('opts2');
+    showSuccess('fb2', '¡Correcto! El Ius Sanguinis requiere un acto voluntario llamado "opción". No es automático.');
+    document.getElementById('next2').classList.add('show');
+    earnShield(2);
+  } else {
+    tries2++;
+    btn.classList.add('wrong');
+    btn.disabled = true;
+    showRetry('fb2', '"...los hijos de argentinos nativos nacidos en el extranjero pueden obtener la ciudadanía mediante un acto voluntario: <strong>la opción</strong>."');
+  }
+}
+
+// ===== DESAFÍO 3 =====
+function answer3(btn, opt) {
+  if (opt === 'C') {
+    btn.classList.add('correct');
+    disableOpts('opts3');
+    showSuccess('fb3', '¡Exacto! La nueva reforma plantea que quien realice inversiones económicas importantes puede obtener la ciudadanía argentina.');
+    document.getElementById('next3').classList.add('show');
+    earnShield(3);
+  } else {
+    btn.classList.add('wrong');
+    btn.disabled = true;
+    showRetry('fb3', '"...el Estado ofrece el estatus de ciudadano a cambio de <strong>inversiones económicas</strong>."');
+  }
+}
+
+// ===== DESAFÍO 4 =====
+var d4aOk = false;
+function answer4a(btn, opt) {
+  if (opt === 'A') {
+    btn.classList.add('correct');
+    disableOpts('opts4a');
+    showSuccess('fb4a', '¡Bien! El TRABAJO no necesariamente es pago. El esfuerzo físico o mental sin remuneración también es trabajo.');
+    setTimeout(() => { document.getElementById('q4b').style.display = 'block'; }, 600);
+    d4aOk = true;
+  } else {
+    btn.classList.add('wrong');
+    btn.disabled = true;
+    showRetry('fb4a', '"El trabajo es la actividad económica que una persona realiza, y el empleo es esa misma actividad, pero <strong>remunerada</strong>."');
+  }
+}
+function answer4b(btn, opt) {
+  if (opt === 'B') {
+    btn.classList.add('correct');
+    disableOpts('opts4b');
+    showSuccess('fb4b', '¡Perfecto! El EMPLEO es el trabajo que recibe una remuneración (pago en dinero).');
+    document.getElementById('next4').classList.add('show');
+    earnShield(4);
+  } else {
+    btn.classList.add('wrong');
+    btn.disabled = true;
+    showRetry('fb4b', '"...el empleo es la actividad laboral por la cual una persona <strong>recibe una remuneración</strong>."');
+  }
+}
+
+// ===== DESAFÍO 5: DRAG AND DROP =====
+var dragging = null;
+var blanks5 = { blank5a: null, blank5b: null };
+
+function dragStart(e, val) {
+  dragging = val;
+}
+function allowDrop(e) {
+  e.preventDefault();
+  e.currentTarget.classList.add('dragover');
+}
+function dropOn(e, blankId) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('dragover');
+  if (!dragging) return;
+  // If blank already has something, return token
+  if (blanks5[blankId]) {
+    const oldTok = 'tok_' + blanks5[blankId].toLowerCase();
+    const oldEl = document.getElementById(oldTok);
+    if (oldEl) oldEl.classList.remove('used');
+  }
+  blanks5[blankId] = dragging;
+  const el = document.getElementById(blankId);
+  el.textContent = dragging;
+  el.classList.add('filled');
+  el.classList.remove('correct', 'wrong-fill');
+  // Mark token as used
+  const tokId = 'tok_' + dragging.toLowerCase();
+  const tokEl = document.getElementById(tokId);
+  if (tokEl) tokEl.classList.add('used');
+  dragging = null;
+}
+function clearBlank(blankId) {
+  if (blanks5[blankId]) {
+    const tokId = 'tok_' + blanks5[blankId].toLowerCase();
+    const tokEl = document.getElementById(tokId);
+    if (tokEl) tokEl.classList.remove('used');
+    blanks5[blankId] = null;
+    const el = document.getElementById(blankId);
+    el.textContent = '___';
+    el.classList.remove('filled','correct','wrong-fill');
+  }
+}
+
+// Touch support
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.drag-token').forEach(tok => {
+    tok.addEventListener('touchstart', e => {
+      dragging = tok.dataset.val || tok.id.replace('tok_','').toUpperCase();
+    });
+  });
+  document.querySelectorAll('.blank-word').forEach(blank => {
+    blank.addEventListener('touchend', e => {
+      if (dragging) {
+        const blankId = blank.id;
+        dropOn({preventDefault:()=>{}, currentTarget: blank}, blankId);
+      }
+    });
+  });
+  // Set data-val on tokens
+  document.querySelectorAll('.drag-token').forEach(tok => {
+    tok.dataset.val = tok.id.replace('tok_','').toUpperCase();
+  });
+});
+
+function check5() {
+  const a = blanks5['blank5a'];
+  const b = blanks5['blank5b'];
+  if (!a || !b) {
+    document.getElementById('fb5').className = 'feedback retry show';
+    document.getElementById('fb5').innerHTML = '⚠️ Arrastrá una palabra a cada espacio antes de comprobar.';
+    return;
+  }
+  const ba = document.getElementById('blank5a');
+  const bb = document.getElementById('blank5b');
+  if (a === 'ESTADO' && b === 'DERECHOS') {
+    ba.classList.add('correct'); bb.classList.add('correct');
+    document.getElementById('checkBtn5').disabled = true;
+    showSuccess('fb5', '¡Excelente! El Contrato Social es el pacto por el que delegamos nuestra libertad al ESTADO a cambio de que garantice nuestros DERECHOS.');
+    document.getElementById('next5').classList.add('show');
+    earnShield(5);
+  } else {
+    if (a !== 'ESTADO') ba.classList.add('wrong-fill'); else ba.classList.add('correct');
+    if (b !== 'DERECHOS') bb.classList.add('wrong-fill'); else bb.classList.add('correct');
+    showRetry('fb5', '"...acordaron un pacto: delegar al <strong>ESTADO</strong> la libertad que les es natural a cambio de ciertos <strong>DERECHOS</strong> civiles, políticos y sociales."');
+    // Reset wrongs
+    setTimeout(() => {
+      if (a !== 'ESTADO') { clearBlank('blank5a'); }
+      if (b !== 'DERECHOS') { clearBlank('blank5b'); }
+      ba.classList.remove('wrong-fill'); bb.classList.remove('wrong-fill');
+    }, 2000);
+  }
+}
+
+// ===== DESAFÍO 6 =====
+function answer6(btn, opt) {
+  if (opt === 'A') {
+    btn.classList.add('correct');
+    disableOpts('opts6');
+    showSuccess('fb6', '¡Correcto! Cuando una persona lucha día a día por conseguir alimento y sustento, la participación política queda en segundo plano. La desigualdad afecta el ejercicio de la ciudadanía.');
+    document.getElementById('next6').classList.add('show');
+    earnShield(6);
+  } else {
+    btn.classList.add('wrong');
+    btn.disabled = true;
+    showRetry('fb6', '"Sus prioridades van a ubicarse en tratar de lograr, <strong>día a día, el sustento</strong>."');
+  }
+}
+</script>
+</body>
+</html>
