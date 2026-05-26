@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recursos para el Aula · Matias Ara</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Nunito:wght@400;600;700;800&display=swap');
+
+:root {
+  --bg: #0f1117;
+  --surface: #181c27;
+  --surface2: #1e2335;
+  --border: #2a3050;
+  --accent1: #4f8ef7;
+  --accent2: #f7a94f;
+  --accent3: #4fd6a0;
+  --accent4: #f76f8e;
+  --text: #eef0f8;
+  --text-soft: #8890b0;
+  --radius: 20px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* HERO */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 64px 24px 56px;
+  text-align: center;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 50%, rgba(79,142,247,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 80% 30%, rgba(79,214,160,0.10) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(79,142,247,0.12);
+  border: 1px solid rgba(79,142,247,0.3);
+  border-radius: 999px;
+  padding: 6px 18px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent1);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2rem, 6vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+.hero h1 span { color: var(--accent1); }
+.hero p {
+  font-size: 1rem;
+  color: var(--text-soft);
+  max-width: 540px;
+  margin: 0 auto 28px;
+  line-height: 1.7;
+  font-weight: 600;
+}
+.hero-meta {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.meta-chip {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-soft);
+}
+.meta-chip span { color: var(--text); }
+
+/* FILTERS */
+.filters {
+  padding: 28px 24px 0;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.filter-label {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-right: 4px;
+}
+.filter-btn {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  padding: 7px 18px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-soft);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.filter-btn:hover, .filter-btn.active {
+  border-color: var(--accent1);
+  color: var(--accent1);
+  background: rgba(79,142,247,0.08);
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 20px;
+  padding: 28px 24px 60px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* CARD */
+.resource-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  animation: cardIn 0.4s ease both;
+}
+.resource-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+}
+.resource-card.hidden { display: none; }
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.card-thumb {
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+.card-thumb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  opacity: 0.15;
+}
+
+.card-body {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.tag {
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.tag.materia {
+  background: rgba(79,142,247,0.15);
+  color: var(--accent1);
+  border: 1px solid rgba(79,142,247,0.25);
+}
+.tag.nivel {
+  background: rgba(79,214,160,0.12);
+  color: var(--accent3);
+  border: 1px solid rgba(79,214,160,0.22);
+}
+.tag.tipo {
+  background: rgba(247,169,79,0.12);
+  color: var(--accent2);
+  border: 1px solid rgba(247,169,79,0.22);
+}
+
+.card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.card-desc {
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  line-height: 1.6;
+  flex: 1;
+  margin-bottom: 18px;
+}
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent1);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 999px;
+  padding: 9px 20px;
+  font-size: 0.83rem;
+  font-weight: 800;
+  transition: background 0.2s, transform 0.15s;
+  letter-spacing: 0.3px;
+}
+.card-link:hover { background: #3a7ae0; transform: scale(1.03); }
+.card-link.disabled {
+  background: var(--surface2);
+  color: var(--text-soft);
+  pointer-events: none;
+  border: 1.5px solid var(--border);
+}
+
+.card-date {
+  font-size: 0.75rem;
+  color: var(--text-soft);
+  font-weight: 600;
+}
+
+/* COMING SOON CARD */
+.resource-card.coming .card-thumb { filter: grayscale(0.5) brightness(0.7); }
+.resource-card.coming .card-title { opacity: 0.6; }
+
+/* EMPTY STATE */
+.empty-state {
+  grid-column: 1/-1;
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-soft);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 28px 24px;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--text-soft);
+  font-weight: 600;
+}
+footer a { color: var(--accent1); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+
+@media (max-width: 480px) {
+  .hero { padding: 48px 20px 40px; }
+  .grid { padding: 20px 16px 48px; gap: 16px; }
+  .filters { padding: 20px 16px 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">📚 Recursos educativos abiertos</div>
+  <h1>Recursos<br>para el <span>Aula</span></h1>
+  <p>Actividades interactivas, gamificaciones y materiales digitales para la educación secundaria. De docente a docente.</p>
+  <div class="hero-meta">
+    <div class="meta-chip">👤 <span>Matias Ara</span></div>
+    <div class="meta-chip">🏫 <span>Educación Secundaria</span></div>
+    <div class="meta-chip">🌐 <span>Uso libre</span></div>
+  </div>
+</div>
+
+<div class="filters">
+  <span class="filter-label">Filtrar:</span>
+  <button class="filter-btn active" onclick="filter('all', this)">Todos</button>
+  <button class="filter-btn" onclick="filter('ciudadania', this)">Trabajo y Ciudadanía</button>
+  <button class="filter-btn" onclick="filter('historia', this)">Historia</button>
+  <button class="filter-btn" onclick="filter('gamificacion', this)">Gamificación</button>
+  <button class="filter-btn" onclick="filter('adaptacion', this)">Con adaptaciones</button>
+</div>
+
+<div class="grid" id="grid">
+
+  <!-- RECURSO 1: Ciudadanía (disponible) -->
+  <div class="resource-card" data-tags="ciudadania gamificacion adaptacion">
+    <div class="card-thumb" style="background: linear-gradient(135deg, #1e2f6e, #3b5bdb);">🏛️</div>
+    <div class="card-body">
+      <div class="card-tags">
+        <span class="tag materia">Trabajo y Ciudadanía</span>
+        <span class="tag nivel">6to año</span>
+        <span class="tag tipo">🎮 Gamificación</span>
+      </div>
+      <div class="card-title">Los Fundadores de la Comunidad</div>
+      <div class="card-desc">Secuencia gamificada sobre ciudadanía, Ius Soli, Ius Sanguinis, contrato social y desigualdad. Con triangulación pantalla ↔ cuadernillo ↔ carpeta. Diseñada con adaptaciones para estudiantes con dificultades de comprensión lectora.</div>
+      <div class="card-footer">
+        <a class="card-link" href="ciudadania/index.html">▶ Abrir recurso</a>
+        <span class="card-date">Mayo 2026</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRÓXIMOS (placeholders) -->
+  <div class="resource-card coming" data-tags="historia">
+    <div class="card-thumb" style="background: linear-gradient(135deg, #1a2e1a, #2f6e3b);">⚔️</div>
+    <div class="card-body">
+      <div class="card-tags">
+        <span class="tag materia">Historia</span>
+        <span class="tag nivel">Secundaria</span>
+        <span class="tag tipo">🔜 Próximamente</span>
+      </div>
+      <div class="card-title">Próximo recurso de Historia</div>
+      <div class="card-desc">Nuevo material en desarrollo. Los recursos se van agregando a medida que se producen.</div>
+      <div class="card-footer">
+        <a class="card-link disabled" href="#">🔒 En desarrollo</a>
+        <span class="card-date">Próximamente</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="resource-card coming" data-tags="ciudadania gamificacion">
+    <div class="card-thumb" style="background: linear-gradient(135deg, #2e1a2e, #6e3b6e);">🗳️</div>
+    <div class="card-body">
+      <div class="card-tags">
+        <span class="tag materia">Trabajo y Ciudadanía</span>
+        <span class="tag nivel">Secundaria</span>
+        <span class="tag tipo">🔜 Próximamente</span>
+      </div>
+      <div class="card-title">Próximo recurso de Ciudadanía</div>
+      <div class="card-desc">Nuevo material en desarrollo. Los recursos se van agregando a medida que se producen.</div>
+      <div class="card-footer">
+        <a class="card-link disabled" href="#">🔒 En desarrollo</a>
+        <span class="card-date">Próximamente</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Hecho con 🧠 por <a href="https://github.com/MatiasAra" target="_blank">Matias Ara</a> &nbsp;·&nbsp;
+  <a href="https://instagram.com/paideia.docente" target="_blank">@paideia.docente</a> &nbsp;·&nbsp;
+  Uso libre para fines educativos
+</footer>
+
+<script>
+function filter(tag, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.resource-card').forEach(card => {
+    if (tag === 'all') {
+      card.classList.remove('hidden');
+    } else {
+      const tags = card.dataset.tags || '';
+      card.classList.toggle('hidden', !tags.includes(tag));
+    }
+  });
+}
+</script>
+</body>
+</html>
