@@ -454,7 +454,7 @@ function advance(chId){
   if(chId===3){showScreen('s-rest-4');return}
   if(chId===5){showScreen('s-rest-6');return}
   if(chId===1){showTransition(1);return}
-  if(chId===4){showTransition(2);return}
+  if(chId===4){showTransition(3);return}
   if(nextIdx>=CHALLENGES.length){$('final-pe-num').textContent=pe;showScreen('s-final');return}
   startChallenge(nextIdx);
 }
