@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Caso del Origen de las Especies — Detective Científico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Special+Elite&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --cream:#F5EFE2;--cream-dark:#E6DBC4;--parchment:#FAF6EE;--ink:#221A15;--ink-mid:#4A3E31;--ink-light:#70604E;
+  --amber:#9E610C;--amber-light:#E0A94F;--amber-pale:#F9F2E3;--green-ok:#205A3B;--green-ok-bg:#E1EFE6;
+  --orange:#AA3E18;--orange-bg:#FBECE6;--blue:#164264;--border:rgba(74,62,49,0.25);--shadow:0 10px 30px rgba(34,26,21,0.15);
+}
+body.theme-sepia{--cream:#E8DCC4;--cream-dark:#D4C1A1;--parchment:#F3EAD6;--ink:#261B0E;--border:rgba(38,27,14,0.3)}
+body.theme-dark{--cream:#1E1A17;--cream-dark:#12100E;--parchment:#292420;--ink:#F5EFE2;--ink-mid:#D3C4B4;--ink-light:#A49382;--amber:#F0A330;--amber-light:#F9CE84;--amber-pale:#37302A;--green-ok:#52B788;--green-ok-bg:#1B3527;--orange:#FF7B54;--orange-bg:#421F17;--border:rgba(245,239,226,0.2)}
+html{scroll-behavior:smooth}
+body{font-family:'Source Serif 4',Georgia,serif;background:var(--cream-dark);background-image:radial-gradient(circle at 10% 20%,rgba(158,97,12,0.06) 0%,transparent 40%),radial-gradient(circle at 90% 80%,rgba(22,66,100,0.06) 0%,transparent 40%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;color:var(--ink);transition:background-color 0.4s,color 0.4s}
+#game-wrap{width:100%;max-width:1020px;position:relative}
+.accessibility-bar{display:flex;justify-content:flex-end;gap:12px;margin-bottom:8px;font-size:12px}
+.acc-btn{background:rgba(34,26,21,0.08);border:1px solid var(--border);color:var(--ink);padding:4px 10px;border-radius:6px;cursor:pointer;font-family:'Source Serif 4',serif;display:flex;align-items:center;gap:4px;transition:all 0.2s}
+.acc-btn:hover{background:var(--ink);color:var(--cream)}
+#game-card{background:var(--cream);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);border:2px solid var(--border);display:flex;flex-direction:column;min-height:620px;position:relative;transition:background-color 0.4s,border-color 0.4s}
+.wax-seal{position:absolute;top:50px;right:25px;width:64px;height:64px;background:#801815;border-radius:50%;box-shadow:inset 0 0 10px rgba(0,0,0,0.5),0 4px 8px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;color:#E2C2A4;font-family:'Special Elite',monospace;font-size:11px;font-weight:bold;transform:rotate(-10deg);border:2px dashed rgba(255,255,255,0.15);pointer-events:none;z-index:10}
+.hdr{background:var(--ink);color:var(--cream);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:3px solid var(--amber);position:relative}
+.hdr-left{display:flex;align-items:center;gap:14px}
+.owl-hdr{font-size:32px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3))}
+.hdr-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;letter-spacing:0.02em}
+.hdr-sub{font-size:12px;opacity:0.75;margin-top:3px;font-family:'Source Serif 4',Georgia,serif}
+.hdr-right{display:flex;align-items:center;gap:12px}
+.pe-badge{background:var(--amber);color:#fff;font-size:15px;font-weight:600;border-radius:24px;padding:6px 18px;white-space:nowrap;font-family:'Special Elite',monospace;box-shadow:inset 0 1px 3px rgba(0,0,0,0.4),0 2px 4px rgba(0,0,0,0.15);transition:transform 0.3s cubic-bezier(0.175,0.885,0.32,1.275)}
+.pe-badge.bump{transform:scale(1.25);background:var(--amber-light);color:var(--ink)}
+.prog-track{background:rgba(0,0,0,0.15);height:6px;width:100%}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--amber),var(--amber-light));width:0%;transition:width 0.6s cubic-bezier(0.4,0,0.2,1)}
+.screen{display:none;flex-direction:column;flex:1;animation:fadeIn 0.4s ease-out}
+.screen.active{display:flex}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.center-screen{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 32px;text-align:center;gap:24px;background:var(--parchment)}
+.owl-xl{font-size:96px;filter:drop-shadow(0 8px 16px rgba(0,0,0,0.15));animation:float 4s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-12px) rotate(2deg)}}
+.big-title{font-family:'Playfair Display',serif;font-size:34px;font-weight:700;color:var(--ink);line-height:1.2}
+.intro-body{font-size:16px;color:var(--ink-mid);line-height:1.8;max-width:580px}
+.intro-body em{color:var(--amber);font-style:italic;font-weight:600}
+.btn-start{background:var(--ink);color:var(--cream);border:2px solid var(--border);border-radius:8px;padding:14px 36px;font-family:'Special Elite',monospace;font-size:15px;cursor:pointer;letter-spacing:0.05em;transition:all 0.2s ease;box-shadow:0 4px 12px rgba(0,0,0,0.15)}
+.btn-start:hover{transform:translateY(-2px);background:var(--amber);color:white;box-shadow:0 6px 20px rgba(158,97,12,0.3)}
+.btn-start:active{transform:translateY(0)}
+.trans-screen{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px;text-align:center;gap:18px;background:linear-gradient(160deg,var(--parchment) 50%,var(--cream-dark) 100%)}
+.owl-lg{font-size:72px;line-height:1;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.12))}
+.exp-ribbon{background:var(--amber);color:white;font-family:'Special Elite',monospace;font-size:12px;letter-spacing:0.15em;text-transform:uppercase;padding:6px 24px;border-radius:4px;box-shadow:0 2px 6px rgba(0,0,0,0.15)}
+.trans-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--ink);max-width:500px;line-height:1.25}
+.trans-quote{font-size:15px;color:var(--ink-mid);line-height:1.8;max-width:480px;font-style:italic;border-left:4px solid var(--amber);padding:8px 0 8px 18px;text-align:left;background:rgba(158,97,12,0.04);border-radius:0 8px 8px 0}
+.rest-emoji{font-size:72px;animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.rest-msg{font-size:16px;color:var(--ink-mid);line-height:1.8;max-width:460px}
+.rest-bar{width:260px;height:8px;background:rgba(0,0,0,0.1);border-radius:4px;overflow:hidden}
+.rest-bar-fill{height:100%;background:var(--green-ok);width:0%;border-radius:4px;animation:fillbar 3s cubic-bezier(0.4,0,0.2,1) forwards}
+@keyframes fillbar{to{width:100%}}
+.ch-layout{flex:1;display:grid;grid-template-columns:45% 55%;min-height:0}
+@media(max-width:768px){.ch-layout{grid-template-columns:1fr}}
+.text-panel{background:var(--parchment);border-right:2px solid var(--border);display:flex;flex-direction:column;overflow:hidden;transition:background-color 0.4s}
+@media(max-width:768px){.text-panel{max-height:280px;border-right:none;border-bottom:2px solid var(--border)}}
+.text-panel-hdr{background:var(--ink);color:var(--amber-light);font-size:11px;letter-spacing:0.15em;text-transform:uppercase;padding:10px 18px;font-family:'Special Elite',monospace;flex-shrink:0;display:flex;justify-content:space-between;align-items:center}
+.text-scroll{flex:1;overflow-y:auto;padding:24px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.frag-label{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--amber);margin-bottom:12px;font-family:'Special Elite',monospace}
+.frag-body{font-size:15px;line-height:1.95;color:var(--ink);transition:all 0.4s}
+.frag-body strong{color:var(--amber);font-weight:600}
+.frag-body.flash-hint{background:var(--amber-pale);border-radius:8px;padding:8px 12px;box-shadow:0 0 15px rgba(158,97,12,0.15);transform:scale(1.01)}
+.q-panel{display:flex;flex-direction:column;padding:24px;gap:16px;overflow-y:auto;background:var(--cream);transition:background-color 0.4s}
+.q-step{font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-light);border:1px solid var(--border);display:inline-block;padding:4px 14px;border-radius:24px;align-self:flex-start;font-family:'Special Elite',monospace;background:rgba(0,0,0,0.03)}
+.q-title{font-family:'Playfair Display',serif;font-size:21px;font-weight:700;color:var(--ink);line-height:1.3}
+.q-instruc{font-size:14px;line-height:1.8;color:var(--ink-mid);background:var(--amber-pale);border-radius:8px;padding:14px 18px;border-left:4px solid var(--amber);box-shadow:inset 2px 2px 5px rgba(0,0,0,0.02)}
+.q-instruc p{margin-bottom:8px}.q-instruc p:last-child{margin-bottom:0}
+.paper-cta{background:#FFFBF5;border:2px dashed var(--orange);border-radius:12px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;box-shadow:0 4px 12px rgba(170,62,24,0.08);animation:pulsePaper 2s infinite alternate}
+@keyframes pulsePaper{from{border-color:var(--orange)}to{border-color:var(--amber-light);box-shadow:0 4px 16px rgba(224,169,79,0.15)}}
+.paper-icon{font-size:44px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.1))}
+.paper-cta p{font-size:14px;color:var(--ink-mid);line-height:1.7;font-style:italic}
+.btn-confirm{background:var(--orange);color:#fff;border:none;border-radius:8px;padding:10px 24px;font-family:'Special Elite',monospace;font-size:13px;cursor:pointer;box-shadow:0 3px 8px rgba(170,62,24,0.3);transition:all 0.15s}
+.btn-confirm:hover{background:var(--ink);transform:translateY(-1px);box-shadow:0 5px 12px rgba(0,0,0,0.2)}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{background:var(--parchment);border:1.5px solid var(--border);border-radius:8px;padding:12px 16px;text-align:left;font-family:'Source Serif 4',serif;font-size:14.5px;color:var(--ink);cursor:pointer;line-height:1.6;transition:all 0.2s cubic-bezier(0.165,0.84,0.44,1);display:flex;gap:12px;align-items:flex-start;width:100%}
+.opt:hover:not(:disabled){border-color:var(--amber);background:var(--amber-pale);transform:translateX(4px);box-shadow:2px 4px 8px rgba(0,0,0,0.05)}
+.opt:disabled{cursor:default}
+.opt.correct{background:var(--green-ok-bg)!important;border-color:var(--green-ok)!important;color:var(--green-ok)!important;font-weight:600}
+.opt.wrong{background:var(--orange-bg)!important;border-color:var(--orange)!important;color:var(--orange)!important}
+.opt-letter{font-family:'Special Elite',monospace;font-weight:700;font-size:15px;color:var(--amber);min-width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,0.04);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.fill-sentence{font-size:16px;line-height:2.2;color:var(--ink);background:var(--amber-pale);border-radius:8px;padding:16px 20px;border-left:4px solid var(--amber)}
+.blank{display:inline-block;min-width:160px;border-bottom:3px dashed var(--amber);color:var(--amber);font-style:italic;font-weight:600;padding:0 8px;text-align:center;transition:all 0.3s}
+.match-wrap{display:flex;flex-direction:column;gap:16px}
+.match-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.match-cols{grid-template-columns:1fr}}
+.match-col-title{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-light);margin-bottom:8px;font-family:'Special Elite',monospace;text-align:center}
+.match-item{background:var(--parchment);border:1.5px solid var(--border);border-radius:8px;padding:12px;font-size:13.5px;line-height:1.6;cursor:pointer;transition:all 0.2s;color:var(--ink);margin-bottom:8px;box-shadow:0 2px 4px rgba(0,0,0,0.02)}
+.match-item:last-child{margin-bottom:0}
+.match-item:hover{border-color:var(--amber);background:var(--amber-pale)}
+.match-item.selected{border-color:var(--amber);background:var(--amber-pale);box-shadow:0 0 0 3px rgba(158,97,12,0.25)}
+.match-item.ok{border-color:var(--green-ok);background:var(--green-ok-bg);color:var(--green-ok);cursor:default;font-weight:600}
+.match-item.bad{border-color:var(--orange);background:var(--orange-bg)}
+.fb{border-radius:8px;padding:14px 18px;font-size:14px;line-height:1.7;display:none;animation:slideUp 0.3s cubic-bezier(0.175,0.885,0.32,1.275)}
+@keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.fb.show{display:block}
+.fb.ok{background:var(--green-ok-bg);border:1px solid var(--green-ok);color:#154730}
+.fb.hint{background:var(--orange-bg);border:1px solid var(--orange);color:#7A2D0A}
+.btn-next{background:var(--ink);color:var(--cream);border:2px solid var(--border);border-radius:8px;padding:12px 30px;font-family:'Special Elite',monospace;font-size:14px;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 10px rgba(0,0,0,0.15);align-self:flex-start;display:none}
+.btn-next:hover{background:var(--amber);color:white;transform:translateY(-2px);box-shadow:0 6px 16px rgba(158,97,12,0.3)}
+.final-screen{flex:1;background:var(--ink);color:var(--cream);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:44px 32px;text-align:center;gap:20px;position:relative}
+.final-screen::before{content:"";position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle,rgba(158,97,12,0.15) 0%,transparent 80%);pointer-events:none}
+.trophy-anim{font-size:96px;animation:popTrophy 0.8s cubic-bezier(0.175,0.885,0.32,1.275)}
+@keyframes popTrophy{0%{transform:scale(0) rotate(-45deg)}70%{transform:scale(1.2) rotate(10deg)}100%{transform:scale(1) rotate(0)}}
+.final-title{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--amber-light);line-height:1.2;letter-spacing:0.05em}
+.final-pe{font-family:'Special Elite',monospace;font-size:56px;color:#fff;text-shadow:0 2px 10px rgba(255,255,255,0.2)}
+.final-pe-label{font-size:13px;color:var(--amber-light);letter-spacing:0.15em;text-transform:uppercase;margin-top:-10px;font-family:'Special Elite',monospace}
+.final-msg{font-size:15px;opacity:0.85;max-width:550px;line-height:1.8}
+.concepts-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:700px;width:100%}
+@media(max-width:600px){.concepts-grid{grid-template-columns:1fr 1fr}}
+.cpill{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:6px;padding:8px 10px;font-size:11.5px;color:var(--amber-light);line-height:1.4;font-family:'Special Elite',monospace}
+.resumen-box{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:20px 24px;max-width:640px;width:100%;text-align:left;font-size:14px;line-height:1.8;color:rgba(247,242,232,0.9);position:relative}
+.resumen-box strong{color:var(--amber-light);font-weight:600}
+.certificate-generator{background:rgba(158,97,12,0.15);border:1px solid var(--amber);border-radius:8px;padding:16px;max-width:500px;width:100%;margin-top:10px}
+.cert-input{background:var(--cream);border:1px solid var(--border);color:var(--ink);padding:10px;border-radius:6px;font-family:'Source Serif 4',serif;font-size:14px;width:100%;max-width:280px;text-align:center;margin-bottom:10px}
+.btn-cert{background:var(--amber);color:white;border:none;border-radius:6px;padding:10px 20px;font-family:'Special Elite',monospace;font-size:12px;cursor:pointer;transition:all 0.2s}
+.btn-cert:hover{background:var(--amber-light);color:var(--ink)}
+.btn-restart{background:transparent;color:var(--amber-light);border:1.5px solid var(--amber);border-radius:8px;padding:10px 28px;font-family:'Special Elite',monospace;font-size:13px;cursor:pointer;transition:all 0.2s;margin-top:10px}
+.btn-restart:hover{background:rgba(158,97,12,0.2);color:white}
+.print-modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:100;align-items:center;justify-content:center;padding:16px}
+.print-content{background:#FAF6EE;color:#221A15;width:100%;max-width:650px;border:12px double #4A3E31;padding:40px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.5);font-family:'Source Serif 4',Georgia,serif;position:relative}
+.print-logo{font-size:48px;margin-bottom:12px}
+.print-header{font-family:'Special Elite',monospace;font-size:14px;letter-spacing:0.15em;text-transform:uppercase;color:#9E610C}
+.print-title{font-family:'Playfair Display',serif;font-size:32px;font-weight:bold;margin:16px 0;border-bottom:2px solid #4A3E31;padding-bottom:8px}
+.print-name{font-family:'Special Elite',monospace;font-size:24px;font-style:italic;margin:20px 0;color:#164264;border-bottom:1px dotted #4A3E31;display:inline-block;padding:0 30px}
+.print-text{font-size:15px;line-height:1.8;margin-bottom:24px}
+.print-footer{display:flex;justify-content:space-between;margin-top:40px;font-family:'Special Elite',monospace;font-size:11px}
+.print-signature{border-top:1px solid #4A3E31;padding-top:6px;width:160px}
+.btn-print-action{background:#4A3E31;color:#FAF6EE;border:none;padding:8px 16px;font-family:'Special Elite',monospace;border-radius:4px;cursor:pointer;margin-top:20px;margin-right:10px}
+.btn-print-close{background:#801815;color:white;border:none;padding:8px 16px;font-family:'Special Elite',monospace;border-radius:4px;cursor:pointer}
+@media print{body *{visibility:hidden}.print-modal,.print-modal *{visibility:visible}.print-modal{position:absolute;left:0;top:0;width:100%;background:white}.print-content{border:6px double #000;box-shadow:none;max-width:100%}.print-actions{display:none!important}}
+.casebook-drawer{position:absolute;top:0;right:-320px;width:300px;height:100%;background:var(--parchment);border-left:3px solid var(--border);box-shadow:-5px 0 25px rgba(0,0,0,0.15);transition:right 0.3s cubic-bezier(0.165,0.84,0.44,1);z-index:20;display:flex;flex-direction:column}
+.casebook-drawer.open{right:0}
+.casebook-hdr{background:var(--ink);color:var(--cream);padding:16px;font-family:'Special Elite',monospace;font-size:14px;display:flex;justify-content:space-between;align-items:center}
+.casebook-close{background:none;border:none;color:var(--amber-light);cursor:pointer;font-size:18px}
+.casebook-body{padding:16px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:12px}
+.casebook-clue-item{background:rgba(0,0,0,0.03);border-left:3px solid var(--amber-light);padding:8px 12px;border-radius:0 4px 4px 0;font-size:12px;line-height:1.5;animation:fadeIn 0.3s}
+.casebook-clue-item.empty{border-left:3px solid var(--border);color:var(--ink-light);font-style:italic;text-align:center;padding:24px 12px}
+.casebook-clue-title{font-weight:600;color:var(--amber);margin-bottom:2px;font-family:'Special Elite',monospace}
+</style>
+</head>
+<body class="theme-sepia">
+<div id="game-wrap">
+  <div class="accessibility-bar">
+    <button class="acc-btn" onclick="toggleMute()" id="mute-btn">🔊 Sonido: ON</button>
+    <button class="acc-btn" onclick="changeTheme('sepia')">🎨 Sepia</button>
+    <button class="acc-btn" onclick="changeTheme('light')">☀️ Claro</button>
+    <button class="acc-btn" onclick="changeTheme('dark')">🌙 Oscuro</button>
+  </div>
+  <div id="game-card">
+    <div class="wax-seal">CASO<br>Nº 1859</div>
+    <div class="hdr">
+      <div class="hdr-left">
+        <div class="owl-hdr">🦉</div>
+        <div>
+          <div class="hdr-title">El Caso del Origen de las Especies</div>
+          <div class="hdr-sub">Detective Científico · 8 Desafíos · 5 Expedientes</div>
+        </div>
+      </div>
+      <div class="hdr-right">
+        <button class="acc-btn" onclick="toggleCasebook()" style="background:var(--amber);color:#fff;border:none;">📋 Pistas</button>
+        <div class="pe-badge" id="pe-display">0 PE</div>
+      </div>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="prog"></div></div>
+    <div class="casebook-drawer" id="casebook">
+      <div class="casebook-hdr"><span>📋 PISTAS RECOLECTADAS</span><button class="casebook-close" onclick="toggleCasebook()">✕</button></div>
+      <div class="casebook-body" id="casebook-content"><div class="casebook-clue-item empty">Aún no has descubierto pistas en este caso.</div></div>
+    </div>
+    <!-- INTRO -->
+    <div class="screen active" id="s-intro">
+      <div class="center-screen">
+        <div class="owl-xl">🦉</div>
+        <div class="big-title">¡Bienvenido, Detective de la Ciencia!</div>
+        <p class="intro-body">Para resolver el mayor misterio de la historia natural —<em>el origen de la diversidad biológica</em>— debés abrirte paso a través de <strong>5 Expedientes de Investigación</strong> secuenciales.<br><br>Cada pista que descubras modificará tu visión de la naturaleza. Recordá tener a mano tu <strong>cuadernillo de papel físico</strong> cuando la investigación te lo pida.</p>
+        <button class="btn-start" onclick="playPaperSound();showTransition(0)">Comenzar investigación →</button>
+      </div>
+    </div>
+    <!-- TRANSITIONS -->
+    <div class="screen" id="s-trans-0"><div class="trans-screen"><div class="owl-lg">📜</div><div class="exp-ribbon">Expediente 1</div><div class="trans-title">El Despacho del Tiempo Detenido</div><p class="trans-quote">"Nuestro viaje se inicia en el siglo XVIII. Para la gran mayoría, la Tierra es un escenario perfectamente inmutable. Entremos al despacho de los antiguos sabios fijistas para descifrar el dogma original."</p><button class="btn-start" onclick="playPaperSound();startChallenge(0)">Entrar al despacho →</button></div></div>
+    <div class="screen" id="s-trans-1"><div class="trans-screen"><div class="owl-lg">🧬</div><div class="exp-ribbon">Expediente 2</div><div class="trans-title">El Laboratorio del Cambio</div><p class="trans-quote">"¡Primer expediente resuelto! Ahora viajamos a Francia, 1809. Jean-Baptiste Lamarck se atreve a postular algo revolucionario: '¡Las especies cambian!'. Entremos a su gabinete para analizar sus leyes del transformismo."</p><button class="btn-start" onclick="playPaperSound();startChallenge(2)">Entrar al gabinete →</button></div></div>
+    <div class="screen" id="s-trans-2"><div class="trans-screen"><div class="owl-lg">🦖</div><div class="exp-ribbon">Expediente 3</div><div class="trans-title">La Trinchera de los Críticos</div><p class="trans-quote">"¡Alerta, Detective! El fijismo no cede su corona. Anatomistas gigantescos como Cuvier y Owen encuentran graves fisuras en las explicaciones de Lamarck. Indaguemos en la sala de anatomía comparada."</p><button class="btn-start" onclick="playPaperSound();startChallenge(4)">Entrar a la sala →</button></div></div>
+    <div class="screen" id="s-trans-3"><div class="trans-screen"><div class="owl-lg">🗺️</div><div class="exp-ribbon">Expediente 4</div><div class="trans-title">Las Fuerzas del Entorno</div><p class="trans-quote">"¡Excelente trabajo! Nos embarcamos junto al joven naturalista Charles Darwin en el HMS Beagle. Su lectura de la geología de Lyell y la economía de Malthus están a punto de unirse en su mente."</p><button class="btn-start" onclick="playPaperSound();startChallenge(5)">Subir a bordo →</button></div></div>
+    <div class="screen" id="s-trans-4"><div class="trans-screen"><div class="owl-lg">🌳</div><div class="exp-ribbon">Expediente 5</div><div class="trans-title">El Caso Cerrado</div><p class="trans-quote">"¡Llegamos a la cumbre! Charles Darwin posee todas las piezas del rompecabezas histórico: la variabilidad biológica, el tiempo de Lyell y la despiadada lucha de Malthus. Es hora de sintetizar la Selección Natural."</p><button class="btn-start" onclick="playPaperSound();startChallenge(6)">Cerrar el caso →</button></div></div>
+    <!-- REST -->
+    <div class="screen" id="s-rest-4"><div class="center-screen"><div class="rest-emoji">☕</div><div class="big-title" style="font-size:24px">¡Minuto de Reflexión, Detective!</div><p class="rest-msg">"Completaste el Expediente 2. Has hecho una gran lectura. Aprovechá este breve receso para estirarte y repasar tus apuntes físicos antes de enfrentarte a los duros críticos del transformismo."</p><div class="rest-bar"><div class="rest-bar-fill"></div></div><button class="btn-start" onclick="playPaperSound();showTransition(2)">Continuar investigación →</button></div></div>
+    <div class="screen" id="s-rest-6"><div class="center-screen"><div class="rest-emoji">🌿</div><div class="big-title" style="font-size:24px">¡Pausa del Investigador!</div><p class="rest-msg">"¡Soberbia deducción! Cerraste el Expediente 4. El tablero de evidencias está casi listo. Tomate unos segundos de descanso antes de adentrarte en la formulación final de Darwin."</p><div class="rest-bar"><div class="rest-bar-fill"></div></div><button class="btn-start" onclick="playPaperSound();showTransition(4)">¡Ir al último expediente! →</button></div></div>
+    <!-- CHALLENGE -->
+    <div class="screen" id="s-challenge"></div>
+    <!-- FINAL -->
+    <div class="screen" id="s-final">
+      <div class="final-screen">
+        <div class="trophy-anim">🏆</div>
+        <div class="final-title">¡MISTERIO DEVELADO, DETECTIVE!</div>
+        <div class="final-pe" id="final-pe-num">800</div>
+        <div class="final-pe-label">Puntos de Evidencia</div>
+        <p class="final-msg">Has demostrado con maestría que la naturaleza no es un estante estático de esencias eternas, sino un árbol majestuoso que ramifica y cambia sin cesar, gobernado por leyes materiales.</p>
+        <div class="concepts-grid">
+          <div class="cpill">Esencialismo</div><div class="cpill">Diseño (Paley)</div><div class="cpill">Uso y Desuso</div><div class="cpill">Correlación (Cuvier)</div>
+          <div class="cpill">Homología (Owen)</div><div class="cpill">Tiempo (Lyell)</div><div class="cpill">Malthusianismo</div><div class="cpill">Selección Natural</div>
+        </div>
+        <div class="resumen-box">
+          <strong>📌 SÍNTESIS CIENTÍFICA (Transcribila en tu carpeta):</strong><br><br>
+          Antes de Darwin, dominaba el <strong>fijismo</strong> (las especies son inmutables). Lamarck rompió esta idea al proponer el <strong>transformismo</strong> (cambios por necesidad transmitidos a los hijos), pero fue combatido por Cuvier (quien sostenía que alterar una sola parte mataba al organismo). Darwin unió la geología de Lyell (millones de años de cambios paulatinos) con la escasez de recursos de Malthus (lucha por la vida). Descubrió la <strong>Selección Natural</strong>: en poblaciones con variabilidad heredable, los individuos con ventajas biológicas se reproducen más, guiando el cambio adaptativo de toda la especie desde ancestros comunes.
+        </div>
+        <div class="certificate-generator">
+          <h4 style="margin-bottom:8px;font-family:'Special Elite',monospace;">📜 OBTENER INFORME OFICIAL</h4>
+          <p style="font-size:12px;opacity:0.9;margin-bottom:12px;">Ingresá tu nombre para validar tu trabajo en el aula:</p>
+          <input type="text" id="student-name" class="cert-input" placeholder="Nombre del Alumno/a">
+          <br><button class="btn-cert" onclick="generateReport()">Generar Comprobante Imprimible</button>
+        </div>
+        <button class="btn-restart" onclick="restartGame()">↩ Reiniciar Investigación</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL CERTIFICADO -->
+<div class="print-modal" id="print-modal">
+  <div class="print-content">
+    <div class="print-logo">🦉🛡️</div>
+    <div class="print-header">MINISTERIO DE EDUCACIÓN E HISTORIA DE LA CIENCIA</div>
+    <div class="print-title">INFORME DE CASO RESUELTO</div>
+    <p class="print-text">Se certifica que el/la Detective de la Ciencia:</p>
+    <div class="print-name" id="cert-student-name">Nombre del Alumno/a</div>
+    <p class="print-text">ha descifrado con éxito los 5 expedientes de <strong>"El Caso del Origen de las Especies"</strong>, analizando con rigor las teorías de Aristóteles, Paley, Lamarck, Cuvier, Lyell y Darwin, resolviendo de manera sobresaliente el misterio de la diversidad biológica.</p>
+    <div style="background:rgba(0,0,0,0.03);border:1px dotted #4A3E31;padding:12px;margin:15px 0;">
+      <strong>Puntuación Alcanzada:</strong> <span id="cert-score">0</span> PE | <strong>Fecha:</strong> <span id="cert-date">--/--/----</span>
+    </div>
+    <div class="print-footer">
+      <div class="print-signature">Firma del Alumno/a</div>
+      <div class="print-signature" style="text-align:right">Firma del Docente</div>
+    </div>
+    <div class="print-actions" style="margin-top:30px">
+      <button class="btn-print-action" onclick="window.print()">Imprimir / Guardar PDF</button>
+      <button class="btn-print-close" onclick="closePrintModal()">Cerrar</button>
+    </div>
+  </div>
+</div>
+<script>
+// ═══════════════════════════════════════════════════════════
+// DESAFÍOS — distribución de respuestas correctas variada:
+// D1=A(0)  D2=C(2)  D3=B(1)  D4=match  D5=A(0)  D6=B(1)  D7=B(1)  D8=C(2)
+// ═══════════════════════════════════════════════════════════
+const CHALLENGES = [
+  {
+    id:0,step:'Expediente 1 · Desafío 1 de 8',title:'Desafío 1: El Código de las Esencias',
+    fragLabel:'Fragmento 1 — Aristóteles y Linneo',
+    frag:`Para Aristóteles todas las cosas tenían dos tipos de propiedades: <strong>esenciales</strong> y <strong>accidentales</strong>. Si una propiedad esencial de un objeto cambiaba, cambiaba la naturaleza del objeto. En tanto las propiedades accidentales eran aquellas que podían variar entre individuos sin que cambie su naturaleza.<br><br>Desde el punto de vista aristotélico, un dálmata, un caniche y un collie compartirían una esencia que los hace ser perros, pero se diferenciarían en las propiedades accidentales que caracterizan a cada variedad: tamaño, patrón del pelaje, largo del pelo, etc.`,
+    instruc:'Leé el texto de la izquierda sobre Aristóteles.\n\nIdentificá la diferencia entre "esencial" y "accidental".\n\nElegí la opción correcta: ¿Qué pasaría con un dálmata si pierde sus manchas negras (propiedad accidental)?',
+    type:'mc',clue_title:'Esencialismo Aristotélico',clue_text:'Las especies tienen esencias fijas que no cambian; la variación externa es meramente accidental y superficial.',
+    opts:[
+      {l:'A',t:'Sigue siendo un perro, porque las manchas son solo un rasgo accidental y no alteran su esencia de perro.'},
+      {l:'B',t:'Deja de ser un perro y se convierte en otra especie diferente de forma inmediata.'},
+      {l:'C',t:'El perro deja de existir porque todas las propiedades de un ser vivo son esenciales para el fijismo.'}
+    ],correct:0,
+    feedOk:'¡Excelente pista! Las propiedades accidentales (como las manchas) pueden variar, pero la "esencia de perro" se mantiene inmutable para el fijismo aristotélico.',
+    feedHint:'Fijate bien. El fragmento dice que los rasgos accidentales varían sin alterar la naturaleza de la criatura. ¿Qué es lo que NO cambia?'
+  },
+  {
+    id:1,step:'Expediente 1 · Desafío 2 de 8',title:'Desafío 2: La Metáfora del Relojero',
+    fragLabel:'Fragmento 2 — El Reloj de Paley',
+    frag:`Para dar cuenta de las adaptaciones exhibidas en los seres vivos, William Paley argumentaba que de la misma forma en que al ver cómo funciona un reloj atribuiríamos su diseño a un relojero, al observar las adaptaciones biológicas debemos atribuir su complejo diseño a un Dios creador:<br><br><em>"Al examinar la estructura del reloj hallo en él que las partes de que se compone han sido hechas unas para otras y con determinado objeto... Forzoso es que esta máquina sea obra de uno o de muchos artífices... Toda observación hecha respecto al reloj puede ser repetida con propiedad en relación al ojo, a los animales."</em><br><br>(Paley, 1802)`,
+    instruc:'1. Buscá en tu cuadernillo de papel físico el fragmento donde se explica la analogía del reloj de William Paley.\n\n2. Subrayá con un lápiz el fragmento que dice: "...atribuir su complejo diseño a un Dios creador".\n\n3. Ahora volvé a la pantalla y respondé: ¿Por qué usa Paley la comparación con un reloj?',
+    type:'mc-paper',clue_title:'Teología Natural de Paley',clue_text:'La extrema complejidad de las adaptaciones se atribuye a un Dios creador/diseñador, comparable con un relojero.',
+    paperMsg:'Buscá en tu cuadernillo el apartado sobre "El Reloj de Paley". Subrayá la frase que indica a quién se atribuye el diseño complejo antes de contestar.',
+    opts:[
+      {l:'A',t:'Porque pensaba que los animales funcionan mecánicamente con engranajes de cobre y pilas.'},
+      {l:'B',t:'Porque creía que el tiempo pasaba muy veloz para las especies y debían adaptarse rápido.'},
+      {l:'C',t:'Porque un reloj es tan complejo que necesita un relojero que lo diseñe, al igual que los seres vivos necesitan a Dios para ser creados con esas adaptaciones perfectas.'}
+    ],correct:2,
+    feedOk:'¡Excelente, Detective! Uniste el papel con el análisis digital. Paley utiliza la complejidad del reloj para deducir la existencia obligatoria de un Diseñador Inteligente.',
+    feedHint:'Revisá lo que subrayaste en tu cuadernillo. ¿A quién compara Paley con el fabricante de un mecanismo sumamente preciso? Hay una opción que lo dice claramente.'
+  },
+  {
+    id:2,step:'Expediente 2 · Desafío 3 de 8',title:'Desafío 3: El Gimnasio de las Jirafas',
+    fragLabel:'Fragmento 3 — Las Leyes de Lamarck',
+    frag:`Lamarck explicaba las adaptaciones a través de dos leyes.<br><br><strong>Primera ley (uso y desuso):</strong> durante la vida de los animales, estos ejercitan ciertos órganos mientras que otros entran en desuso. Los más utilizados se ven <strong>fortalecidos</strong> y desarrollados, mientras que los <strong>menos usados se van debilitando</strong>.<br><br><strong>Segunda ley (herencia de caracteres adquiridos):</strong> los cambios pequeños y graduales que experimentan en vida los individuos de una especie son transmitidos a sus descendientes.<br><br>Por ejemplo, el cuello largo de la jirafa sería resultado de que sucesivas generaciones lo fueron estirando para alcanzar hojas cada vez más escasas a bajas alturas.`,
+    instruc:'Leé el fragmento de Lamarck.\n\nPrestá atención a lo que le ocurre a los órganos que no se utilizan.\n\nElegí la opción que responde correctamente.',
+    type:'mc',clue_title:'Leyes del Transformismo',clue_text:'Las especies cambian impulsadas por el esfuerzo. Los órganos se desarrollan según el uso o se atrofian si se abandonan.',
+    opts:[
+      {l:'A',t:'Los órganos en desuso crecen y se fortalecen acumulando la energía no liberada.'},
+      {l:'B',t:'Los órganos menos usados se van debilitando y pueden llegar a desaparecer de la especie gradualmente.'},
+      {l:'C',t:'Todos los órganos del cuerpo permanecen intactos sin importar su interacción con el medio.'}
+    ],correct:1,
+    feedOk:'¡Exacto! Según Lamarck, el uso moldea la anatomía y el desuso constante la deteriora, posibilitando el cambio corporal adaptativo.',
+    feedHint:'Echá un vistazo al fragmento. Buscá la frase sobre los órganos "menos usados". ¿Qué les sucede exactamente?'
+  },
+  {
+    id:3,step:'Expediente 2 · Desafío 4 de 8',title:'Desafío 4: Las Dos Reglas de la Evolución',
+    fragLabel:'Fragmento 3 — Las Leyes de Lamarck',
+    frag:`Lamarck explicaba las adaptaciones a través de dos leyes.<br><br><strong>Primera ley (uso y desuso):</strong> durante la vida de los animales, estos ejercitan ciertos órganos mientras que otros entran en desuso. Los más utilizados se ven fortalecidos y desarrollados, mientras que los menos usados se van debilitando.<br><br><strong>Segunda ley (herencia de caracteres adquiridos):</strong> los cambios pequeños y graduales que experimentan en vida los individuos de una especie son transmitidos a sus descendientes.`,
+    instruc:'Apoyándote en el texto, asociá cada ley de Lamarck con su definición correspondiente.\n\nSeleccioná primero la ley en la columna izquierda y luego su descripción en la columna derecha.',
+    type:'match',clue_title:'La Herencia de Lamarck',clue_text:'Los rasgos adquiridos por esfuerzo biológico individual se transmiten directamente a la descendencia.',
+    leftItems:[{id:'l1',t:'Ley de uso y desuso'},{id:'l2',t:'Ley de herencia de caracteres adquiridos'}],
+    rightItems:[{id:'rB',t:'Ejercitar constantemente un órgano lo robustece; ignorarlo lo debilita.'},{id:'rA',t:'Los cambios corporales sufridos por un animal en su vida se transmiten a sus descendientes.'}],
+    correctPairs:{'l1':'rB','l2':'rA'},
+    feedOk:'¡Perfecto! Lamarck postulaba que si una jirafa estiraba su cuello para alimentarse en vida, sus crías nacerían con cuellos proporcionalmente más largos.',
+    feedHint:'Una de las leyes se refiere a la actividad del cuerpo en vida, la otra explica qué pasa con esos cambios en la siguiente generación. Corregilo.'
+  },
+  {
+    id:4,step:'Expediente 3 · Desafío 5 de 8',title:'Desafío 5: El Freno de la Evolución',
+    fragLabel:'Fragmento 4 — Cuvier y la Correlación de las Partes',
+    frag:`Georges Cuvier (1769-1832) fue un duro crítico de la evolución. Compartía con Aristóteles la idea de que los seres vivos se caracterizan por tener partes que cumplen un propósito específico. A su vez, <strong>cada parte de un ser vivo se correlaciona con otra</strong> de manera tal que cada componente necesariamente depende de otros dentro de ese organismo.<br><br>Entonces, si la configuración biológica de una especie fuera alterada más allá de ciertos límites, <strong>su todo armónico se desorganizaría tanto que el organismo sería inviable</strong>. Para Cuvier, las especies debían ser fijas e inmutables: no podían cambiar poco a poco sin destruirse.`,
+    instruc:'Analizá los postulados científicos de Georges Cuvier.\n\n¿Cuál de estas opciones resume mejor su "ley de correlación de las partes"?',
+    type:'mc',clue_title:'Correlación de Cuvier',clue_text:'Los organismos son sistemas perfectos e inseparables. Cambiar una parte destruye el equilibrio de todo el animal.',
+    opts:[
+      {l:'A',t:'Los seres vivos son como mecanismos perfectos: alterar paulatinamente una sola pieza destruye el equilibrio general y el organismo se vuelve inviable.'},
+      {l:'B',t:'Las partes del cuerpo son autónomas y pueden transformarse gradualmente sin comprometer la supervivencia del organismo.'},
+      {l:'C',t:'Los seres vivos mutan velozmente de forma independiente a la armonía de sus órganos internos.'}
+    ],correct:0,
+    feedOk:'¡Extraordinario análisis! Cuvier demostraba que el cambio gradual lamarckiano era imposible porque desarticularía la cohesión biológica vital del organismo.',
+    feedHint:'Recordá: para Cuvier, un organismo es una máquina tan coordinada que un cambio aislado en una pieza rompe la funcionalidad del total. ¿Cuál opción dice eso?'
+  },
+  {
+    id:5,step:'Expediente 4 · Desafío 6 de 8',title:'Desafío 6: El Tiempo Profundo',
+    fragLabel:'Fragmento 6 — El Tiempo Geológico de Lyell',
+    frag:`En su viaje en el Beagle, Darwin leyó a Charles Lyell, quien afirmaba que la Tierra no se formó por catástrofes repentinas, sino por <strong>procesos lentos y constantes</strong> (erosión, lluvia, volcanes, glaciares) que actúan durante <strong>millones de años</strong>.<br><br>Darwin razonó: si la corteza terrestre cambia de forma tan lenta y gradual, la vida en la Tierra también debió tener un larguísimo período de tiempo para cambiar y adaptarse paso a paso. La geología de Lyell implicaba directamente que las especies debían o bien emigrar o bien <strong>modificarse gradualmente</strong> para no perecer.`,
+    instruc:'1. Buscá en tu cuadernillo físico el apartado enfocado en Charles Lyell.\n\n2. Encontrá y subrayá las palabras "lentos" y la expresión "millones de años".\n\n3. Respondé: ¿De qué manera la geología de Lyell influyó en el pensamiento de Darwin?',
+    type:'mc-paper',clue_title:'Gradualismo Geológico',clue_text:'La geología lenta de Lyell introdujo el concepto de "Tiempo Profundo" indispensable para acumular cambios evolutivos.',
+    paperMsg:'Buscá en tu cuadernillo el apartado de Lyell. Subrayá "lentos" y "millones de años" con lápiz para integrar tu lectura analógica.',
+    opts:[
+      {l:'A',t:'Le enseñó que la Tierra posee apenas unos pocos miles de años y que fue modelada por inundaciones repentinas y cataclismos.'},
+      {l:'B',t:'Le permitió dilucidar que si la geología cambia lentamente a lo largo de millones de años, la vida tuvo ese inmenso margen de tiempo para diversificarse paulatinamente.'},
+      {l:'C',t:'Le convenció de que la evolución ocurre de forma instantánea cada vez que cambia el clima de una región.'}
+    ],correct:1,
+    feedOk:'¡Brillante deducción! El "Tiempo Profundo" de Lyell expandió la escala de la historia natural: el tiempo físico indispensable para que opere la evolución biológica.',
+    feedHint:'Focalizate en tus subrayados: "lentos" y "millones de años". ¿Cómo dota esto a la naturaleza de una escala temporal apta para el cambio adaptativo?'
+  },
+  {
+    id:6,step:'Expediente 5 · Desafío 7 de 8',title:'Desafío 7: La Fórmula de la Selección Natural',
+    fragLabel:'Fragmento 8 — La Selección Natural de Darwin',
+    frag:`Darwin propuso que la <strong>variabilidad</strong> podría ofrecer a algunos individuos una ventaja en la lucha por los recursos necesarios para la supervivencia, de manera tal que solo sobrevivirían aquellos individuos cuyos rasgos les permitían acaparar esos recursos.<br><br>Al reproducirse estos individuos con los rasgos más ventajosos, transmitirían tales características a su descendencia. Darwin llamó a este proceso <strong>"selección natural"</strong>, en analogía con la "selección artificial" de parejas reproductoras realizada por los criadores. Este proceso, repetido a lo largo de innumerables generaciones, modificaría órganos y hábitos dando lugar a la aparición de nuevas especies.`,
+    instruc:'Estudiá las condiciones indispensables para la Selección Natural.\n\nCompletá el enunciado del cuadro seleccionando la pieza ausente:',
+    type:'fill',clue_title:'Variabilidad de Darwin',clue_text:'Sin variaciones individuales heredables, la naturaleza no tiene de dónde seleccionar; la variabilidad es el motor del cambio.',
+    sentence:'La Selección Natural opera gracias a que dentro de una población los individuos manifiestan <span class="blank" id="blank-fill">_______________</span>, permitiendo que el ambiente favorezca a quienes posean ventajas adaptativas.',
+    opts:[
+      {l:'A',t:'un diseño inteligente idéntico donde todos los individuos son uniformes'},
+      {l:'B',t:'variabilidad (pequeñas divergencias heredables entre sí)'},
+      {l:'C',t:'un deseo consciente de mutar al instante por voluntad propia'}
+    ],correct:1,
+    feedOk:'¡Perfecto! Sin variabilidad intrínseca, no hay selección viable. Las diferencias entre individuos determinan quiénes resisten mejor la lucha por la existencia.',
+    feedHint:'Si todos los especímenes fuesen idénticos, ¿tendría el entorno criterios para seleccionar unos sobre otros? Releé el fragmento y buscá la palabra clave.'
+  },
+  {
+    id:7,step:'Expediente 5 · Desafío 8 de 8',title:'Desafío 8: Los Casilleros vs. El Árbol de la Vida',
+    fragLabel:'Fragmento 9 — El Árbol de la Vida',
+    frag:`A diferencia de Linneo, quien clasificaba a las especies en categorías <strong>fijas</strong> creadas por separado como si fueran cajones cerrados, Darwin representó la historia de la vida como un <strong>gran árbol ramificado</strong>.<br><br>Cada bifurcación del árbol representa un <strong>ancestro común</strong> del cual descendieron nuevas especies. Esto significa que todas las especies, por diferentes que parezcan hoy, comparten un origen familiar único en el pasado. Bajo la perspectiva darwiniana, el sistema de Linneo era en realidad un <strong>árbol genealógico</strong> que reflejaba el parentesco evolutivo entre los organismos.`,
+    instruc:'Observá las diferencias fundamentales entre Linneo y Darwin.\n\n¿Cuál es la premisa esencial del modelo darwiniano que rompe el paradigma fijista?',
+    type:'mc',clue_title:'Ancestro Común',clue_text:'Toda la diversidad biológica está emparentada, ramificándose desde ancestros compartidos a través del tiempo.',
+    opts:[
+      {l:'A',t:'Que cada especie fue diseñada y confinada a un casillero fijo de clasificación por voluntad divina.'},
+      {l:'B',t:'Que las plantas crecen más rápido si se clasifican con nombres en latín siguiendo el sistema de Linneo.'},
+      {l:'C',t:'Que todas las especies están unidas por lazos de parentesco evolutivo porque descienden de antepasados compartidos en el pasado.'}
+    ],correct:2,
+    feedOk:'¡FANTÁSTICO DETECTIVE! Has reconstruido con precisión la historia evolutiva. Darwin transformó los "casilleros" de Linneo en ramas de un árbol genealógico compartido.',
+    feedHint:'Identificá el concepto de "bifurcación" y "ancestro común" en el fragmento. ¿Qué dicen sobre el vínculo histórico entre todas las especies?'
+  }
+];
+
+// ═══════════════════════════════════════════════════════════
+// ESTADO Y AUDIO
+// ═══════════════════════════════════════════════════════════
+let pe=0,cur=0,answered=false,paperConfirmed=false;
+let matchState={selLeft:null,selRight:null,pairs:{},done:false};
+let unlockedClues=[],audioMuted=false;
+const AudioCtx=window.AudioContext||window.webkitAudioContext;
+let audioCtx=null;
+function getACtx(){if(!audioCtx)audioCtx=new AudioCtx();return audioCtx}
+function toggleMute(){audioMuted=!audioMuted;const b=$('mute-btn');b.textContent=audioMuted?'🔇 Sonido: OFF':'🔊 Sonido: ON';b.style.background=audioMuted?'rgba(128,24,21,0.2)':'rgba(34,26,21,0.08)'}
+function playClick(){if(audioMuted)return;try{const c=getACtx(),o=c.createOscillator(),g=c.createGain();o.type='triangle';o.frequency.setValueAtTime(150,c.currentTime);o.frequency.exponentialRampToValueAtTime(80,c.currentTime+0.05);g.gain.setValueAtTime(0.15,c.currentTime);g.gain.exponentialRampToValueAtTime(0.01,c.currentTime+0.05);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+0.06)}catch(e){}}
+function playSuccess(){if(audioMuted)return;try{const c=getACtx(),o1=c.createOscillator(),o2=c.createOscillator(),g=c.createGain();o1.type='sine';o1.frequency.setValueAtTime(587.33,c.currentTime);o2.type='sine';o2.frequency.setValueAtTime(880,c.currentTime);g.gain.setValueAtTime(0.2,c.currentTime);g.gain.exponentialRampToValueAtTime(0.01,c.currentTime+0.8);o1.connect(g);o2.connect(g);g.connect(c.destination);o1.start();o2.start();o1.stop(c.currentTime+0.8);o2.stop(c.currentTime+0.8)}catch(e){}}
+function playError(){if(audioMuted)return;try{const c=getACtx(),o=c.createOscillator(),g=c.createGain();o.type='sawtooth';o.frequency.setValueAtTime(110,c.currentTime);o.frequency.linearRampToValueAtTime(90,c.currentTime+0.25);g.gain.setValueAtTime(0.15,c.currentTime);g.gain.exponentialRampToValueAtTime(0.01,c.currentTime+0.3);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+0.3)}catch(e){}}
+function playPaperSound(){if(audioMuted)return;try{const c=getACtx(),sz=c.sampleRate*0.3,buf=c.createBuffer(1,sz,c.sampleRate),d=buf.getChannelData(0);for(let i=0;i<sz;i++)d[i]=Math.random()*2-1;const n=c.createBufferSource();n.buffer=buf;const f=c.createBiquadFilter();f.type='bandpass';f.frequency.value=1000;f.Q.value=1;const g=c.createGain();g.gain.setValueAtTime(0.12,c.currentTime);g.gain.exponentialRampToValueAtTime(0.01,c.currentTime+0.3);n.connect(f);f.connect(g);g.connect(c.destination);n.start();n.stop(c.currentTime+0.35)}catch(e){}}
+
+// ═══════════════════════════════════════════════════════════
+// INTERFAZ
+// ═══════════════════════════════════════════════════════════
+function $(id){return document.getElementById(id)}
+function changeTheme(t){playClick();document.body.className='';if(t!=='light')document.body.classList.add('theme-'+t)}
+function toggleCasebook(){playClick();$('casebook').classList.toggle('open')}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));const el=$(id);if(el){el.classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}}
+function updatePE(add){pe+=add;const b=$('pe-display');b.textContent=pe+' PE';b.classList.add('bump');setTimeout(()=>b.classList.remove('bump'),400)}
+function setProg(step){$('prog').style.width=Math.round((step/8)*100)+'%'}
+function showTransition(n){showScreen('s-trans-'+n)}
+function startChallenge(idx){cur=idx;answered=false;paperConfirmed=false;matchState={selLeft:null,selRight:null,pairs:{},done:false};renderChallenge(CHALLENGES[idx]);showScreen('s-challenge');setProg(idx)}
+
+function renderChallenge(ch){
+  const instrLines=ch.instruc.split('\n').filter(l=>l.trim()).map(l=>`<p>${l}</p>`).join('');
+  let right='';
+  if(ch.type==='mc'||ch.type==='mc-paper'){
+    const optsHtml=`<div class="opts">${ch.opts.map((o,i)=>`<button class="opt" id="opt-${i}" onclick="selectMC(${i})"><span class="opt-letter">${o.l}</span><span>${o.t}</span></button>`).join('')}</div>`;
+    if(ch.type==='mc-paper'){right+=`<div class="paper-cta" id="paper-cta"><div class="paper-icon">📓✏️</div><p>${ch.paperMsg}</p><button class="btn-confirm" onclick="confirmPaper()">Hecho, ¡desbloquear panel de respuestas! →</button></div><div id="opts-wrap" style="display:none">${optsHtml}</div>`}
+    else right+=optsHtml;
+  }else if(ch.type==='fill'){
+    right+=`<div class="fill-sentence">${ch.sentence}</div><div class="opts" style="margin-top:14px">${ch.opts.map((o,i)=>`<button class="opt" id="opt-${i}" onclick="selectFill(${i},'${o.t.replace(/'/g,"\\'")}')"><span class="opt-letter">${o.l}</span><span>${o.t}</span></button>`).join('')}</div>`;
+  }else if(ch.type==='match'){
+    right+=`<div class="match-wrap"><div class="match-cols"><div><div class="match-col-title">Concepto / Ley</div>${ch.leftItems.map(it=>`<div class="match-item" id="${it.id}" onclick="matchClick('left','${it.id}')">${it.t}</div>`).join('')}</div><div><div class="match-col-title">Explicación</div>${ch.rightItems.map(it=>`<div class="match-item" id="${it.id}" onclick="matchClick('right','${it.id}')">${it.t}</div>`).join('')}</div></div><div id="match-verify" style="display:none;text-align:center"><button class="btn-start" style="font-size:12px;padding:8px 20px;margin-top:10px" onclick="checkMatch()">Verificar correspondencias →</button></div></div>`;
+  }
+  right+=`<div class="fb" id="fb"></div><button class="btn-next" id="btn-next" onclick="advance(${ch.id})">Siguiente expediente →</button>`;
+  $('s-challenge').innerHTML=`<div class="ch-layout"><div class="text-panel"><div class="text-panel-hdr"><span>📄 RECURSO DE APOYO</span><span style="font-size:9px;color:var(--amber)">Estudio Activo</span></div><div class="text-scroll"><div class="frag-label">${ch.fragLabel}</div><div class="frag-body" id="frag-body">${ch.frag}</div></div></div><div class="q-panel"><div class="q-step">${ch.step}</div><div class="q-title">${ch.title}</div><div class="q-instruc">${instrLines}</div>${right}</div></div>`;
+}
+
+function confirmPaper(){playPaperSound();$('paper-cta').style.display='none';$('opts-wrap').style.display='block'}
+function showFb(type,msg){const fb=$('fb');fb.className='fb show '+type;fb.innerHTML=msg;fb.scrollIntoView({behavior:'smooth',block:'nearest'})}
+function hideFb(){const fb=$('fb');if(fb){fb.className='fb';fb.innerHTML=''}}
+function flashFrag(){const f=$('frag-body');if(f){f.classList.add('flash-hint');setTimeout(()=>f.classList.remove('flash-hint'),2000)}}
+
+function registerClue(ch){
+  if(unlockedClues.some(c=>c.title===ch.clue_title))return;
+  unlockedClues.push({title:ch.clue_title,text:ch.clue_text});
+  const content=$('casebook-content');
+  content.innerHTML=unlockedClues.map(c=>`<div class="casebook-clue-item"><div class="casebook-clue-title">🔑 ${c.title}</div><div>${c.text}</div></div>`).join('');
+  const t=document.querySelector('button[onclick="toggleCasebook()"]');
+  if(t){t.style.transform='scale(1.1)';t.style.background='var(--green-ok)';setTimeout(()=>{t.style.transform='';t.style.background='var(--amber)'},1000)}
+}
+
+function retryMC(ch){answered=false;ch.opts.forEach((_,i)=>{const b=$('opt-'+i);if(b){b.disabled=false;b.className='opt'}})}
+
+function selectMC(idx){
+  if(answered)return;answered=true;const ch=CHALLENGES[cur];
+  ch.opts.forEach((_,i)=>{const b=$('opt-'+i);if(b){b.disabled=true;if(i===ch.correct)b.classList.add('correct');else if(i===idx)b.classList.add('wrong')}});
+  if(idx===ch.correct){playSuccess();showFb('ok','✅ '+ch.feedOk);updatePE(100);registerClue(ch);$('btn-next').style.display='block'}
+  else{playError();showFb('hint','🔎 '+ch.feedHint);setTimeout(()=>retryMC(ch),2500)}
+}
+
+function selectFill(idx,text){
+  if(answered)return;answered=true;const ch=CHALLENGES[cur];
+  const blank=$('blank-fill');
+  if(blank){blank.textContent=text;blank.style.color=idx===ch.correct?'var(--green-ok)':'var(--orange)'}
+  ch.opts.forEach((_,i)=>{const b=$('opt-'+i);if(b){b.disabled=true;if(i===ch.correct)b.classList.add('correct');else if(i===idx)b.classList.add('wrong')}});
+  if(idx===ch.correct){playSuccess();showFb('ok','✅ '+ch.feedOk);updatePE(100);registerClue(ch);$('btn-next').style.display='block'}
+  else{playError();showFb('hint','🔎 '+ch.feedHint);setTimeout(()=>{answered=false;ch.opts.forEach((_,i)=>{const b=$('opt-'+i);if(b){b.disabled=false;b.className='opt'}});if(blank){blank.textContent='_______________';blank.style.color='var(--amber)'}hideFb();flashFrag()},2500)}
+}
+
+function matchClick(side,id){
+  playClick();if(matchState.done)return;const ch=CHALLENGES[cur];
+  if(side==='left'){if(matchState.pairs[id])return;if(matchState.selLeft){const p=$(matchState.selLeft);if(p)p.classList.remove('selected')}matchState.selLeft=id;$(id).classList.add('selected')}
+  else{if(Object.values(matchState.pairs).includes(id))return;if(!matchState.selLeft)return;matchState.pairs[matchState.selLeft]=id;$(matchState.selLeft).classList.remove('selected');$(matchState.selLeft).classList.add('ok');$(id).classList.add('ok');matchState.selLeft=null;if(Object.keys(matchState.pairs).length===ch.leftItems.length)$('match-verify').style.display='block'}
+}
+
+function checkMatch(){
+  const ch=CHALLENGES[cur];const allOk=Object.entries(matchState.pairs).every(([l,r])=>ch.correctPairs[l]===r);matchState.done=true;
+  if(allOk){playSuccess();showFb('ok','✅ '+ch.feedOk);updatePE(100);registerClue(ch);$('btn-next').style.display='block'}
+  else{playError();ch.leftItems.forEach(it=>{const e=$(it.id);if(e)e.className='match-item'});ch.rightItems.forEach(it=>{const e=$(it.id);if(e)e.className='match-item'});matchState={selLeft:null,selRight:null,pairs:{},done:false};$('match-verify').style.display='none';showFb('hint','🔎 '+ch.feedHint);flashFrag();setTimeout(hideFb,3000)}
+}
+
+function advance(chId){
+  playPaperSound();const nextIdx=chId+1;setProg(nextIdx);
+  if(chId===3){showScreen('s-rest-4');return}
+  if(chId===5){showScreen('s-rest-6');return}
+  if(chId===1){showTransition(1);return}
+  if(chId===4){showTransition(2);return}
+  if(nextIdx>=CHALLENGES.length){$('final-pe-num').textContent=pe;showScreen('s-final');return}
+  startChallenge(nextIdx);
+}
+
+function generateReport(){
+  playClick();const n=$('student-name').value.trim();
+  if(!n){alert('Por favor, escribí tu nombre antes de generar.');return}
+  const today=new Date();const fd=String(today.getDate()).padStart(2,'0')+'/'+String(today.getMonth()+1).padStart(2,'0')+'/'+today.getFullYear();
+  $('cert-student-name').textContent=n;$('cert-score').textContent=pe;$('cert-date').textContent=fd;$('print-modal').style.display='flex';
+}
+function closePrintModal(){playClick();$('print-modal').style.display='none'}
+function restartGame(){playPaperSound();pe=0;cur=0;unlockedClues=[];$('pe-display').textContent='0 PE';if($('student-name'))$('student-name').value='';$('casebook-content').innerHTML='<div class="casebook-clue-item empty">Aún no has descubierto pistas en este caso.</div>';setProg(0);showScreen('s-intro')}
+
+document.addEventListener('click',function(){try{const c=getACtx();if(c.state==='suspended')c.resume()}catch(e){}},{once:true});
+</script>
+</body>
+</html>
