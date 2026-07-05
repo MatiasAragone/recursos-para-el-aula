@@ -318,8 +318,10 @@ footer a:hover { text-decoration: underline; }
   <button class="filter-btn active" onclick="filter('all', this)">Todos</button>
   <button class="filter-btn" onclick="filter('ciudadania', this)">Trabajo y Ciudadanía</button>
   <button class="filter-btn" onclick="filter('historia', this)">Historia</button>
-  <button class="filter-btn" onclick="filter('gamificacion', this)">Gamificación</button>
   <button class="filter-btn" onclick="filter('pensamiento', this)">Pensamiento Científico</button>
+  <button class="filter-btn" onclick="filter('matematica', this)">Matemática</button>
+  <button class="filter-btn" onclick="filter('fisica', this)">Física</button>
+  <button class="filter-btn" onclick="filter('gamificacion', this)">Gamificación</button>
   <button class="filter-btn" onclick="filter('adaptacion', this)">Con adaptaciones</button>
 </div>
 
@@ -397,20 +399,92 @@ footer a:hover { text-decoration: underline; }
     </div>
   </div>
 
-  <!-- PRÓXIMO (placeholder) -->
-  <div class="resource-card coming" data-tags="historia">
-    <div class="card-thumb" style="background: linear-gradient(135deg, #1a2e1a, #2f6e3b);">⚔️</div>
+  <!-- RECURSO 5: Rugby Matemática mobile -->
+  <div class="resource-card" data-tags="matematica gamificacion">
+    <div class="card-thumb" style="background: linear-gradient(135deg, #0a2200, #1a5c00);">🏉</div>
     <div class="card-body">
       <div class="card-tags">
-        <span class="tag materia">Historia</span>
-        <span class="tag nivel">Secundaria</span>
-        <span class="tag tipo">🔜 Próximamente</span>
+        <span class="tag materia">Matemática</span>
+        <span class="tag nivel">2do año</span>
+        <span class="tag tipo">🎮 Gamificación</span>
       </div>
-      <div class="card-title">Próximo recurso de Historia</div>
-      <div class="card-desc">Nuevo material en desarrollo. Los recursos se van agregando a medida que se producen.</div>
+      <div class="card-title">Conversión de Rugby — Versión celular</div>
+      <div class="card-desc">6 desafíos con dificultad progresiva. Calculá velocidad, ángulo o distancia para que la pelota entre en la ventana. Con scoring, sonido, confeti y desarrollo algebraico paso a paso.</div>
       <div class="card-footer">
-        <a class="card-link disabled" href="#">🔒 En desarrollo</a>
-        <span class="card-date">Próximamente</span>
+        <a class="card-link" href="https://matiasara.github.io/juego-cuadratica/juego_mobile.html" target="_blank">▶ Abrir recurso</a>
+        <span class="card-date">2025</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECURSO 6: Rugby escritorio -->
+  <div class="resource-card" data-tags="matematica gamificacion">
+    <div class="card-thumb" style="background: linear-gradient(135deg, #0a2200, #2d7a00);">🏉</div>
+    <div class="card-body">
+      <div class="card-tags">
+        <span class="tag materia">Matemática</span>
+        <span class="tag nivel">2do año</span>
+        <span class="tag tipo">💻 Escritorio</span>
+      </div>
+      <div class="card-title">Conversión de Rugby — Versión escritorio</div>
+      <div class="card-desc">La misma experiencia optimizada para proyectar en clase o usar en computadora. Funciones cuadráticas con contexto real.</div>
+      <div class="card-footer">
+        <a class="card-link" href="https://matiasara.github.io/juego-cuadratica/juego_web.html" target="_blank">▶ Abrir recurso</a>
+        <span class="card-date">2025</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECURSO 7: Lanzador pelotas -->
+  <div class="resource-card" data-tags="matematica">
+    <div class="card-thumb" style="background: linear-gradient(135deg, #001a2e, #003d6b);">⚽</div>
+    <div class="card-body">
+      <div class="card-tags">
+        <span class="tag materia">Matemática</span>
+        <span class="tag nivel">2do año</span>
+        <span class="tag tipo">🔬 Simulador</span>
+      </div>
+      <div class="card-title">Lanzador de Pelotas</div>
+      <div class="card-desc">Ajustá los coeficientes a, b y c y observá cómo cambia la trayectoria en tiempo real. Muestra vértice, discriminante y alcance.</div>
+      <div class="card-footer">
+        <a class="card-link" href="https://matiasara.github.io/juego-cuadratica/lanzador_pelotas.html" target="_blank">▶ Abrir recurso</a>
+        <span class="card-date">2025</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECURSO 8: Carrera autos -->
+  <div class="resource-card" data-tags="fisica gamificacion">
+    <div class="card-thumb" style="background: linear-gradient(135deg, #1a0a00, #5c2000);">🏎️</div>
+    <div class="card-body">
+      <div class="card-tags">
+        <span class="tag materia">Física</span>
+        <span class="tag nivel">1er año</span>
+        <span class="tag tipo">🎮 Gamificación</span>
+      </div>
+      <div class="card-title">Carrera de Autos — MRU vs MRUV</div>
+      <div class="card-desc">Dos autos compiten en tiempo real. El gráfico posición-tiempo se dibuja en vivo mostrando la diferencia entre movimiento uniforme y uniformemente variado.</div>
+      <div class="card-footer">
+        <a class="card-link" href="https://matiasara.github.io/juego-cuadratica/carrera_autos.html" target="_blank">▶ Abrir recurso</a>
+        <span class="card-date">2025</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECURSO 9: Artemis -->
+  <div class="resource-card" data-tags="fisica matematica">
+    <div class="card-thumb" style="background: linear-gradient(135deg, #000d1a, #001a3d);">🌍</div>
+    <div class="card-body">
+      <div class="card-tags">
+        <span class="tag materia">Física · Matemática</span>
+        <span class="tag nivel">Secundaria</span>
+        <span class="tag tipo">🚀 Simulador</span>
+      </div>
+      <div class="card-title">Simulador Artemis II — Misión Lunar</div>
+      <div class="card-desc">Sos el Oficial de Dinámica de Vuelo. Resolvé 5 cálculos reales — mecánica orbital, velocidad de escape, reentrada — para llevar la tripulación a la Luna y de regreso.</div>
+      <div class="card-footer">
+        <a class="card-link" href="https://matiasara.github.io/juego-cuadratica/artemis_simulator.html" target="_blank">▶ Abrir recurso</a>
+        <span class="card-date">2025</span>
       </div>
     </div>
   </div>
@@ -418,7 +492,7 @@ footer a:hover { text-decoration: underline; }
 </div>
 
 <footer>
-  Hecho con 🧠 por <a href="https://github.com/MatiasAra" target="_blank">Matias Ara</a> &nbsp;·&nbsp;
+  Hecho con 🧠 por <a href="https://matiasara.github.io" target="_blank">Matías Aragone</a> &nbsp;·&nbsp;
   <a href="https://instagram.com/paideia.docente" target="_blank">@paideia.docente</a> &nbsp;·&nbsp;
   Uso libre para fines educativos
 </footer>
