@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Camino de la Libertad · Revolución Francesa</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Nunito:wght@400;600;700;800&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --bg:#0f1117;
+  --surface:#1a1f2e;
+  --surface2:#141824;
+  --surface3:#0d1018;
+  --border:#2a3050;
+  --border2:#1e2438;
+  --amber:#f0a830;
+  --amber2:#d08820;
+  --amber-bg:rgba(240,168,48,0.1);
+  --amber-border:rgba(240,168,48,0.3);
+  --green:#34d399;
+  --green-bg:rgba(52,211,153,0.12);
+  --green-border:rgba(52,211,153,0.35);
+  --red:#f87171;
+  --red-bg:rgba(248,113,113,0.12);
+  --red-border:rgba(248,113,113,0.35);
+  --blue:#60a5fa;
+  --blue-bg:rgba(96,165,250,0.12);
+  --teal:#2dd4bf;
+  --teal-bg:rgba(45,212,191,0.12);
+  --text:#e2e8f0;
+  --text-soft:#8892aa;
+  --radius:16px;
+}
+
+body{
+  font-family:'Nunito',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+.serif{font-family:'EB Garamond',serif;}
+
+/* LAYOUT */
+.app{display:flex;flex:1;min-height:100vh;}
+.main-area{flex:1;display:flex;flex-direction:column;background:radial-gradient(ellipse at center,#1e2535 0%,#0f1117 100%);border-right:1px solid var(--border);}
+.sidebar{width:420px;background:var(--surface3);display:flex;flex-direction:column;overflow-y:auto;}
+
+/* SCREENS */
+.screen{display:none;flex:1;padding:40px;flex-direction:column;}
+.screen.active{display:flex;}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-weight:700;cursor:pointer;transition:all 0.18s;}
+.btn:disabled{opacity:0.4;cursor:not-allowed;}
+.btn-primary{background:var(--amber2);color:#fff;padding:14px 32px;font-size:1.1rem;border-radius:14px;}
+.btn-primary:hover:not(:disabled){background:#b87010;transform:scale(1.02);}
+.btn-ghost{background:var(--surface);color:var(--text-soft);padding:8px 16px;font-size:0.85rem;border:1px solid var(--border);}
+.btn-ghost:hover:not(:disabled){color:var(--amber);border-color:var(--amber-border);}
+.btn-blue{background:rgba(59,100,220,0.18);color:var(--blue);border:1px solid rgba(96,165,250,0.3);padding:8px 16px;font-size:0.85rem;}
+.btn-blue:hover:not(:disabled){background:rgba(59,100,220,0.28);}
+.btn-success{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);padding:12px;width:100%;}
+.btn-success:hover:not(:disabled){background:rgba(52,211,153,0.2);}
+.btn-danger{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);padding:12px;width:100%;}
+.btn-danger:hover:not(:disabled){background:rgba(248,113,113,0.2);}
+.btn-teal{background:var(--teal-bg);color:var(--teal);border:1px solid rgba(45,212,191,0.3);padding:8px;width:100%;font-size:0.82rem;}
+.btn-teal:hover:not(:disabled){background:rgba(45,212,191,0.2);}
+
+/* START SCREEN */
+.start-box{background:rgba(30,37,54,0.8);border:2px solid var(--amber-border);border-radius:24px;padding:56px 48px;max-width:680px;margin:auto;text-align:center;backdrop-filter:blur(8px);}
+.start-box h1{font-size:3rem;color:var(--amber);letter-spacing:2px;margin-bottom:8px;}
+.start-box h2{font-size:1.8rem;color:var(--text);font-weight:400;margin-bottom:28px;}
+.start-box p{font-size:1rem;color:var(--text-soft);line-height:1.8;margin-bottom:36px;text-align:justify;}
+
+/* MAP SCREEN */
+.map-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;}
+.map-header h2{font-size:2.2rem;color:var(--amber);}
+.stations-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1;}
+.station-card{background:var(--surface);border:2px solid var(--border);border-radius:20px;padding:32px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;transition:all 0.2s;position:relative;}
+.station-card:hover:not(.locked){border-color:var(--amber);transform:scale(1.03);box-shadow:0 16px 40px rgba(240,168,48,0.15);}
+.station-card.locked{opacity:0.6;cursor:not-allowed;background:rgba(15,17,23,0.5);}
+.station-card.completed{border-color:rgba(52,211,153,0.4);}
+.station-num{position:absolute;top:14px;left:14px;width:36px;height:36px;background:var(--surface2);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;color:var(--text-soft);}
+.station-icon{position:absolute;top:14px;right:14px;font-size:1.3rem;}
+.station-card h3{font-size:1.3rem;font-weight:700;color:var(--text);margin-bottom:8px;line-height:1.3;}
+.station-card span{font-size:0.78rem;color:var(--text-soft);text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+.locked-msg{margin-top:12px;font-size:0.72rem;color:#f87171;background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.2);padding:4px 12px;border-radius:999px;}
+
+/* STATION SCREEN */
+.station-nav{display:flex;gap:12px;margin-bottom:24px;}
+.mode-tabs{display:flex;gap:12px;justify-content:center;margin-bottom:24px;}
+.tab{padding:10px 28px;border-radius:999px;font-weight:700;font-size:1rem;cursor:pointer;border:none;font-family:'Nunito',sans-serif;transition:all 0.18s;}
+.tab.active{background:var(--amber2);color:#fff;box-shadow:0 4px 20px rgba(208,136,32,0.3);}
+.tab.inactive{background:var(--surface);color:var(--text-soft);}
+.tab.inactive:hover{background:var(--surface2);}
+.tab .check-badge{margin-left:8px;color:var(--green);}
+
+.question-box{background:var(--surface);border:1px solid var(--border);border-radius:24px;flex:1;padding:40px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;}
+.question-box::before{content:'⚜';position:absolute;top:-20px;right:-20px;font-size:200px;opacity:0.04;pointer-events:none;}
+.q-badge{background:rgba(240,168,48,0.15);color:var(--amber);padding:4px 16px;border-radius:999px;font-size:0.78rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:20px;display:inline-block;}
+.reto-text{font-size:1.6rem;color:var(--text);line-height:1.7;max-width:640px;}
+.mcq-question{font-size:1.6rem;color:var(--text);margin-bottom:32px;max-width:640px;}
+.mcq-hint{font-size:0.82rem;color:var(--text-soft);margin-bottom:20px;margin-top:-20px;}
+.mcq-options{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;max-width:760px;}
+.mcq-opt{padding:20px;border-radius:14px;font-size:1rem;font-weight:600;border:2px solid var(--border);background:rgba(26,31,46,0.5);color:var(--text);cursor:pointer;text-align:left;transition:all 0.18s;font-family:'Nunito',sans-serif;}
+.mcq-opt:hover:not(:disabled){background:rgba(40,50,70,0.6);border-color:#4a5580;}
+.mcq-opt.correct{background:rgba(52,211,153,0.12);border-color:var(--green-border);color:var(--green);box-shadow:0 0 24px rgba(52,211,153,0.2);}
+.mcq-opt.wrong{background:rgba(15,17,23,0.3);border-color:#1e2438;color:#4a5580;}
+.mcq-opt:disabled{cursor:default;}
+
+.progress-badges{position:absolute;top:0;right:0;display:flex;gap:6px;}
+.prog-badge{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);font-size:0.7rem;padding:3px 10px;border-radius:999px;font-weight:700;}
+
+/* SIDEBAR */
+.sidebar-header{padding:20px 20px 16px;background:var(--surface);border-bottom:1px solid var(--border2);position:sticky;top:0;z-index:10;}
+.sidebar-header h2{font-size:1rem;font-weight:800;color:var(--amber);text-transform:uppercase;letter-spacing:2px;margin-bottom:4px;}
+.sidebar-hint{font-size:0.72rem;color:var(--text-soft);}
+.sidebar-hint.amber{color:var(--amber);}
+
+.teams-list{padding:14px;flex:1;}
+.team-card{padding:14px;border-radius:14px;border:2px solid var(--border2);background:rgba(15,17,23,0.5);cursor:pointer;transition:all 0.18s;margin-bottom:10px;position:relative;overflow:hidden;}
+.team-card:hover{background:rgba(26,31,46,0.6);}
+.team-card.selected{border-color:var(--amber);background:var(--surface);}
+.team-card.payer{border-color:var(--amber);background:rgba(240,168,48,0.08);}
+.team-card.imprisoned{opacity:0.7;filter:grayscale(0.5);}
+.team-stripe{position:absolute;top:0;left:0;width:4px;height:100%;}
+.team-name{font-weight:700;font-size:1rem;padding-left:10px;}
+.team-name.imprisoned{color:var(--red);}
+.team-stats{display:flex;align-items:center;gap:16px;margin-top:6px;padding-left:10px;font-size:0.85rem;color:var(--text-soft);}
+.team-coins{color:var(--amber);font-weight:700;}
+.team-lives{color:var(--red);}
+.team-badges{position:absolute;top:10px;right:10px;display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+.bastilla-badge{background:rgba(248,113,113,0.15);color:var(--red);border:1px solid var(--red-border);font-size:0.65rem;padding:2px 8px;border-radius:999px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;}
+.streak-dots{display:flex;gap:3px;}
+.streak-dot{width:7px;height:7px;border-radius:50%;}
+.streak-dot.active{background:var(--amber);}
+.streak-dot.inactive{background:var(--border);}
+.payer-label{font-size:0.7rem;color:var(--amber);font-weight:600;}
+
+/* CONTROLS */
+.controls{padding:18px;background:var(--surface);border-top:1px solid var(--border2);position:sticky;bottom:0;z-index:10;}
+.ctrl-title{font-size:0.75rem;color:var(--text-soft);text-transform:uppercase;letter-spacing:1px;font-weight:800;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
+.ctrl-grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.ctrl-sublabel{font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;opacity:0.8;display:block;margin-bottom:2px;}
+.ctrl-main{font-size:1rem;display:flex;align-items:center;gap:6px;}
+
+/* PRISON */
+.prison-box{background:var(--surface3);border:1px solid var(--border2);border-radius:12px;padding:12px;margin-top:8px;}
+.prison-title{font-size:0.7rem;color:var(--text-soft);display:flex;align-items:center;gap:4px;margin-bottom:8px;}
+.prison-step{font-size:0.72rem;color:var(--text-soft);margin-bottom:8px;line-height:1.5;}
+.prison-step strong{color:var(--text);}
+.prison-step.amber{color:var(--amber);}
+.prison-btn{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-family:'Nunito',sans-serif;font-size:0.75rem;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all 0.15s;margin-bottom:4px;}
+.prison-btn:hover{background:rgba(240,168,48,0.08);border-color:var(--amber-border);color:var(--amber);}
+.prison-btn-red{background:rgba(248,113,113,0.1);border:1px solid var(--red-border);border-radius:8px;padding:6px 10px;font-family:'Nunito',sans-serif;font-size:0.75rem;color:var(--red);cursor:pointer;width:100%;margin-bottom:4px;transition:all 0.15s;}
+.prison-btn-red:hover{background:rgba(248,113,113,0.2);}
+.prison-cancel{width:100%;margin-top:4px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:5px;font-family:'Nunito',sans-serif;font-size:0.72rem;color:var(--text-soft);cursor:pointer;}
+.prison-empty{font-size:0.72rem;color:#4a5580;font-style:italic;}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);display:flex;align-items:center;justify-content:center;z-index:100;}
+.modal-box{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:36px;max-width:380px;text-align:center;}
+.modal-box p{font-size:1.1rem;font-weight:700;margin-bottom:8px;}
+.modal-box small{color:var(--text-soft);font-size:0.85rem;display:block;margin-bottom:24px;}
+.modal-actions{display:flex;gap:12px;justify-content:center;}
+
+/* FINAL */
+.final-box{background:var(--surface);border:2px solid var(--amber-border);border-radius:24px;padding:48px;max-width:700px;margin:auto;text-align:center;}
+.final-box h1{font-size:2.8rem;color:var(--amber);margin-bottom:8px;}
+.final-box p{color:var(--text-soft);margin-bottom:32px;line-height:1.7;}
+.final-table{width:100%;border-collapse:collapse;margin-bottom:28px;}
+.final-table th{background:var(--surface2);color:var(--text-soft);font-size:0.78rem;text-transform:uppercase;letter-spacing:1px;padding:10px 14px;text-align:left;}
+.final-table td{padding:12px 14px;border-top:1px solid var(--border2);font-size:0.95rem;}
+.final-table tr:first-child td{color:var(--amber);font-weight:800;}
+.team-color-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;}
+
+@media(max-width:900px){
+  .app{flex-direction:column;}
+  .sidebar{width:100%;}
+  .stations-grid{grid-template-columns:1fr;}
+  .mcq-options{grid-template-columns:1fr;}
+  .start-box{padding:32px 20px;}
+  .start-box h1{font-size:2rem;}
+  .screen{padding:20px;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- MAIN AREA -->
+  <div class="main-area">
+
+    <!-- START -->
+    <div class="screen active" id="scr-start">
+      <div class="start-box">
+        <h1 class="serif">El Camino de la Libertad</h1>
+        <h2 class="serif">De Súbditos a Ciudadanos</h2>
+        <p>Francia, 1789. El reino está en bancarrota, el pueblo tiene hambre y las ideas de la Ilustración encienden las mentes. Atraviesen las 4 Estaciones de la Revolución para redactar la Constitución y forjar la ciudadanía.</p>
+        <button class="btn btn-primary serif" onclick="gotoMap()">▶ Comenzar la Revolución</button>
+      </div>
+    </div>
+
+    <!-- MAP -->
+    <div class="screen" id="scr-map">
+      <div class="map-header">
+        <h2 class="serif">Mapa de la Revolución</h2>
+        <button class="btn btn-ghost" onclick="confirmReset()">↺ Reiniciar juego</button>
+      </div>
+      <div class="stations-grid" id="stationsGrid"></div>
+    </div>
+
+    <!-- STATION -->
+    <div class="screen" id="scr-station">
+      <div class="station-nav">
+        <button class="btn btn-ghost" onclick="gotoMap()">← Volver al Mapa</button>
+        <button class="btn btn-blue" id="btnNextQ" onclick="nextQuestion()">⟳ Siguiente Pregunta (1/4)</button>
+        <div class="progress-badges" id="progBadges"></div>
+      </div>
+      <div style="text-align:center;margin-bottom:20px;">
+        <h2 class="serif" id="stTitle" style="font-size:2rem;color:var(--amber);margin-bottom:4px;"></h2>
+        <p id="stEje" style="font-size:0.85rem;color:var(--text-soft);text-transform:uppercase;letter-spacing:2px;font-weight:700;"></p>
+      </div>
+      <div class="mode-tabs">
+        <button class="tab active" id="tabReto" onclick="setMode('reto')">Pregunta Reto <span class="check-badge" id="chkReto" style="display:none">✓</span></button>
+        <button class="tab inactive" id="tabMcq" onclick="setMode('mcq')">Opciones Múltiples <span class="check-badge" id="chkMcq" style="display:none">✓</span></button>
+      </div>
+      <div class="question-box" id="questionBox"></div>
+    </div>
+
+    <!-- FINAL -->
+    <div class="screen" id="scr-final">
+      <div class="final-box">
+        <div style="font-size:3rem;margin-bottom:12px;">🏆</div>
+        <h1 class="serif">¡Revolución Completada!</h1>
+        <p>Todas las estaciones han sido superadas. Las 4 facciones han contribuido al nuevo orden constitucional.</p>
+        <table class="final-table" id="finalTable"></table>
+        <button class="btn btn-primary serif" onclick="resetGame()">↺ Nueva Partida</button>
+      </div>
+    </div>
+
+  </div><!-- end main-area -->
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h2>🛡 Posiciones</h2>
+      <div class="sidebar-hint" id="sideHint">Seleccioná una facción para administrarla</div>
+    </div>
+    <div class="teams-list" id="teamsList"></div>
+    <div class="controls">
+      <div class="ctrl-title">
+        <span id="ctrlTitle">Administrando: —</span>
+        <span id="bastillaIcon" style="display:none;color:var(--red);">💣</span>
+      </div>
+      <div class="ctrl-grid2">
+        <button class="btn btn-success" id="btnCorrect" onclick="addPoints()">
+          <span>
+            <span class="ctrl-sublabel" id="correctLabel">Correcta (Reto)</span>
+            <span class="ctrl-main" id="correctPts">🪙 +200 F</span>
+          </span>
+        </button>
+        <button class="btn btn-danger" id="btnWrong" onclick="removeLife()">
+          <span>
+            <span class="ctrl-sublabel">Incorrecta</span>
+            <span class="ctrl-main">❤️ -1 Escarapela</span>
+          </span>
+        </button>
+      </div>
+      <div class="ctrl-grid2">
+        <button class="btn btn-blue" id="btnVeto" onclick="useVeto()">🛡 Usar Veto</button>
+        <button class="btn btn-teal" id="btnEnc" onclick="useEnciclopedia()">📖 Enciclopedia</button>
+      </div>
+      <div class="prison-box" id="prisonBox"></div>
+    </div>
+  </div>
+
+</div><!-- end app -->
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" style="display:none;">
+  <div class="modal-box">
+    <p>¿Reiniciar partida?</p>
+    <small>Se perderán todos los puntos, vidas y progreso.</small>
+    <div class="modal-actions">
+      <button class="btn btn-danger" style="padding:10px 24px;" onclick="resetGame()">Sí, reiniciar</button>
+      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const STATIONS = [
+  {
+    id:1, title:"El Derrumbe del Antiguo Régimen", eje:"Sociedad y Crisis Económica", emoji:"👑",
+    retos:[
+      "Expliquen por qué el Tercer Estado sostenía a toda Francia mientras los otros dos estamentos vivían en el lujo. ¿Qué gastos causaron la bancarrota?",
+      "¿Por qué la forma de votar en los Estados Generales —un voto por estamento en lugar de uno por cabeza— enfureció al Tercer Estado? ¿Qué hubiera cambiado si se votaba por cabeza?",
+      "¿Por qué las malas cosechas de 1789 fueron una chispa tan importante para el estallido de la Revolución?",
+      "María Antonieta y la corte de Versalles concentraban la furia del pueblo. ¿Qué gastos del Estado justificaban ese enojo?"
+    ],
+    mcqs:[
+      {q:"¿Cuál de estas NO es una causa de la crisis de 1789?",opts:["a) Malas cosechas de trigo.","b) Gastos en la guerra de EE.UU.","c) El fin de la censura de libros.","d) Lujos en Versalles."],correct:2},
+      {q:"¿Qué porcentaje aproximado de la población formaba el Tercer Estado?",opts:["a) 50%","b) 70%","c) 97%","d) 20%"],correct:2},
+      {q:"¿Qué impuesto principal pagaban los campesinos obligatoriamente a la Iglesia?",opts:["a) La Talla","b) El Diezmo","c) La Alcabala","d) La Corvea"],correct:1},
+      {q:"¿Quiénes estaban exceptuados de pagar impuestos en el Antiguo Régimen?",opts:["a) Los campesinos y artesanos.","b) El clero y la nobleza.","c) La burguesía y el clero.","d) Solo los grandes comerciantes."],correct:1}
+    ]
+  },
+  {
+    id:2, title:"El Despertar de la Razón", eje:"La Ilustración", emoji:"📚",
+    retos:[
+      "Si Montesquieu entrara hoy al aula, ¿por qué diría que el poder absoluto de Luis XVI es 'injusto e inmoral'?",
+      "Expliquen por qué los Ilustrados se alejaron de las creencias religiosas para explicar el mundo. ¿Con qué las reemplazaron?",
+      "¿Por qué los reyes absolutos consideraban que la 'Enciclopedia' era un libro peligroso que debía ser prohibido?",
+      "¿Cómo justificaban los Ilustrados que la razón debía reemplazar a la religión como guía de la sociedad?"
+    ],
+    mcqs:[
+      {q:"¿Qué idea defendía Rousseau en 'El Contrato Social'?",opts:["a) Derecho divino.","b) Soberanía popular.","c) Clero sin impuestos.","d) Feudalismo."],correct:1},
+      {q:"¿Quiénes fueron los encargados de elaborar la Enciclopedia?",opts:["a) Voltaire y Rousseau","b) Montesquieu y Diderot","c) D'Alembert y Diderot","d) Robespierre y Danton"],correct:2},
+      {q:"¿Cuál era la propuesta central del pensamiento liberal ilustrado respecto al poder?",opts:["a) Que el rey concentre todo el poder.","b) Que el poder no se concentre en una sola mano.","c) Que la Iglesia gobierne junto al rey.","d) Que solo voten los nobles."],correct:1},
+      {q:"¿Cuál era la base del pensamiento ilustrado para alcanzar el progreso?",opts:["a) La Fe","b) La Tradición","c) La Razón","d) La Guerra"],correct:2}
+    ]
+  },
+  {
+    id:3, title:"La Lucha por el Poder", eje:"Grupos Políticos y el Terror", emoji:"⚔️",
+    retos:[
+      "¿En qué se diferenciaba el proyecto de un Jacobino frente al de un Girondino? Usen 'derecha' e 'izquierda'.",
+      "Expliquen la contradicción de Robespierre: ¿Cómo alguien que pedía libertad terminó liderando el 'Régimen del Terror'?",
+      "¿Quiénes eran los 'Sans-Culottes' y por qué fueron la fuerza de choque más importante en las calles de París?",
+      "El 27 de julio de 1794 Robespierre fue derrocado y ejecutado. ¿Por qué sus propios aliados revolucionarios terminaron volviéndose en su contra?"
+    ],
+    mcqs:[
+      {q:"¿Quién fue el líder jacobino que instauró el Terror y terminó en la guillotina?",opts:["a) Lafayette","b) Robespierre","c) Danton","d) Marat"],correct:1},
+      {q:"¿A qué rey ejecutaron los revolucionarios en 1793?",opts:["a) Luis XIV","b) Luis XV","c) Luis XVI","d) Enrique IV"],correct:2},
+      {q:"¿Cuál era la principal herramienta de ejecución masiva durante el Terror?",opts:["a) La Horca","b) El Fusilamiento","c) La Guillotina","d) El Exilio"],correct:2},
+      {q:"¿Qué documento sancionaron los girondinos en 1791 que limitaba el poder del rey?",opts:["a) La Declaración de los Derechos del Hombre","b) La primera Constitución francesa","c) El Código Civil napoleónico","d) El Acta de Independencia"],correct:1}
+    ]
+  },
+  {
+    id:4, title:"El Nuevo Mundo", eje:"Consecuencias y Legado", emoji:"🌍",
+    retos:[
+      "Expliquen el cambio político fundamental: ¿Qué significa exactamente que una persona deje de ser 'súbdito' para ser 'ciudadano'?",
+      "¿Por qué se dice que la Revolución Francesa fue el triunfo definitivo de la Burguesía, si en apariencia luchaba por la igualdad de todos?",
+      "Tras la caída de Robespierre, ¿quién llegó al poder en Francia y cómo lo hizo? ¿Qué cambió con su llegada?",
+      "¿Cómo impactaron las invasiones inglesas al Río de la Plata (1806-1807) y la invasión francesa a España en las ideas independentistas de América Latina?"
+    ],
+    mcqs:[
+      {q:"¿Cuál fue la consecuencia económica para la burguesía tras la revolución?",opts:["a) Vuelve el trueque.","b) Inicia el capitalismo y libre empresa.","c) Más derechos feudales.","d) Cierre de fábricas."],correct:1},
+      {q:"¿Qué documento fundamental aprobó la Asamblea en 1789?",opts:["a) La Carta Magna","b) Declaración de Independencia","c) Declaración de los Derechos del Hombre","d) El Código Civil"],correct:2},
+      {q:"¿Cuál es el famoso lema que nos dejó la Revolución Francesa?",opts:["a) Orden y Progreso","b) Libertad, Igualdad, Fraternidad","c) Dios y Patria","d) Paz, Pan y Tierra"],correct:1},
+      {q:"Tras la Revolución, ¿qué nueva clase social se convirtió en la dominante en Francia?",opts:["a) El campesinado","b) La nobleza de provincias","c) La burguesía","d) El bajo clero"],correct:2}
+    ]
+  }
+];
+
+const TEAM_COLORS = ['#b91c1c','#1d4ed8','#b45309','#065f46'];
+const TEAM_COLORS_CSS = ['#ef4444','#60a5fa','#f59e0b','#34d399'];
+
+function makeTeams(){
+  return [
+    {id:1,name:"Los Jacobinos",     points:0,lives:3,veto:true,enc:true,streak:0,bastilla:false,imprisoned:false},
+    {id:2,name:"Los Girondinos",    points:0,lives:3,veto:true,enc:true,streak:0,bastilla:false,imprisoned:false},
+    {id:3,name:"Los Sans-Culottes", points:0,lives:3,veto:true,enc:true,streak:0,bastilla:false,imprisoned:false},
+    {id:4,name:"Los Ilustrados",    points:0,lives:3,veto:true,enc:true,streak:0,bastilla:false,imprisoned:false},
+  ];
+}
+function makeProgress(){return {0:{reto:false,mcq:false},1:{reto:false,mcq:false},2:{reto:false,mcq:false},3:{reto:false,mcq:false}};}
+
+let teams = makeTeams();
+let progress = makeProgress();
+let selectedTeamId = 1;
+let activeStation = null;
+let activeMode = 'reto';
+let qIdx = {reto:0, mcq:0};
+let showAnswer = false;
+let indultoPayerId = null;
+
+// NAVIGATION
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function gotoMap(){
+  renderMap();
+  showScreen('scr-map');
+}
+function confirmReset(){document.getElementById('modalOverlay').style.display='flex';}
+function closeModal(){document.getElementById('modalOverlay').style.display='none';}
+function resetGame(){
+  teams=makeTeams(); progress=makeProgress();
+  selectedTeamId=1; activeStation=null; activeMode='reto';
+  qIdx={reto:0,mcq:0}; showAnswer=false; indultoPayerId=null;
+  closeModal();
+  renderSidebar();
+  showScreen('scr-start');
+}
+
+// MAP
+function getUnlocked(){
+  const u=[0];
+  for(let i=0;i<STATIONS.length-1;i++){
+    if(progress[i].reto&&progress[i].mcq) u.push(i+1); else break;
+  }
+  return u;
+}
+function renderMap(){
+  const unlocked=getUnlocked();
+  const grid=document.getElementById('stationsGrid');
+  grid.innerHTML='';
+  STATIONS.forEach((st,idx)=>{
+    const isUnlocked=unlocked.includes(idx);
+    const isCompleted=progress[idx].reto&&progress[idx].mcq;
+    const div=document.createElement('div');
+    div.className='station-card'+(isUnlocked?'':' locked')+(isCompleted?' completed':'');
+    div.innerHTML=`
+      <div class="station-num">${st.id}</div>
+      <div class="station-icon">${isCompleted?'✅':isUnlocked?'🔓':'🔒'}</div>
+      <h3 class="serif">${st.title}</h3>
+      <span>${st.eje}</span>
+      ${!isUnlocked?'<div class="locked-msg">🔒 Completá la estación anterior</div>':''}
+    `;
+    if(isUnlocked){
+      div.onclick=()=>{
+        activeStation=idx;
+        activeMode='reto';
+        qIdx={reto:0,mcq:0};
+        showAnswer=false;
+        renderStation();
+        showScreen('scr-station');
+      };
+    }
+    grid.appendChild(div);
+  });
+}
+
+// STATION
+function renderStation(){
+  const st=STATIONS[activeStation];
+  document.getElementById('stTitle').textContent=st.title;
+  document.getElementById('stEje').textContent=st.eje;
+  // tabs
+  document.getElementById('tabReto').className='tab '+(activeMode==='reto'?'active':'inactive');
+  document.getElementById('tabMcq').className='tab '+(activeMode==='mcq'?'active':'inactive');
+  document.getElementById('chkReto').style.display=progress[activeStation].reto?'':'none';
+  document.getElementById('chkMcq').style.display=progress[activeStation].mcq?'':'none';
+  // progress badges
+  const pb=document.getElementById('progBadges');
+  pb.innerHTML='';
+  if(progress[activeStation].reto) pb.innerHTML+='<span class="prog-badge">✓ Reto completado</span>';
+  if(progress[activeStation].mcq) pb.innerHTML+='<span class="prog-badge">✓ Opciones completado</span>';
+  // next q button
+  const curIdx=activeMode==='reto'?qIdx.reto:qIdx.mcq;
+  document.getElementById('btnNextQ').textContent=`⟳ Siguiente Pregunta (${curIdx+1}/4)`;
+  // question
+  renderQuestion();
+  // controls
+  renderSidebar();
+}
+function setMode(m){
+  activeMode=m;
+  showAnswer=false;
+  renderStation();
+}
+function nextQuestion(){
+  qIdx[activeMode]=(qIdx[activeMode]+1)%4;
+  showAnswer=false;
+  renderStation();
+}
+function renderQuestion(){
+  const st=STATIONS[activeStation];
+  const box=document.getElementById('questionBox');
+  const curIdx=activeMode==='reto'?qIdx.reto:qIdx.mcq;
+  if(activeMode==='reto'){
+    box.innerHTML=`
+      <span class="q-badge">Pregunta ${curIdx+1} de 4</span>
+      <p class="reto-text serif">${st.retos[curIdx]}</p>
+    `;
+  } else {
+    const mcq=st.mcqs[curIdx];
+    const team=teams.find(t=>t.id===selectedTeamId);
+    let optsHTML='';
+    mcq.opts.forEach((opt,i)=>{
+      let cls='mcq-opt';
+      if(showAnswer){
+        if(i===mcq.correct) cls+=' correct';
+        else cls+=' wrong';
+      }
+      const disabled=(showAnswer||team?.imprisoned)?'disabled':'';
+      optsHTML+=`<button class="${cls}" ${disabled} onclick="handleMcqClick(${i},${mcq.correct})">${opt}${showAnswer&&i===mcq.correct?' ✓':''}</button>`;
+    });
+    box.innerHTML=`
+      <span class="q-badge">Pregunta ${curIdx+1} de 4</span>
+      <p class="mcq-question serif">${mcq.q}</p>
+      ${!showAnswer?'<p class="mcq-hint">Hacé clic en una opción para responder</p>':''}
+      <div class="mcq-options">${optsHTML}</div>
+    `;
+  }
+}
+function handleMcqClick(idx,correct){
+  if(showAnswer) return;
+  showAnswer=true;
+  if(idx===correct) addPoints();
+  else removeLife();
+  renderStation();
+}
+
+// TEAM LOGIC
+function selectedTeam(){return teams.find(t=>t.id===selectedTeamId);}
+function updateTeam(id,upd){teams=teams.map(t=>t.id===id?{...t,...upd}:t);}
+
+function markProgress(imprisoned){
+  if(activeStation!==null&&!imprisoned){
+    progress[activeStation][activeMode]=true;
+    setTimeout(checkAllComplete,300);
+  }
+}
+function addPoints(){
+  const t=selectedTeam();
+  if(t.imprisoned) return;
+  const base=activeMode==='reto'?200:100;
+  const pts=t.bastilla?base*2:base;
+  const newStreak=t.bastilla?0:t.streak+1;
+  const isBastilla=newStreak>=3;
+  updateTeam(selectedTeamId,{
+    points:t.points+pts,
+    bastilla:t.bastilla?false:isBastilla,
+    streak:isBastilla?0:newStreak
+  });
+  markProgress(false);
+  renderSidebar();
+  updateCtrlLabels();
+}
+function removeLife(){
+  const t=selectedTeam();
+  if(t.imprisoned) return;
+  const newLives=t.lives-1;
+  updateTeam(selectedTeamId,{lives:newLives,imprisoned:newLives===0,streak:0,bastilla:false});
+  markProgress(newLives===0);
+  renderSidebar();
+}
+function useVeto(){
+  const t=selectedTeam();
+  if(!t.veto||t.imprisoned) return;
+  updateTeam(selectedTeamId,{veto:false});
+  renderSidebar();
+}
+function useEnciclopedia(){
+  const t=selectedTeam();
+  if(!t.enc||t.imprisoned) return;
+  updateTeam(selectedTeamId,{enc:false});
+  renderSidebar();
+}
+
+// INDULTO
+function handleIndultoFlow(teamId){
+  const team=teams.find(t=>t.id===teamId);
+  if(!indultoPayerId){
+    if(!team.imprisoned&&team.points>=200){
+      indultoPayerId=teamId;
+      renderSidebar();
+    }
+  } else {
+    if(indultoPayerId===teamId){indultoPayerId=null;renderSidebar();return;}
+    if(team.imprisoned){
+      const payer=teams.find(t=>t.id===indultoPayerId);
+      updateTeam(indultoPayerId,{points:payer.points-200});
+      updateTeam(teamId,{lives:1,imprisoned:false});
+      indultoPayerId=null;
+      renderSidebar();
+    }
+  }
+}
+
+// SIDEBAR RENDER
+function renderSidebar(){
+  // hint
+  const hint=document.getElementById('sideHint');
+  hint.className='sidebar-hint'+(indultoPayerId?' amber':'');
+  hint.textContent=indultoPayerId
+    ? '💰 Ahora hacé clic en el equipo encarcelado que recibe el indulto'
+    : 'Seleccioná una facción para administrarla';
+
+  // teams
+  const list=document.getElementById('teamsList');
+  list.innerHTML='';
+  teams.forEach((t,i)=>{
+    const isPayer=indultoPayerId===t.id;
+    const isSelected=selectedTeamId===t.id&&!indultoPayerId;
+    let cls='team-card';
+    if(isPayer) cls+=' payer';
+    else if(isSelected) cls+=' selected';
+    if(t.imprisoned&&!indultoPayerId) cls+=' imprisoned';
+
+    const hearts='❤️'.repeat(t.lives)+'🖤'.repeat(3-t.lives);
+    const streakDots=!t.bastilla&&t.streak>0
+      ?`<div class="streak-dots">${[0,1,2].map(j=>`<div class="streak-dot ${j<t.streak?'active':'inactive'}"></div>`).join('')}</div>`:'';
+    const bastillaBadge=t.bastilla?'<div class="bastilla-badge">💣 Bastilla x2</div>':'';
+    const payerLabel=isPayer?'<div class="payer-label">(pagará -200F)</div>':'';
+
+    const div=document.createElement('div');
+    div.className=cls;
+    div.innerHTML=`
+      <div class="team-stripe" style="background:${TEAM_COLORS[i]}"></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+        <div>
+          <div class="team-name${t.imprisoned?' imprisoned':''}">${t.name}${t.imprisoned?' 🔒':''}</div>
+          ${payerLabel}
+          <div class="team-stats">
+            <span class="team-coins">🪙 ${t.points} F</span>
+            <span class="team-lives">${hearts}</span>
+            ${t.veto?'<span title="Veto" style="font-size:0.8rem;">🛡</span>':''}
+            ${t.enc?'<span title="Enciclopedia" style="font-size:0.8rem;">📖</span>':''}
+          </div>
+        </div>
+        <div class="team-badges">${bastillaBadge}${streakDots}</div>
+      </div>
+    `;
+    div.onclick=()=>{
+      if(indultoPayerId!==null){
+        handleIndultoFlow(t.id);
+      } else {
+        selectedTeamId=t.id;
+        renderSidebar();
+        updateCtrlLabels();
+      }
+    };
+    list.appendChild(div);
+  });
+
+  // controls
+  updateCtrlLabels();
+  renderPrisonBox();
+}
+
+function updateCtrlLabels(){
+  const t=selectedTeam();
+  if(!t) return;
+  const base=activeMode==='reto'?200:100;
+  const pts=t.bastilla?base*2:base;
+  document.getElementById('ctrlTitle').innerHTML=indultoPayerId
+    ?'<span style="color:var(--amber)">Seleccioná al equipo que recibe</span>'
+    :`Administrando: <span style="color:var(--text)">${t.name}</span>`;
+  document.getElementById('bastillaIcon').style.display=t.bastilla&&!indultoPayerId?'':'none';
+  document.getElementById('correctLabel').textContent=`Correcta (${activeMode==='reto'?'Reto':'Opciones'})`;
+  document.getElementById('correctPts').textContent=`🪙 +${pts} F`;
+  const dis=t.imprisoned||!!indultoPayerId;
+  document.getElementById('btnCorrect').disabled=dis;
+  document.getElementById('btnWrong').disabled=dis;
+  document.getElementById('btnVeto').disabled=!t.veto||dis;
+  document.getElementById('btnEnc').disabled=!t.enc||dis;
+}
+
+function renderPrisonBox(){
+  const box=document.getElementById('prisonBox');
+  const payableTeams=teams.filter(t=>!t.imprisoned&&t.points>=200);
+  const imprisonedTeams=teams.filter(t=>t.imprisoned);
+  if(!indultoPayerId){
+    let html=`<div class="prison-title">⚠️ Gestión de Prisión</div>
+    <div class="prison-step">Paso 1: hacé clic en el equipo que <strong>paga</strong> el indulto (necesita ≥200F).</div>`;
+    if(payableTeams.length===0){
+      html+=`<div class="prison-empty">Ningún equipo puede pagar (necesita ≥200F)</div>`;
+    } else {
+      payableTeams.forEach(t=>{
+        html+=`<button class="prison-btn" onclick="setIndultoPayer(${t.id})"><span>${t.name}</span><span style="color:var(--amber);font-weight:700">${t.points} F</span></button>`;
+      });
+    }
+    box.innerHTML=html;
+  } else {
+    let html=`<div class="prison-title">⚠️ Gestión de Prisión</div>
+    <div class="prison-step amber">Paso 2: hacé clic en el equipo <strong>encarcelado</strong> que recibe la libertad.</div>`;
+    if(imprisonedTeams.length===0){
+      html+=`<div class="prison-empty">No hay equipos encarcelados</div>`;
+    } else {
+      imprisonedTeams.forEach(t=>{
+        html+=`<button class="prison-btn-red" onclick="handleIndultoFlow(${t.id})">Liberar a ${t.name}</button>`;
+      });
+    }
+    html+=`<button class="prison-cancel" onclick="cancelIndulto()">Cancelar</button>`;
+    box.innerHTML=html;
+  }
+}
+
+function setIndultoPayer(id){indultoPayerId=id;renderSidebar();}
+function cancelIndulto(){indultoPayerId=null;renderSidebar();}
+
+// CHECK FINAL
+function checkAllComplete(){
+  const all=STATIONS.every((_,i)=>progress[i].reto&&progress[i].mcq);
+  if(all) showFinal();
+}
+function showFinal(){
+  const sorted=[...teams].sort((a,b)=>b.points-a.points);
+  let rows='<tr><th>Posición</th><th>Facción</th><th>Francos</th><th>Vidas</th></tr>';
+  sorted.forEach((t,i)=>{
+    const tidx=teams.findIndex(x=>x.id===t.id);
+    rows+=`<tr><td>${i===0?'🥇':i===1?'🥈':i===2?'🥉':'4°'}</td>
+    <td><span class="team-color-dot" style="background:${TEAM_COLORS_CSS[tidx]}"></span>${t.name}</td>
+    <td style="color:var(--amber);font-weight:700">${t.points} F</td>
+    <td>${'❤️'.repeat(t.lives)}</td></tr>`;
+  });
+  document.getElementById('finalTable').innerHTML=rows;
+  showScreen('scr-final');
+}
+
+// INIT
+renderSidebar();
+</script>
+</body>
+</html>
