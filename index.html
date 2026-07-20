@@ -3,255 +3,541 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Recursos con accesibilidad para el aula — PaideIA · Matías Aragone">
-<title>Recursos con Accesibilidad · PaideIA</title>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<title>Recursos para el Aula · Matias Ara</title>
 <style>
-:root{
-  --bg:#f4f0e8;
-  --card:#fff;
-  --dark:#1a1410;
-  --muted:#8a8070;
-  --border:#d4cfc2;
-  --surface:#eae5d8;
-  --accent:#f5a623;
-  --accent2:#e08c10;
-  --green:#1d9e75;
-  --blue:#185fa5;
-  --purple:#5a2d9e;
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Nunito:wght@400;600;700;800&display=swap');
+
+:root {
+  --bg: #0f1117;
+  --surface: #181c27;
+  --surface2: #1e2335;
+  --border: #2a3050;
+  --accent1: #4f8ef7;
+  --accent2: #f7a94f;
+  --accent3: #4fd6a0;
+  --accent4: #f76f8e;
+  --text: #eef0f8;
+  --text-soft: #8890b0;
+  --radius: 20px;
 }
-*{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
 
 /* HERO */
-.hero{
-  background:var(--dark);padding:48px 20px 40px;
-  text-align:center;position:relative;overflow:hidden;
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 64px 24px 56px;
+  text-align: center;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
 }
-.hero::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 50% 120%,rgba(245,166,35,0.13) 0%,transparent 70%);
-  pointer-events:none;
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 50%, rgba(79,142,247,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 80% 30%, rgba(79,214,160,0.10) 0%, transparent 70%);
+  pointer-events: none;
 }
-.hero-back{
-  display:inline-flex;align-items:center;gap:6px;
-  font-size:12px;color:rgba(255,255,255,0.5);font-weight:500;
-  text-decoration:none;margin-bottom:20px;
-  transition:color .2s;
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(79,142,247,0.12);
+  border: 1px solid rgba(79,142,247,0.3);
+  border-radius: 999px;
+  padding: 6px 18px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent1);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 22px;
 }
-.hero-back:hover{color:var(--accent);}
-.hero-tag{
-  display:inline-block;font-size:10px;color:var(--accent);
-  letter-spacing:.2em;text-transform:uppercase;
-  border:1px solid rgba(245,166,35,0.3);
-  padding:4px 14px;border-radius:20px;margin-bottom:16px;
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2rem, 6vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
 }
-.hero-logo{
-  font-family:'Unbounded',sans-serif;
-  font-size:clamp(22px,5vw,32px);font-weight:900;
-  color:#fff;margin-bottom:8px;line-height:1.15;
+.hero h1 span { color: var(--accent1); }
+.hero p {
+  font-size: 1rem;
+  color: var(--text-soft);
+  max-width: 540px;
+  margin: 0 auto 28px;
+  line-height: 1.7;
+  font-weight: 600;
 }
-.hero-logo span{color:var(--accent);}
-.hero-desc{
-  font-size:14px;color:rgba(255,255,255,0.55);
-  line-height:1.8;max-width:440px;margin:0 auto;
+.hero-meta {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.meta-chip {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-soft);
+}
+.meta-chip span { color: var(--text); }
+
+/* FILTERS */
+.filters {
+  padding: 28px 24px 0;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.filter-label {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-right: 4px;
+}
+.filter-btn {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  padding: 7px 18px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-soft);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.filter-btn:hover, .filter-btn.active {
+  border-color: var(--accent1);
+  color: var(--accent1);
+  background: rgba(79,142,247,0.08);
 }
 
-/* A11Y CHIPS */
-.a11y-chips{
-  display:flex;flex-wrap:wrap;justify-content:center;gap:8px;
-  padding:20px 20px 0;max-width:700px;margin:0 auto;
-}
-.a11y-chip{
-  background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);
-  border-radius:999px;padding:5px 14px;
-  font-size:11px;color:rgba(255,255,255,0.65);font-weight:500;
-}
-
-/* MAIN */
-main{max-width:760px;margin:0 auto;padding:8px 20px 60px;}
-
-/* YEAR SECTION */
-.year-section{margin-top:36px;}
-.year-header{
-  display:flex;align-items:center;gap:12px;
-  margin-bottom:16px;padding-bottom:12px;
-  border-bottom:2px solid var(--border);
-}
-.year-icon{
-  width:40px;height:40px;border-radius:12px;
-  background:var(--dark);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.1rem;flex-shrink:0;
-}
-.year-title{
-  font-family:'Unbounded',sans-serif;
-  font-size:13px;font-weight:700;color:var(--dark);
-}
-.year-sub{font-size:12px;color:var(--muted);margin-top:2px;}
-.year-count{
-  margin-left:auto;
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:999px;padding:3px 12px;
-  font-size:11px;font-weight:600;color:var(--muted);
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 20px;
+  padding: 28px 24px 60px;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
-/* RESOURCE CARDS */
-.resource-card{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:14px;padding:18px;margin-bottom:10px;
-  display:flex;gap:16px;align-items:flex-start;
-  text-decoration:none;color:inherit;
-  transition:border-color .2s,box-shadow .2s,transform .2s;
+/* CARD */
+.resource-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  animation: cardIn 0.4s ease both;
 }
-.resource-card:hover{
-  border-color:var(--accent);
-  box-shadow:0 4px 20px rgba(245,166,35,0.12);
-  transform:translateY(-2px);
+.resource-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.3);
 }
-.resource-thumb{
-  min-width:52px;height:52px;border-radius:12px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.5rem;flex-shrink:0;
-}
-.resource-body{flex:1;}
-.resource-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px;}
-.tag{
-  font-size:10px;font-weight:600;padding:3px 9px;
-  border-radius:20px;border:1px solid var(--border);
-  background:var(--surface);color:var(--muted);
-}
-.tag.historia{background:#fdf0e0;color:#8b4500;border-color:#f5c96a;}
-.tag.a11y{background:#e8f0fa;color:var(--blue);border-color:#9ab8e0;}
-.tag.nivel{background:#e6f7f1;color:var(--green);border-color:#86cdb5;}
-.resource-title{font-size:15px;font-weight:600;margin-bottom:4px;line-height:1.3;color:var(--dark);}
-.resource-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:10px;}
-.resource-a11y-badges{display:flex;flex-wrap:wrap;gap:5px;}
-.a11y-badge{
-  display:inline-flex;align-items:center;gap:4px;
-  font-size:10px;font-weight:600;
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:6px;padding:2px 8px;color:var(--muted);
-}
-.resource-arrow{
-  font-size:1.2rem;color:var(--muted);flex-shrink:0;
-  margin-top:2px;transition:transform .2s,color .2s;
-}
-.resource-card:hover .resource-arrow{transform:translateX(4px);color:var(--accent);}
+.resource-card.hidden { display: none; }
 
-/* COMING SOON */
-.coming-card{
-  background:var(--surface);border:1px dashed var(--border);
-  border-radius:14px;padding:16px 18px;margin-bottom:10px;
-  opacity:.65;display:flex;align-items:center;gap:12px;
-}
-.coming-card span{font-size:13px;color:var(--muted);font-weight:500;}
-.coming-badge{
-  margin-left:auto;font-size:10px;
-  background:var(--border);color:var(--muted);
-  border-radius:20px;padding:3px 10px;font-weight:600;
-  white-space:nowrap;
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* BACK BANNER */
-.back-banner{
-  display:flex;align-items:center;gap:12px;
-  background:var(--dark);border-radius:14px;padding:18px 20px;
-  text-decoration:none;margin-top:40px;
-  transition:opacity .2s;
+.card-thumb {
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  position: relative;
+  overflow: hidden;
 }
-.back-banner:hover{opacity:.85;}
-.back-banner p{font-size:13px;color:rgba(255,255,255,0.55);}
-.back-banner strong{font-size:14px;font-weight:600;color:#fff;display:block;margin-bottom:2px;}
-.back-banner-arrow{margin-left:auto;font-size:1.3rem;color:rgba(255,255,255,0.4);}
-
-footer{
-  text-align:center;padding:20px 16px 36px;
-  font-size:11px;color:var(--muted);line-height:1.9;
+.card-thumb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  opacity: 0.15;
 }
-footer a{color:var(--accent);text-decoration:none;}
 
-@media(max-width:540px){
-  .resource-card{flex-direction:column;gap:10px;}
-  .resource-arrow{display:none;}
+.card-body {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.tag {
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.tag.materia {
+  background: rgba(79,142,247,0.15);
+  color: var(--accent1);
+  border: 1px solid rgba(79,142,247,0.25);
+}
+.tag.nivel {
+  background: rgba(79,214,160,0.12);
+  color: var(--accent3);
+  border: 1px solid rgba(79,214,160,0.22);
+}
+.tag.tipo {
+  background: rgba(247,169,79,0.12);
+  color: var(--accent2);
+  border: 1px solid rgba(247,169,79,0.22);
+}
+
+.card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.card-desc {
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  line-height: 1.6;
+  flex: 1;
+  margin-bottom: 18px;
+}
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent1);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 999px;
+  padding: 9px 20px;
+  font-size: 0.83rem;
+  font-weight: 800;
+  transition: background 0.2s, transform 0.15s;
+  letter-spacing: 0.3px;
+}
+.card-link:hover { background: #3a7ae0; transform: scale(1.03); }
+.card-link.disabled {
+  background: var(--surface2);
+  color: var(--text-soft);
+  pointer-events: none;
+  border: 1.5px solid var(--border);
+}
+
+.card-date {
+  font-size: 0.75rem;
+  color: var(--text-soft);
+  font-weight: 600;
+}
+
+/* COMING SOON CARD */
+.resource-card.coming .card-thumb { filter: grayscale(0.5) brightness(0.7); }
+.resource-card.coming .card-title { opacity: 0.6; }
+
+/* EMPTY STATE */
+.empty-state {
+  grid-column: 1/-1;
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-soft);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 28px 24px;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--text-soft);
+  font-weight: 600;
+}
+footer a { color: var(--accent1); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+
+@media (max-width: 480px) {
+  .hero { padding: 48px 20px 40px; }
+  .grid { padding: 20px 16px 48px; gap: 16px; }
+  .filters { padding: 20px 16px 0; }
 }
 </style>
 </head>
 <body>
 
-<header class="hero">
-  <div style="text-align:center;margin-bottom:16px;">
-    <a class="hero-back" href="https://matiasaragone.github.io/recursos-para-el-aula">← Volver al catálogo principal</a>
+<div class="hero">
+  <div class="hero-badge">📚 Recursos educativos abiertos</div>
+  <h1>Recursos<br>para el <span>Aula</span></h1>
+  <p>Actividades interactivas, gamificaciones y materiales digitales para la educación secundaria. De docente a docente.</p>
+  <div class="hero-meta">
+    <div class="meta-chip">👤 <span>Matias Ara</span></div>
+    <div class="meta-chip">🏫 <span>Educación Secundaria</span></div>
+    <div class="meta-chip">🌐 <span>Uso libre</span></div>
   </div>
-  <div class="hero-tag">Accesibilidad · Inclusión</div>
-  <div class="hero-logo">Recursos con <span>Accesibilidad</span></div>
-  <p class="hero-desc">Materiales diseñados con herramientas de accesibilidad integradas: modo dislexia, alto contraste, tamaño de texto ajustable y más. Para que todos los estudiantes puedan aprender.</p>
-  <div class="a11y-chips">
-    <span class="a11y-chip">👁 Alto contraste</span>
-    <span class="a11y-chip">🔤 Modo dislexia</span>
-    <span class="a11y-chip">Aa Texto ajustable</span>
-    <span class="a11y-chip">🖨 Versión imprimible</span>
-    <span class="a11y-chip">⌨ Navegación por teclado</span>
-  </div>
-</header>
+</div>
 
-<main>
+<div class="filters">
+  <span class="filter-label">Filtrar:</span>
+  <button class="filter-btn active" onclick="filter('all', this)">Todos</button>
+  <button class="filter-btn" onclick="filter('ciudadania', this)">Trabajo y Ciudadanía</button>
+  <button class="filter-btn" onclick="filter('historia', this)">Historia</button>
+  <button class="filter-btn" onclick="filter('pensamiento', this)">Pensamiento Científico</button>
+  <button class="filter-btn" onclick="filter('matematica', this)">Matemática</button>
+  <button class="filter-btn" onclick="filter('fisica', this)">Física</button>
+  <button class="filter-btn" onclick="filter('gamificacion', this)">Gamificación</button>
+  <button class="filter-btn" onclick="filter('adaptacion', this)">Con adaptaciones</button>
+  <button class="filter-btn" onclick="filter('proyecto', this)">Proyectos de Aula</button>
+</div>
 
-  <!-- HISTORIA 2DO AÑO -->
-  <div class="year-section" id="historia-2do">
-    <div class="year-header">
-      <div class="year-icon">⚔️</div>
-      <div>
-        <div class="year-title">Historia · 2° Año</div>
-        <div class="year-sub">Edad Media y Moderna</div>
-      </div>
-      <div class="year-count">1 recurso</div>
+<div style="max-width:1100px;margin:24px auto 0;padding:0 24px;">
+  <a href="accesibilidad/index.html" style="display:flex;align-items:center;gap:16px;background:linear-gradient(135deg,#1a1410,#2d1f0a);border:1.5px solid rgba(245,166,35,0.3);border-radius:20px;padding:20px 24px;text-decoration:none;transition:transform .2s,box-shadow .2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 32px rgba(0,0,0,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+    <div style="font-size:2rem;flex-shrink:0;">♿</div>
+    <div style="flex:1;">
+      <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:#fff;margin-bottom:4px;">Recursos con Accesibilidad</div>
+      <div style="font-size:0.82rem;color:rgba(255,255,255,0.5);line-height:1.5;">Materiales con modo dislexia, alto contraste y texto ajustable. Organizados por año y materia.</div>
     </div>
-
-    <a class="resource-card" href="historia-2do/cisma/index.html">
-      <div class="resource-thumb" style="background:#f2ede4;">⛪</div>
-      <div class="resource-body">
-        <div class="resource-tags">
-          <span class="tag historia">Historia</span>
-          <span class="tag nivel">2° año</span>
-          <span class="tag a11y">♿ Accesible</span>
-        </div>
-        <div class="resource-title">El Cisma de la Iglesia</div>
-        <div class="resource-desc">Recurso sobre el Cisma de Occidente, la crisis de la Iglesia medieval, Martín Lutero y la Reforma Protestante. Incluye texto adaptado, glosario interactivo y actividad de comprensión.</div>
-        <div class="resource-a11y-badges">
-          <span class="a11y-badge">👁 Alto contraste</span>
-          <span class="a11y-badge">🔤 Dislexia</span>
-          <span class="a11y-badge">Aa Texto ajustable</span>
-          <span class="a11y-badge">🖨 Imprimible</span>
-        </div>
-      </div>
-      <div class="resource-arrow">→</div>
-    </a>
-
-    <div class="coming-card">
-      <span>Próximo recurso de Historia 2° · En desarrollo</span>
-      <div class="coming-badge">Próximamente</div>
-    </div>
-
-  </div>
-
-  <!-- VOLVER -->
-  <a class="back-banner" href="https://matiasaragone.github.io/recursos-para-el-aula">
-    <div>
-      <strong>🗂 Catálogo principal de recursos</strong>
-      <p>Gamificaciones, simuladores y proyectos para todas las materias</p>
-    </div>
-    <div class="back-banner-arrow">→</div>
+    <div style="font-size:1.3rem;color:rgba(245,166,35,0.6);flex-shrink:0;">→</div>
   </a>
+</div>
 
-</main>
+<div class="grid" id="grid">
 
-<footer>
-  PaideIA · <a href="https://matiasaragone.github.io" target="_blank">Matías Aragone</a> ·
-  <a href="https://instagram.com/paideia.docente" target="_blank">@paideia.docente</a><br>
-  Recursos de uso libre para docentes
+  <!-- RECURSO 1: Ciudadanía (disponible) -->
+  <div class="resource-card" data-tags="ciudadania gamificacion adaptacion">
+    <div class="card-thumb" style="background: linear-gradient(135deg, #1e2f6e, #3b5bdb);">🏛️</div>
+    <div class="card-body">
+      <div class="card-tags">
+        <span class="tag materia">Trabajo y Ciudadanía</span>
+        <span class="tag nivel">6to año</span>
+        <span class="tag tipo">🎮 Gamificación</span>
+      </div>
+      <div class="card-title">Los Fundadores de la Comunidad</div>
+      <div class="card-desc">Secuencia gamificada sobre ciudadanía, Ius Soli, Ius Sanguinis, contrato social y desigualdad. Con triangulación pantalla ↔ cuadernillo ↔ carpeta. Diseñada con adaptaciones para estudiantes con dificultades de comprensión lectora.</div>
+      <div class="card-footer">
+        <a class="card-link" href="ciudadania/index.html">▶ Abrir recurso</a>
+        <span class="card-date">Mayo 2026</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECURSO 2: Arqueología del Trabajo (disponible) -->
+  <div class="resource-card" data-tags="ciudadania gamificacion adaptacion">
+    <div class="card-thumb" style="background: linear-gradient(135deg, #412402, #854F0B);">⛏️</div>
+    <div class="card-body">
+      <div class="card-tags">
+        <span class="tag materia">Trabajo y Ciudadanía</span>
+        <span class="tag nivel">6to año</span>
+        <span class="tag tipo">🎮 Gamificación</span>
+      </div>
+      <div class="card-title">Arqueología del Trabajo</div>
+      <div class="card-desc">Misión interactiva sobre la evolución histórica del concepto de trabajo: del tripalium romano hasta el empleo asalariado. Con mapa de estaciones, barra de XP y resumen para carpeta. Diseñada con adaptaciones para estudiantes con dificultades de comprensión lectora.</div>
+      <div class="card-footer">
+        <a class="card-link" href="trabajo/index.html">▶ Abrir recurso</a>
+        <span class="card-date">Mayo 2026</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECURSO 3: Pensamiento Científico (disponible) -->
+  <div class="resource-card" data-tags="pensamiento gamificacion">
+    <div class="card-thumb" style="background: linear-gradient(135deg, #12202e, #164264);">🦉</div>
+    <div class="card-body">
+      <div class="card-tags">
+        <span class="tag materia">Pensamiento Científico</span>
+        <span class="tag nivel">Secundaria</span>
+        <span class="tag tipo">🎮 Gamificación</span>
+      </div>
+      <div class="card-title">El Caso del Origen de las Especies</div>
+      <div class="card-desc">Aventura interactiva de detective científico sobre la teoría de Darwin. El estudiante investiga evidencias, resuelve desafíos conceptuales y reconstruye el argumento evolutivo. Estética de expedición victoriana con barra de progreso y modos de accesibilidad.</div>
+      <div class="card-footer">
+        <a class="card-link" href="pensamiento-cientifico/index.html">▶ Abrir recurso</a>
+        <span class="card-date">Mayo 2026</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECURSO 4: Historia (disponible) -->
+  <div class="resource-card" data-tags="historia gamificacion">
+    <div class="card-thumb" style="background: linear-gradient(135deg, #1a0a0a, #6b1a1a);">⚔️</div>
+    <div class="card-body">
+      <div class="card-tags">
+        <span class="tag materia">Historia</span>
+        <span class="tag nivel">3er año</span>
+        <span class="tag tipo">🎮 Gamificación</span>
+      </div>
+      <div class="card-title">El Camino de la Libertad · Revolución Francesa</div>
+      <div class="card-desc">Juego de facciones por equipos sobre la Revolución Francesa. 4 estaciones temáticas, preguntas reto y opciones múltiples, sistema de puntos, vidas, vetos, Bastilla x2 e indultos. Pensado para trabajar en grupos en el aula.</div>
+      <div class="card-footer">
+        <a class="card-link" href="historia/index.html">▶ Abrir recurso</a>
+        <span class="card-date">Mayo 2026</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECURSO 5: Rugby Matemática mobile -->
+  <div class="resource-card" data-tags="matematica gamificacion">
+    <div class="card-thumb" style="background: linear-gradient(135deg, #0a2200, #1a5c00);">🏉</div>
+    <div class="card-body">
+      <div class="card-tags">
+        <span class="tag materia">Matemática</span>
+        <span class="tag nivel">2do año</span>
+        <span class="tag tipo">🎮 Gamificación</span>
+      </div>
+      <div class="card-title">Conversión de Rugby — Versión celular</div>
+      <div class="card-desc">6 desafíos con dificultad progresiva. Calculá velocidad, ángulo o distancia para que la pelota entre en la ventana. Con scoring, sonido, confeti y desarrollo algebraico paso a paso.</div>
+      <div class="card-footer">
+        <a class="card-link" href="https://matiasaragone.github.io/juego-cuadratica/juego_mobile.html" target="_blank">▶ Abrir recurso</a>
+        <span class="card-date">2025</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECURSO 6: Rugby escritorio -->
+  <div class="resource-card" data-tags="matematica gamificacion">
+    <div class="card-thumb" style="background: linear-gradient(135deg, #0a2200, #2d7a00);">🏉</div>
+    <div class="card-body">
+      <div class="card-tags">
+        <span class="tag materia">Matemática</span>
+        <span class="tag nivel">2do año</span>
+        <span class="tag tipo">💻 Escritorio</span>
+      </div>
+      <div class="card-title">Conversión de Rugby — Versión escritorio</div>
+      <div class="card-desc">La misma experiencia optimizada para proyectar en clase o usar en computadora. Funciones cuadráticas con contexto real.</div>
+      <div class="card-footer">
+        <a class="card-link" href="https://matiasaragone.github.io/juego-cuadratica/juego_web.html" target="_blank">▶ Abrir recurso</a>
+        <span class="card-date">2025</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECURSO 7: Lanzador pelotas -->
+  <div class="resource-card" data-tags="matematica">
+    <div class="card-thumb" style="background: linear-gradient(135deg, #001a2e, #003d6b);">⚽</div>
+    <div class="card-body">
+      <div class="card-tags">
+        <span class="tag materia">Matemática</span>
+        <span class="tag nivel">2do año</span>
+        <span class="tag tipo">🔬 Simulador</span>
+      </div>
+      <div class="card-title">Lanzador de Pelotas</div>
+      <div class="card-desc">Ajustá los coeficientes a, b y c y observá cómo cambia la trayectoria en tiempo real. Muestra vértice, discriminante y alcance.</div>
+      <div class="card-footer">
+        <a class="card-link" href="https://matiasaragone.github.io/juego-cuadratica/lanzador_pelotas.html" target="_blank">▶ Abrir recurso</a>
+        <span class="card-date">2025</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECURSO 8: Carrera autos -->
+  <div class="resource-card" data-tags="fisica gamificacion">
+    <div class="card-thumb" style="background: linear-gradient(135deg, #1a0a00, #5c2000);">🏎️</div>
+    <div class="card-body">
+      <div class="card-tags">
+        <span class="tag materia">Física</span>
+        <span class="tag nivel">1er año</span>
+        <span class="tag tipo">🎮 Gamificación</span>
+      </div>
+      <div class="card-title">Carrera de Autos — MRU vs MRUV</div>
+      <div class="card-desc">Dos autos compiten en tiempo real. El gráfico posición-tiempo se dibuja en vivo mostrando la diferencia entre movimiento uniforme y uniformemente variado.</div>
+      <div class="card-footer">
+        <a class="card-link" href="https://matiasaragone.github.io/juego-cuadratica/carrera_autos.html" target="_blank">▶ Abrir recurso</a>
+        <span class="card-date">2025</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECURSO 9: Artemis -->
+  <div class="resource-card" data-tags="fisica matematica">
+    <div class="card-thumb" style="background: linear-gradient(135deg, #000d1a, #001a3d);">🌍</div>
+    <div class="card-body">
+      <div class="card-tags">
+        <span class="tag materia">Física · Matemática</span>
+        <span class="tag nivel">Secundaria</span>
+        <span class="tag tipo">🚀 Simulador</span>
+      </div>
+      <div class="card-title">Simulador Artemis II — Misión Lunar</div>
+      <div class="card-desc">Sos el Oficial de Dinámica de Vuelo. Resolvé 5 cálculos reales — mecánica orbital, velocidad de escape, reentrada — para llevar la tripulación a la Luna y de regreso.</div>
+      <div class="card-footer">
+        <a class="card-link" href="https://matiasaragone.github.io/juego-cuadratica/artemis_simulator.html" target="_blank">▶ Abrir recurso</a>
+        <span class="card-date">2025</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECURSO 10: Historia y Rock -->
+  <div class="resource-card" data-tags="historia proyecto">
+    <div class="card-thumb" style="background: linear-gradient(135deg, #1a0a2e, #3d1a6b);">🎸</div>
+    <div class="card-body">
+      <div class="card-tags">
+        <span class="tag materia">Historia</span>
+        <span class="tag nivel">6to año</span>
+        <span class="tag tipo">📋 Proyecto de Aula</span>
+      </div>
+      <div class="card-title">Historia y Rock — Argentina 1966/2004</div>
+      <div class="card-desc">Proyecto anual que recorre la historia política y social argentina a través de la música rock y popular. De la Revolución Argentina a la crisis del 2001, cada período analizado con su banda sonora.</div>
+      <div class="card-footer">
+        <a class="card-link" href="https://matiasaragone.github.io/Historia-y-rock" target="_blank">▶ Abrir recurso</a>
+        <span class="card-date">2025</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+  Hecho con 🧠 por <a href="https://matiasaragone.github.io" target="_blank">Matías Aragone</a> &nbsp;·&nbsp;
+  <a href="https://instagram.com/paideia.docente" target="_blank">@paideia.docente</a> &nbsp;·&nbsp;
+  Uso libre para fines educativos
 </footer>
 
+<script>
+function filter(tag, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.resource-card').forEach(card => {
+    if (tag === 'all') {
+      card.classList.remove('hidden');
+    } else {
+      const tags = card.dataset.tags || '';
+      card.classList.toggle('hidden', !tags.includes(tag));
+    }
+  });
+}
+</script>
 </body>
 </html>
