@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Recursos con accesibilidad para el aula — PaideIA · Matías Aragone">
+<title>Recursos con Accesibilidad · PaideIA</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f0e8;
+  --card:#fff;
+  --dark:#1a1410;
+  --muted:#8a8070;
+  --border:#d4cfc2;
+  --surface:#eae5d8;
+  --accent:#f5a623;
+  --accent2:#e08c10;
+  --green:#1d9e75;
+  --blue:#185fa5;
+  --purple:#5a2d9e;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;}
+
+/* HERO */
+.hero{
+  background:var(--dark);padding:48px 20px 40px;
+  text-align:center;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 120%,rgba(245,166,35,0.13) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-back{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:12px;color:rgba(255,255,255,0.5);font-weight:500;
+  text-decoration:none;margin-bottom:20px;
+  transition:color .2s;
+}
+.hero-back:hover{color:var(--accent);}
+.hero-tag{
+  display:inline-block;font-size:10px;color:var(--accent);
+  letter-spacing:.2em;text-transform:uppercase;
+  border:1px solid rgba(245,166,35,0.3);
+  padding:4px 14px;border-radius:20px;margin-bottom:16px;
+}
+.hero-logo{
+  font-family:'Unbounded',sans-serif;
+  font-size:clamp(22px,5vw,32px);font-weight:900;
+  color:#fff;margin-bottom:8px;line-height:1.15;
+}
+.hero-logo span{color:var(--accent);}
+.hero-desc{
+  font-size:14px;color:rgba(255,255,255,0.55);
+  line-height:1.8;max-width:440px;margin:0 auto;
+}
+
+/* A11Y CHIPS */
+.a11y-chips{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:8px;
+  padding:20px 20px 0;max-width:700px;margin:0 auto;
+}
+.a11y-chip{
+  background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);
+  border-radius:999px;padding:5px 14px;
+  font-size:11px;color:rgba(255,255,255,0.65);font-weight:500;
+}
+
+/* MAIN */
+main{max-width:760px;margin:0 auto;padding:8px 20px 60px;}
+
+/* YEAR SECTION */
+.year-section{margin-top:36px;}
+.year-header{
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:16px;padding-bottom:12px;
+  border-bottom:2px solid var(--border);
+}
+.year-icon{
+  width:40px;height:40px;border-radius:12px;
+  background:var(--dark);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;flex-shrink:0;
+}
+.year-title{
+  font-family:'Unbounded',sans-serif;
+  font-size:13px;font-weight:700;color:var(--dark);
+}
+.year-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+.year-count{
+  margin-left:auto;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:999px;padding:3px 12px;
+  font-size:11px;font-weight:600;color:var(--muted);
+}
+
+/* RESOURCE CARDS */
+.resource-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:18px;margin-bottom:10px;
+  display:flex;gap:16px;align-items:flex-start;
+  text-decoration:none;color:inherit;
+  transition:border-color .2s,box-shadow .2s,transform .2s;
+}
+.resource-card:hover{
+  border-color:var(--accent);
+  box-shadow:0 4px 20px rgba(245,166,35,0.12);
+  transform:translateY(-2px);
+}
+.resource-thumb{
+  min-width:52px;height:52px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;flex-shrink:0;
+}
+.resource-body{flex:1;}
+.resource-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px;}
+.tag{
+  font-size:10px;font-weight:600;padding:3px 9px;
+  border-radius:20px;border:1px solid var(--border);
+  background:var(--surface);color:var(--muted);
+}
+.tag.historia{background:#fdf0e0;color:#8b4500;border-color:#f5c96a;}
+.tag.a11y{background:#e8f0fa;color:var(--blue);border-color:#9ab8e0;}
+.tag.nivel{background:#e6f7f1;color:var(--green);border-color:#86cdb5;}
+.resource-title{font-size:15px;font-weight:600;margin-bottom:4px;line-height:1.3;color:var(--dark);}
+.resource-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:10px;}
+.resource-a11y-badges{display:flex;flex-wrap:wrap;gap:5px;}
+.a11y-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:10px;font-weight:600;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:6px;padding:2px 8px;color:var(--muted);
+}
+.resource-arrow{
+  font-size:1.2rem;color:var(--muted);flex-shrink:0;
+  margin-top:2px;transition:transform .2s,color .2s;
+}
+.resource-card:hover .resource-arrow{transform:translateX(4px);color:var(--accent);}
+
+/* COMING SOON */
+.coming-card{
+  background:var(--surface);border:1px dashed var(--border);
+  border-radius:14px;padding:16px 18px;margin-bottom:10px;
+  opacity:.65;display:flex;align-items:center;gap:12px;
+}
+.coming-card span{font-size:13px;color:var(--muted);font-weight:500;}
+.coming-badge{
+  margin-left:auto;font-size:10px;
+  background:var(--border);color:var(--muted);
+  border-radius:20px;padding:3px 10px;font-weight:600;
+  white-space:nowrap;
+}
+
+/* BACK BANNER */
+.back-banner{
+  display:flex;align-items:center;gap:12px;
+  background:var(--dark);border-radius:14px;padding:18px 20px;
+  text-decoration:none;margin-top:40px;
+  transition:opacity .2s;
+}
+.back-banner:hover{opacity:.85;}
+.back-banner p{font-size:13px;color:rgba(255,255,255,0.55);}
+.back-banner strong{font-size:14px;font-weight:600;color:#fff;display:block;margin-bottom:2px;}
+.back-banner-arrow{margin-left:auto;font-size:1.3rem;color:rgba(255,255,255,0.4);}
+
+footer{
+  text-align:center;padding:20px 16px 36px;
+  font-size:11px;color:var(--muted);line-height:1.9;
+}
+footer a{color:var(--accent);text-decoration:none;}
+
+@media(max-width:540px){
+  .resource-card{flex-direction:column;gap:10px;}
+  .resource-arrow{display:none;}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div style="text-align:center;margin-bottom:16px;">
+    <a class="hero-back" href="https://matiasara.github.io/recursos-para-el-aula">← Volver al catálogo principal</a>
+  </div>
+  <div class="hero-tag">Accesibilidad · Inclusión</div>
+  <div class="hero-logo">Recursos con <span>Accesibilidad</span></div>
+  <p class="hero-desc">Materiales diseñados con herramientas de accesibilidad integradas: modo dislexia, alto contraste, tamaño de texto ajustable y más. Para que todos los estudiantes puedan aprender.</p>
+  <div class="a11y-chips">
+    <span class="a11y-chip">👁 Alto contraste</span>
+    <span class="a11y-chip">🔤 Modo dislexia</span>
+    <span class="a11y-chip">Aa Texto ajustable</span>
+    <span class="a11y-chip">🖨 Versión imprimible</span>
+    <span class="a11y-chip">⌨ Navegación por teclado</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- HISTORIA 2DO AÑO -->
+  <div class="year-section" id="historia-2do">
+    <div class="year-header">
+      <div class="year-icon">⚔️</div>
+      <div>
+        <div class="year-title">Historia · 2° Año</div>
+        <div class="year-sub">Edad Media y Moderna</div>
+      </div>
+      <div class="year-count">1 recurso</div>
+    </div>
+
+    <a class="resource-card" href="historia-2do/cisma/index.html">
+      <div class="resource-thumb" style="background:#f2ede4;">⛪</div>
+      <div class="resource-body">
+        <div class="resource-tags">
+          <span class="tag historia">Historia</span>
+          <span class="tag nivel">2° año</span>
+          <span class="tag a11y">♿ Accesible</span>
+        </div>
+        <div class="resource-title">El Cisma de la Iglesia</div>
+        <div class="resource-desc">Recurso sobre el Cisma de Occidente, la crisis de la Iglesia medieval, Martín Lutero y la Reforma Protestante. Incluye texto adaptado, glosario interactivo y actividad de comprensión.</div>
+        <div class="resource-a11y-badges">
+          <span class="a11y-badge">👁 Alto contraste</span>
+          <span class="a11y-badge">🔤 Dislexia</span>
+          <span class="a11y-badge">Aa Texto ajustable</span>
+          <span class="a11y-badge">🖨 Imprimible</span>
+        </div>
+      </div>
+      <div class="resource-arrow">→</div>
+    </a>
+
+    <div class="coming-card">
+      <span>Próximo recurso de Historia 2° · En desarrollo</span>
+      <div class="coming-badge">Próximamente</div>
+    </div>
+
+  </div>
+
+  <!-- VOLVER -->
+  <a class="back-banner" href="https://matiasara.github.io/recursos-para-el-aula">
+    <div>
+      <strong>🗂 Catálogo principal de recursos</strong>
+      <p>Gamificaciones, simuladores y proyectos para todas las materias</p>
+    </div>
+    <div class="back-banner-arrow">→</div>
+  </a>
+
+</main>
+
+<footer>
+  PaideIA · <a href="https://matiasara.github.io" target="_blank">Matías Aragone</a> ·
+  <a href="https://instagram.com/paideia.docente" target="_blank">@paideia.docente</a><br>
+  Recursos de uso libre para docentes
+</footer>
+
+</body>
+</html>
