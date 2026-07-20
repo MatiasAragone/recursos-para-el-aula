@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Cisma de la Iglesia · Historia 2° Año</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+
+/* ============ TOKENS ============ */
+:root{
+  --bg: #F2EDE4;
+  --surface: #FFFDF9;
+  --surface-2: #EAE1CE;
+  --ink: #1B263B;
+  --text: #2B2620;
+  --muted: #5B5346;
+  --accent: #7A2E2E;      /* sello de cera */
+  --accent-2: #B8860B;    /* dorado iluminado */
+  --border: #D9CBB2;
+  --correct-bg: #E4F3E9;
+  --correct-fg: #1F7A45;
+  --incorrect-bg: #FBE9E7;
+  --incorrect-fg: #B23A2E;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Source Sans 3', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --radius: 10px;
+  --toolbar-h: 64px;
+  --line-height: 1.65;
+  --max-line: 68ch;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  line-height:var(--line-height);
+  padding-top:var(--toolbar-h);
+  transition:background .3s ease, color .3s ease;
+}
+
+h1,h2,h3,h4{
+  font-family:var(--font-display);
+  color:var(--ink);
+  line-height:1.15;
+  margin:0 0 .5em;
+}
+
+a{color:var(--accent);}
+
+.container{max-width:960px;margin:0 auto;padding:0 24px 80px;}
+
+/* ============ TOOLBAR ============ */
+.toolbar{
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  height:var(--toolbar-h);
+  background:var(--ink);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:0 16px;
+  overflow-x:auto;
+  box-shadow:0 2px 10px rgba(0,0,0,.25);
+}
+.toolbar::-webkit-scrollbar{height:4px;}
+.toolbar-title{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:1rem;
+  white-space:nowrap;
+  margin-right:8px;
+  padding-right:12px;
+  border-right:1px solid rgba(255,255,255,.25);
+  flex-shrink:0;
+}
+.a11y-btn{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.3);
+  color:#fff;
+  font-family:var(--font-body);
+  font-size:.8rem;
+  font-weight:600;
+  padding:8px 12px;
+  border-radius:999px;
+  cursor:pointer;
+  white-space:nowrap;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  transition:background .2s, transform .1s;
+  flex-shrink:0;
+}
+.a11y-btn:hover{background:rgba(255,255,255,.18);}
+.a11y-btn:active{transform:scale(.97);}
+.a11y-btn[aria-pressed="true"]{
+  background:var(--accent-2);
+  border-color:var(--accent-2);
+  color:#241a00;
+}
+.a11y-btn .dot{
+  width:8px;height:8px;border-radius:50%;
+  background:rgba(255,255,255,.4);
+  flex-shrink:0;
+}
+.a11y-btn[aria-pressed="true"] .dot{background:#241a00;}
+.print-btn{
+  margin-left:auto;
+  background:var(--accent);
+  border-color:var(--accent);
+  flex-shrink:0;
+}
+.print-btn:hover{background:#8f3939;}
+
+/* ============ HERO ============ */
+.hero{
+  padding:56px 0 32px;
+  position:relative;
+}
+.hero .eyebrow{
+  font-family:var(--font-mono);
+  font-size:.75rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--accent);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:14px;
+}
+.eyebrow .seal{
+  width:14px;height:14px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 0 3px rgba(122,46,46,.15);
+}
+.hero h1{
+  font-size:clamp(2rem, 5vw, 3.1rem);
+  max-width:14ch;
+}
+.hero p.lede{
+  max-width:62ch;
+  color:var(--muted);
+  font-size:1.05rem;
+}
+
+/* ============ TABS ============ */
+.tabs-nav{
+  display:flex;
+  gap:6px;
+  border-bottom:2px solid var(--border);
+  margin-bottom:32px;
+  overflow-x:auto;
+}
+.tab-btn{
+  position:relative;
+  background:transparent;
+  border:none;
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:1rem;
+  color:var(--muted);
+  padding:14px 20px 16px;
+  cursor:pointer;
+  white-space:nowrap;
+  border-radius:var(--radius) var(--radius) 0 0;
+  transition:color .2s, background .2s;
+}
+.tab-btn:hover{color:var(--ink); background:var(--surface-2);}
+.tab-btn[aria-selected="true"]{
+  color:var(--ink);
+  background:var(--surface);
+}
+.tab-btn[aria-selected="true"]::after{
+  content:"";
+  position:absolute;
+  bottom:-2px; left:50%; transform:translateX(-50%);
+  width:9px;height:9px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 0 3px rgba(122,46,46,.18);
+}
+.tab-panel{display:none;}
+.tab-panel.active{display:block; animation:fade .35s ease;}
+@keyframes fade{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+/* ============ CONTENT CARD ============ */
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:28px 32px;
+  margin-bottom:24px;
+}
+.card h2{font-size:1.5rem; margin-bottom:.7em;}
+.card h3{
+  font-size:1.1rem;
+  color:var(--accent);
+  margin-top:1.6em;
+  padding-bottom:.3em;
+  border-bottom:1px solid var(--border);
+}
+.card p{margin:0 0 1em;}
+.card p:last-child{margin-bottom:0;}
+strong.term{color:var(--accent); font-weight:700;}
+figure.inline-fig{
+  margin:18px 0;
+  padding:14px 16px;
+  background:var(--surface-2);
+  border-left:3px solid var(--accent-2);
+  border-radius:6px;
+  font-size:.9rem;
+  color:var(--muted);
+}
+figure.inline-fig figcaption{font-style:italic;}
+.decorativo{ } /* elementos que se ocultan en modo lectura fácil */
+
+/* ============ GLOSARIO ============ */
+.glossary-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(240px,1fr));
+  gap:14px;
+}
+.gloss-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:0;
+  overflow:hidden;
+}
+.gloss-btn{
+  width:100%;
+  text-align:left;
+  background:var(--surface-2);
+  border:none;
+  padding:16px 18px;
+  cursor:pointer;
+  font-family:var(--font-display);
+  font-weight:600;
+  color:var(--ink);
+  font-size:1rem;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+}
+.gloss-btn .plus{
+  font-family:var(--font-mono);
+  color:var(--accent);
+  transition:transform .2s;
+  flex-shrink:0;
+}
+.gloss-btn[aria-expanded="true"] .plus{transform:rotate(45deg);}
+.gloss-def{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .25s ease, padding .25s ease;
+  padding:0 18px;
+  font-size:.92rem;
+  color:var(--muted);
+}
+.gloss-def.open{max-height:300px; padding:14px 18px 18px;}
+
+/* ============ PREGUNTAS ============ */
+.question-card{
+  background:var(--surface);
+  border-left:4px solid var(--accent-2);
+  border-radius:var(--radius);
+  padding:18px 22px;
+  margin-bottom:14px;
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+}
+.question-card .qnum{
+  font-family:var(--font-mono);
+  color:var(--accent-2);
+  font-weight:600;
+  flex-shrink:0;
+}
+.question-card p{margin:0; font-family:var(--font-display); font-size:1.05rem; color:var(--ink);}
+.section-label{
+  font-family:var(--font-mono);
+  font-size:.75rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin:28px 0 12px;
+}
+.section-label:first-child{margin-top:0;}
+
+/* ============ QUIZ ============ */
+.quiz-item{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:22px 26px;
+  margin-bottom:20px;
+}
+.quiz-item .q-text{
+  font-family:var(--font-display);
+  font-size:1.1rem;
+  color:var(--ink);
+  margin-bottom:14px;
+}
+.quiz-options{display:flex; flex-direction:column; gap:8px;}
+.quiz-opt{
+  text-align:left;
+  background:var(--surface-2);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:12px 16px;
+  cursor:pointer;
+  font-family:var(--font-body);
+  font-size:.96rem;
+  color:var(--text);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  transition:background .15s, border-color .15s;
+}
+.quiz-opt:hover:not(:disabled){border-color:var(--accent-2);}
+.quiz-opt:disabled{cursor:default;}
+.quiz-opt .icon{font-weight:700; width:1.2em; flex-shrink:0;}
+.quiz-opt.correct{background:var(--correct-bg); border-color:var(--correct-fg); color:var(--correct-fg);}
+.quiz-opt.incorrect{background:var(--incorrect-bg); border-color:var(--incorrect-fg); color:var(--incorrect-fg);}
+.quiz-feedback{
+  margin-top:12px;
+  font-size:.9rem;
+  font-weight:600;
+  min-height:1.2em;
+}
+.quiz-feedback.ok{color:var(--correct-fg);}
+.quiz-feedback.no{color:var(--incorrect-fg);}
+.quiz-score{
+  position:sticky; bottom:16px;
+  background:var(--ink);
+  color:#fff;
+  padding:14px 22px;
+  border-radius:999px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-family:var(--font-display);
+  font-weight:600;
+  box-shadow:0 6px 20px rgba(0,0,0,.2);
+}
+.reset-btn{
+  background:var(--accent-2); color:#241a00; border:none;
+  padding:8px 16px; border-radius:999px; font-weight:700; cursor:pointer;
+  font-family:var(--font-body); font-size:.85rem;
+}
+
+footer.page-footer{
+  text-align:center; color:var(--muted); font-size:.82rem; padding:20px 0 60px;
+}
+
+/* ============ MODO DISLEXIA ============ */
+html.a11y-dyslexia body{
+  font-family:'Comic Sans MS','OpenDyslexic',Arial,sans-serif;
+  background:#FDF6E3;
+  line-height:2;
+  letter-spacing:.06em;
+  word-spacing:.12em;
+}
+html.a11y-dyslexia .card,
+html.a11y-dyslexia .quiz-item,
+html.a11y-dyslexia .gloss-card,
+html.a11y-dyslexia .question-card{
+  background:#FFFDF5;
+}
+html.a11y-dyslexia h1, html.a11y-dyslexia h2, html.a11y-dyslexia h3, html.a11y-dyslexia h4{
+  font-family:'Comic Sans MS','OpenDyslexic',Arial,sans-serif;
+  letter-spacing:.03em;
+}
+
+/* ============ MODO DALTONISMO ============ */
+/* variables accesibles: azul intenso = correcto, naranja = incorrecto */
+html.a11y-colorblind{
+  --correct-bg:#DCEBFA;
+  --correct-fg:#0B4F8A;
+  --incorrect-bg:#FDEBD3;
+  --incorrect-fg:#C1590A;
+  --accent-2:#0B4F8A;
+}
+html.a11y-colorblind .tab-btn[aria-selected="true"]::after,
+html.a11y-colorblind .eyebrow .seal{background:#0B4F8A;}
+html.a11y-colorblind strong.term{color:#0B4F8A;}
+html.a11y-colorblind .card h3{color:#0B4F8A; border-color:#0B4F8A;}
+html.a11y-colorblind .gloss-btn .plus{color:#0B4F8A;}
+html.a11y-colorblind .question-card{border-left-color:#0B4F8A;}
+html.a11y-colorblind .question-card .qnum{color:#0B4F8A;}
+html.a11y-colorblind figure.inline-fig{border-left-color:#C1590A;}
+
+/* ============ MODO LECTURA FÁCIL / TDAH ============ */
+html.a11y-easyread .decorativo{display:none !important;}
+html.a11y-easyread .card p,
+html.a11y-easyread .card h3 + p{max-width:var(--max-line);}
+html.a11y-easyread .card{max-width:640px; margin-left:auto; margin-right:auto;}
+html.a11y-easyread .idea-principal{
+  font-weight:700;
+  background:linear-gradient(transparent 60%, #FFF3C4 60%);
+}
+html.a11y-easyread .card, html.a11y-easyread .quiz-item{
+  padding:22px 24px;
+}
+html.a11y-easyread .hero p.lede{max-width:var(--max-line);}
+html.a11y-easyread .question-card p{font-size:1.15rem;}
+
+/* ============ MODO MACROTIPO ============ */
+html.a11y-macro{ --line-height:1.7; }
+html.a11y-macro body{
+  background:#000;
+  color:#fff;
+  font-size:24px;
+}
+html.a11y-macro .card, html.a11y-macro .quiz-item, html.a11y-macro .gloss-card,
+html.a11y-macro .question-card, html.a11y-macro .quiz-score{
+  background:#000;
+  border-color:#fff;
+  color:#fff;
+}
+html.a11y-macro h1, html.a11y-macro h2, html.a11y-macro h3, html.a11y-macro h4{color:#FFD34D;}
+html.a11y-macro .card h3{border-color:#444; color:#FFD34D;}
+html.a11y-macro strong.term{color:#7FD1FF;}
+html.a11y-macro .toolbar{background:#000; border-bottom:2px solid #fff;}
+html.a11y-macro .gloss-def{color:#eee;}
+html.a11y-macro .quiz-opt{background:#111; border-color:#fff; color:#fff;}
+html.a11y-macro .quiz-opt.correct{background:#003b1f; border-color:#3CF08C; color:#3CF08C;}
+html.a11y-macro .quiz-opt.incorrect{background:#3b0000; border-color:#FF8A65; color:#FF8A65;}
+html.a11y-macro .eyebrow, html.a11y-macro .eyebrow .seal{color:#FFD34D; background:#FFD34D;}
+html.a11y-macro figure.inline-fig{background:#111; color:#ddd; border-color:#FFD34D;}
+html.a11y-macro .tab-btn{color:#ddd;}
+html.a11y-macro .tab-btn[aria-selected="true"]{background:#000; color:#FFD34D;}
+html.a11y-macro .tab-btn[aria-selected="true"]::after{background:#FFD34D;}
+html.a11y-macro .section-label{color:#ddd;}
+
+/* focus visibility */
+button:focus-visible, .gloss-btn:focus-visible{
+  outline:3px solid var(--accent-2);
+  outline-offset:2px;
+}
+
+@media (max-width:640px){
+  .card{padding:20px;}
+  .toolbar-title{display:none;}
+}
+
+/* ============ IMPRESIÓN ============ */
+@media print{
+  .toolbar{display:none !important;}
+  body{padding-top:0 !important;}
+  .tabs-nav{display:none !important;}
+  .tab-panel{display:block !important; page-break-inside:avoid;}
+  .tab-panel + .tab-panel{margin-top:36px; padding-top:20px; border-top:2px dashed var(--border);}
+  .card, .quiz-item, .gloss-card, .question-card{
+    box-shadow:none !important;
+    break-inside:avoid;
+  }
+  .quiz-score, .reset-btn{display:none !important;}
+  a{color:inherit; text-decoration:underline;}
+  html.a11y-macro body{background:#fff !important; color:#000 !important;}
+  html.a11y-macro h1,html.a11y-macro h2,html.a11y-macro h3,html.a11y-macro h4{color:#000 !important;}
+  html.a11y-macro .card,html.a11y-macro .quiz-item,html.a11y-macro .gloss-card,html.a11y-macro .question-card{
+    background:#fff !important; color:#000 !important; border-color:#999 !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ======================= TOOLBAR ======================= -->
+<div class="toolbar" role="toolbar" aria-label="Herramientas de accesibilidad">
+  <span class="toolbar-title">Accesibilidad</span>
+  <button class="a11y-btn" id="btn-dyslexia" aria-pressed="false" onclick="toggleMode('dyslexia', this)">
+    <span class="dot"></span> Adaptación Dislexia
+  </button>
+  <button class="a11y-btn" id="btn-colorblind" aria-pressed="false" onclick="toggleMode('colorblind', this)">
+    <span class="dot"></span> Adaptación Daltonismo
+  </button>
+  <button class="a11y-btn" id="btn-easyread" aria-pressed="false" onclick="toggleMode('easyread', this)">
+    <span class="dot"></span> Lectura Fácil / TDAH
+  </button>
+  <button class="a11y-btn" id="btn-macro" aria-pressed="false" onclick="toggleMode('macro', this)">
+    <span class="dot"></span> Macrotipo (Baja Visión)
+  </button>
+  <button class="a11y-btn print-btn" onclick="window.print()">🖨️ Descargar PDF / Imprimir</button>
+</div>
+
+<div class="container">
+
+  <!-- ======================= HERO ======================= -->
+  <div class="hero">
+    <div class="eyebrow"><span class="seal"></span>Capítulo 4 · Religión y política en la Europa moderna</div>
+    <h1>El Cisma de la Iglesia</h1>
+    <p class="lede">La Reforma protestante, la doctrina de Lutero y la respuesta católica: cómo se quebró la unidad cristiana de Europa en el siglo XVI.</p>
+  </div>
+
+  <!-- ======================= TABS NAV ======================= -->
+  <div class="tabs-nav" role="tablist" aria-label="Secciones de la clase">
+    <button class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-contenido" id="tab-contenido" onclick="showTab('contenido')">📖 Contenido general</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-glosario" id="tab-glosario" onclick="showTab('glosario')">🗝️ Palabras clave</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-preguntas" id="tab-preguntas" onclick="showTab('preguntas')">❓ Preguntas orientadoras</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-actividad" id="tab-actividad" onclick="showTab('actividad')">✍️ Actividad interactiva</button>
+  </div>
+
+  <!-- ======================= PANEL 1: CONTENIDO ======================= -->
+  <section class="tab-panel active" id="panel-contenido" role="tabpanel" aria-labelledby="tab-contenido">
+
+    <div class="section-label">4.4 — Cuestionamientos a la Iglesia y división</div>
+    <div class="card">
+      <h2>La crisis de la religión cristiana</h2>
+      <p class="idea-principal">El ascenso de la burguesía estuvo acompañado por una crisis espiritual que buscaba nuevas respuestas a las incertidumbres individuales. Con Lutero, el protestantismo ofrecería una forma alternativa de religiosidad.</p>
+
+      <h3>Las críticas a la Iglesia</h3>
+      <p>El Cisma de Occidente expresó de forma aguda la crisis de la Iglesia. Sin embargo, esta se había iniciado con anterioridad al siglo XIV. A lo largo de la Edad Media, la institución había enfrentado diversos <strong class="term">cuestionamientos</strong> tanto a la forma en que estaba organizada como a su doctrina.</p>
+      <p>Las <strong class="term">órdenes mendicantes</strong> (franciscanos, agustinos, dominicos y carmelitas) y algunos movimientos calificados de <strong class="term">herejías</strong> por la Iglesia habían censurado el lujo y la riqueza en la que vivía la jerarquía eclesiástica que, a su juicio, se apartaba del ideal de pobreza evangélica. Otros movimientos criticaban la centralización del poder eclesiástico en la figura del Papa y auspiciaban la concesión de una cuota de poder mayor a los concilios.</p>
+      <p class="idea-principal">La crisis del siglo XIV reavivó esas críticas tradicionales y generó una extendida inquietud espiritual a partir de la omnipresencia de la muerte. En el siglo XVI, a pesar de la recuperación de la sociedad europea, lejos de desaparecer, la <strong class="term">incertidumbre religiosa</strong> se extendió.</p>
+      <p>La burguesía en ascenso no estaba contemplada en el modelo de sociedad sostenido por la Iglesia, y muchas de sus actividades eran despreciadas por improductivas y vulgares. Este desajuste entre el dogma oficial de la Iglesia y la vida cotidiana de la sociedad estimuló el interés por formas renovadas de religiosidad que respondieran a las necesidades espirituales de amplios sectores sociales.</p>
+      <figure class="inline-fig decorativo">
+        <figcaption>El objetivo de Lutero era originar una reforma dentro de la Iglesia, no generar el cisma de la cristiandad. Sin embargo, a medida que sus ideas se difundieron y creció la contraofensiva del Papado, la ruptura fue inevitable.</figcaption>
+      </figure>
+
+      <h3>Los orígenes de la Reforma protestante</h3>
+      <p><strong class="term">Martín Lutero</strong> (1483-1546) fue un monje agustino, profesor de Teología en la Universidad de Wittenberg, que con sus denuncias públicas en 1517 dio lugar a la Reforma protestante. Ese año redactó sus <strong class="term">95 tesis</strong> que sintetizaban sus diferencias con algunas prácticas cristianas, y las clavó en la puerta de la iglesia del palacio de Wittenberg lo que, inmediatamente, desencadenó un escándalo de consecuencias impensadas.</p>
+      <p class="idea-principal">El detonante de sus críticas fue la <strong class="term">venta de indulgencias</strong> por parte de la Iglesia, una medida que permitía a los fieles obtener el perdón parcial de sus pecados a cambio de dinero. De esta manera, sin que mediara arrepentimiento alguno, los cristianos podían recibir la salvación. Este procedimiento se hallaba muy extendido en el siglo XVI y había dado lugar a numerosos abusos.</p>
+
+      <h3>La doctrina de Lutero</h3>
+      <p>Las críticas de Lutero contra ciertas prácticas de la Iglesia implicaban, en el fondo, el cuestionamiento de algunos principios básicos del cristianismo, como la <strong class="term">salvación por las obras</strong>. Según la doctrina cristiana, el hombre podía expiar sus pecados y alcanzar la salvación a través de diversos mecanismos, como la confesión, la oración, las peregrinaciones a lugares sagrados y la caridad.</p>
+      <p>Para Lutero, en cambio, la salvación dependía solo de la voluntad de Dios, que distribuía la gracia entre los hombres según su designio inescrutable. Postuló la <strong class="term">salvación por la fe</strong>, basada en la convicción de que la justicia divina favorecería al hombre con la salvación.</p>
+      <p class="idea-principal">Frente a la relación entre hombres y santos mediatizada por la Iglesia, Lutero postuló la existencia de una <strong class="term">relación directa entre el individuo y Dios</strong>, que hacía innecesarios a esos intermediarios. Ese vínculo directo se establecía a través de la lectura de la Biblia. Lutero consideraba que Dios se manifestaba directamente al hombre a través de ella y que, por lo tanto, no hacía falta la interpretación que hacía la Iglesia del texto sagrado.</p>
+      <p>Para facilitar esa comunicación entre el hombre y Dios, Lutero tradujo la Biblia del latín al alemán, que era la lengua que hablaba la mayor parte de la población del Sacro Imperio.</p>
+      <p>La Iglesia no era entendida como una institución jerárquica, sino como la comunidad de los fieles, lo que suponía la <strong class="term">igualdad espiritual</strong> de todos los creyentes, que se adquiría con el bautismo. Lutero rechazó la idea de que los sacerdotes constituyeran un estado clerical separado al que se estaba prohibido el matrimonio; por el contrario, afirmó que podían casarse y formar una familia. Además, la igualdad espiritual significaba que cualquier cristiano estaba habilitado para desempeñar las funciones habitualmente atribuidas al sacerdote, como la administración de los sacramentos, que el protestantismo reduciría solo a dos: el bautismo y la eucaristía.</p>
+      <p class="idea-principal">Las ideas de Lutero fueron condenadas por el Papa, y en 1521 decidió su excomunión. Así se produjo la <strong class="term">ruptura</strong> de la unidad religiosa de la cristiandad. En adelante, los partidarios de las tesis de Lutero fueron denominados <strong class="term">protestantes</strong>, mientras que quienes seguían el dogma de Roma recibieron el nombre de <strong class="term">católicos</strong>.</p>
+    </div>
+
+    <div class="section-label">4.5 — La Reforma protestante y la respuesta de la Iglesia</div>
+    <div class="card">
+      <h2>El fin de la unidad cristiana</h2>
+      <p class="idea-principal">La condena que hizo el Papado de las ideas de Lutero y su posterior excomunión tuvieron un efecto distinto al buscado por la Iglesia: en lugar de reprimir las ideas luteranas, propició su rápida difusión por diversos lugares de Europa. El desarrollo de este movimiento alentó modificaciones internas en la Iglesia católica.</p>
+
+      <h3>La multiplicación de las Iglesias</h3>
+      <p>Algunas de las ideas de Lutero respondían a las necesidades espirituales de amplios sectores de la sociedad, como los burgueses. Su ataque a la jerarquía eclesiástica también fue bien recibido por algunos príncipes del Sacro Imperio, que tomaron su doctrina desde una perspectiva igualitaria para oponerse a la centralización del poder por parte del emperador. En otros Estados, en cambio, las críticas a la Iglesia favorecieron la consolidación de las monarquías, independizadas en la práctica de la injerencia eclesiástica.</p>
+      <p class="idea-principal">De esta manera, el protestantismo alcanzó una rápida <strong class="term">difusión</strong> por toda Europa, con variantes locales. Las ideas del teólogo francés <strong class="term">Juan Calvino</strong> dieron origen a una de las derivaciones más rígidas del protestantismo, que veía en el éxito material de algunos individuos un indicio de que Dios los había elegido para la salvación. Para el calvinismo, la salvación no se conseguía mediante las acciones o la fe de las personas, sino a través de la voluntad divina. En la ciudad de Ginebra, se implantó un sistema de supervisión estricta de la esfera privada de la comunidad según el dogma calvinista, basado en un estilo de vida muy riguroso.</p>
+      <p>En Inglaterra, el rey <strong class="term">Enrique VIII</strong>, en un principio, repudió el movimiento reformista, pero cuando el Papa le negó la anulación de su matrimonio con Catalina de Aragón, rompió relaciones con Roma y creó una nueva iglesia: la <strong class="term">Iglesia anglicana</strong>. Basada en una combinación de protestantismo y catolicismo, esta estaba encabezada por el rey, que pasó a controlar los bienes confiscados al Papado.</p>
+      <p>El protestantismo también dio lugar a interpretaciones alternativas a las de las Iglesias. Algunos grupos se opusieron al vínculo estrecho entre Estado y religión, que alentaba el protestantismo, y formularon propuestas avanzadas y radicales en materia social y religiosa. Fueron calificados de <strong class="term">sectas</strong> y muy combatidos por las Iglesias establecidas. Por ejemplo, entre estos disidentes, se contaron los <strong class="term">anabaptistas</strong> alemanes, que, a mediados de la década de 1520, protagonizaron revueltas campesinas contra las autoridades y fueron repudiados por Lutero y fuertemente reprimidos.</p>
+      <p>En Inglaterra, numerosas sectas de origen calvinista se opusieron por igual a la Iglesia católica y la Iglesia anglicana. Debido a que buscaban erigir una religión purificada de toda influencia del Papado, se los llamó <strong class="term">puritanos</strong>. Estas sectas intervinieron activamente en las revoluciones inglesas de la segunda mitad del siglo XVII.</p>
+      <p class="idea-principal">Las persecuciones de las que fueron objeto impulsaron a muchos disidentes a <strong class="term">emigrar hacia América</strong>. De hecho, los puritanos ingleses fueron los pioneros del poblamiento de Norteamérica; también los menonitas suizos y holandeses se asentaron en Norteamérica en busca de la libertad de culto.</p>
+      <figure class="inline-fig decorativo">
+        <figcaption>Mapa de referencia del manual: "Difusión de las Iglesias protestantes en Europa" — distingue zonas luteranas, calvinistas, anglicanas y católicas hacia mediados del siglo XVI.</figcaption>
+      </figure>
+
+      <h3>La reforma católica</h3>
+      <p>Ante el avance de estas numerosas interpretaciones del protestantismo, la Iglesia decidió tomar una serie de medidas para reforzar el dogma católico. Con ellos buscaba establecer un control mucho más estricto sobre el clero y las órdenes religiosas, así como propagar la fe católica en la sociedad. Este conjunto de medidas es conocido como la <strong class="term">Reforma católica</strong>, llamada a menudo <strong class="term">Contrarreforma</strong> por su carácter defensivo frente a la expansión del protestantismo. Fue el resultado de las decisiones del <strong class="term">Concilio de Trento</strong>, realizado en esa ciudad italiana entre 1545 y 1563.</p>
+      <p class="idea-principal">Algunas de sus disposiciones fueron las siguientes:</p>
+      <p>• El reordenamiento de la conducta y la <strong class="term">formación del clero</strong>, a fin de responder mejor a las necesidades espirituales de los creyentes y evitar los abusos que, en los últimos siglos, habían deteriorado la imagen de la Iglesia en la sociedad.</p>
+      <p>• La reafirmación de los aspectos tradicionales del <strong class="term">dogma católico</strong> que eran cuestionados por los protestantes, entre ellos, la validez de las <strong class="term">interpretaciones de la Biblia</strong> realizadas por la Iglesia y el libre albedrío.</p>
+      <p>• La lucha contra las creencias populares consideradas supersticiosas y las prácticas ligadas a costumbres ancestrales, calificadas por la Iglesia de brujería, y contra las herejías. La persecución de esas prácticas e ideas quedó a cargo de los tribunales de la <strong class="term">Santa Inquisición</strong>, que penalizaban esos delitos con multas, tortura y hasta la ejecución pública.</p>
+      <p>• La <strong class="term">difusión</strong> del catolicismo a través de la conversión de los denominados infieles en los territorios recientemente conquistados, a través de la acción de nuevas órdenes religiosas, como los <strong class="term">jesuitas</strong> o Compañía de Jesús, fundada por san Ignacio de Loyola, que tuvo un importante papel en la evangelización de América, Asia y África.</p>
+      <figure class="inline-fig decorativo">
+        <figcaption>El Concilio de Trento reforzó la doctrina católica ante los embates del protestantismo.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ======================= PANEL 2: GLOSARIO ======================= -->
+  <section class="tab-panel" id="panel-glosario" role="tabpanel" aria-labelledby="tab-glosario">
+    <div class="card">
+      <h2>Palabras clave del Cisma</h2>
+      <p>Tocá cada término para ver su definición.</p>
+    </div>
+    <div class="glossary-grid" id="glossary-grid"></div>
+  </section>
+
+  <!-- ======================= PANEL 3: PREGUNTAS ======================= -->
+  <section class="tab-panel" id="panel-preguntas" role="tabpanel" aria-labelledby="tab-preguntas">
+    <div class="card">
+      <h2>Preguntas orientadoras</h2>
+      <p>Usá estas preguntas antes, durante y después de la lectura para guiar tu comprensión del tema.</p>
+    </div>
+    <div class="section-label">Antes de leer</div>
+    <div class="question-card"><span class="qnum">01</span><p>¿Qué relación existe entre la volanta, el título y la copete de cada texto? ¿Qué idea central anticipan?</p></div>
+
+    <div class="section-label">Sobre la crisis y la doctrina de Lutero</div>
+    <div class="question-card"><span class="qnum">02</span><p>¿Por qué la venta de indulgencias se convirtió en el detonante de las críticas de Lutero hacia la Iglesia?</p></div>
+    <div class="question-card"><span class="qnum">03</span><p>¿Qué diferencias existen entre la "salvación por las obras" y la "salvación por la fe"?</p></div>
+    <div class="question-card"><span class="qnum">04</span><p>¿Por qué Lutero consideraba innecesaria la intermediación de la Iglesia entre el hombre y Dios?</p></div>
+    <div class="question-card"><span class="qnum">05</span><p>Elaborá un cuadro comparativo entre la doctrina de Lutero y la doctrina de la Iglesia católica.</p></div>
+    <div class="question-card"><span class="qnum">06</span><p>Escribí oraciones que empleen los siguientes conjuntos de términos: a) burguesía, condena religiosa, nuevas formas de religiosidad; b) mendicantes, concilios, herejías.</p></div>
+
+    <div class="section-label">Sobre la multiplicación de las Iglesias y la reforma católica</div>
+    <div class="question-card"><span class="qnum">07</span><p>Explicá con tus palabras la siguiente frase: "La reforma protestante abrió la posibilidad de múltiples interpretaciones locales de las ideas de Lutero".</p></div>
+    <div class="question-card"><span class="qnum">08</span><p>¿Por qué la proliferación de nuevas Iglesias estimuló la tolerancia religiosa o, por el contrario, la existencia de persecuciones religiosas? Fundamentá tu respuesta.</p></div>
+    <div class="question-card"><span class="qnum">09</span><p>¿Qué decisiones tomó el Concilio de Trento para evitar la difusión de las ideas protestantes?</p></div>
+    <div class="question-card"><span class="qnum">10</span><p>¿Qué rol cumplieron los jesuitas dentro de la estrategia de la Contrarreforma?</p></div>
+  </section>
+
+  <!-- ======================= PANEL 4: ACTIVIDAD ======================= -->
+  <section class="tab-panel" id="panel-actividad" role="tabpanel" aria-labelledby="tab-actividad">
+    <div class="card">
+      <h2>Actividad interactiva</h2>
+      <p>Elegí la opción correcta. Vas a recibir una devolución inmediata en cada pregunta.</p>
+    </div>
+    <div id="quiz-container"></div>
+    <div class="quiz-score" id="quiz-score">
+      <span id="score-text">Puntaje: 0 / 0</span>
+      <button class="reset-btn" onclick="resetQuiz()">Reiniciar actividad</button>
+    </div>
+  </section>
+
+  <footer class="page-footer">Historia 2 · Capítulo 4 · Religión y política en la Europa moderna</footer>
+</div>
+
+<script>
+/* ======================= TABS ======================= */
+function showTab(name){
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.setAttribute('aria-selected','false'));
+  document.getElementById('panel-'+name).classList.add('active');
+  document.getElementById('tab-'+name).setAttribute('aria-selected','true');
+}
+
+/* ======================= ACCESIBILIDAD ======================= */
+const MODES = ['dyslexia','colorblind','easyread','macro'];
+function toggleMode(mode, btn){
+  const cls = 'a11y-'+mode;
+  const active = document.documentElement.classList.toggle(cls);
+  btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+  saveModes();
+}
+function saveModes(){
+  try{
+    const state = {};
+    MODES.forEach(m => state[m] = document.documentElement.classList.contains('a11y-'+m));
+    localStorage.setItem('cisma_a11y', JSON.stringify(state));
+  }catch(e){}
+}
+function loadModes(){
+  try{
+    const raw = localStorage.getItem('cisma_a11y');
+    if(!raw) return;
+    const state = JSON.parse(raw);
+    MODES.forEach(m => {
+      if(state[m]){
+        document.documentElement.classList.add('a11y-'+m);
+        const b = document.getElementById('btn-'+m);
+        if(b) b.setAttribute('aria-pressed','true');
+      }
+    });
+  }catch(e){}
+}
+loadModes();
+
+/* ======================= GLOSARIO ======================= */
+const GLOSSARY = [
+  {term:"Órdenes mendicantes", def:"Órdenes religiosas cuyos miembros hacen votos de pobreza (franciscanos, agustinos, dominicos, carmelitas)."},
+  {term:"Herejía", def:"Creencia considerada opuesta a los principios cristianos oficiales de la Iglesia."},
+  {term:"95 tesis", def:"Documento redactado por Martín Lutero en 1517 donde sintetizó sus diferencias con prácticas de la Iglesia; lo clavó en la puerta de la iglesia del palacio de Wittenberg."},
+  {term:"Venta de indulgencias", def:"Práctica que permitía a los fieles obtener el perdón parcial de sus pecados a cambio de dinero, sin necesidad de arrepentimiento. Fue el detonante de las críticas de Lutero."},
+  {term:"Salvación por la fe", def:"Doctrina luterana según la cual la salvación depende solo de la voluntad de Dios y de la fe del individuo, y no de las obras o los mecanismos tradicionales de la Iglesia."},
+  {term:"Protestantes / Católicos", def:"Nombres que recibieron, tras la ruptura de 1521, los partidarios de las tesis de Lutero (protestantes) y quienes siguieron el dogma de Roma (católicos)."},
+  {term:"Calvinismo", def:"Corriente protestante fundada por Juan Calvino, para la cual el éxito material era señal de elección divina; la salvación dependía solo de la voluntad de Dios."},
+  {term:"Iglesia anglicana", def:"Iglesia creada por Enrique VIII de Inglaterra al romper con Roma, que combina elementos del protestantismo y del catolicismo bajo la autoridad del rey."},
+  {term:"Anabaptistas", def:"Secta protestante alemana que protagonizó revueltas campesinas hacia 1520; fue repudiada por Lutero y duramente reprimida."},
+  {term:"Puritanos", def:"Sectas inglesas de origen calvinista que buscaban una religión purificada de toda influencia del Papado; fueron pioneros en el poblamiento de Norteamérica."},
+  {term:"Contrarreforma", def:"Conjunto de medidas de la Iglesia católica, también llamado Reforma católica, para reforzar el dogma y frenar el avance del protestantismo. Se definió en el Concilio de Trento (1545-1563)."},
+  {term:"Concilio de Trento", def:"Reunión de la Iglesia católica realizada entre 1545 y 1563 en la ciudad italiana de Trento, donde se definieron las medidas de la Contrarreforma."},
+  {term:"Libre albedrío", def:"Libertad de elegir entre el bien y el mal, y la salvación y el pecado. Este concepto se opone a la idea de predestinación sostenida por los protestantes."},
+  {term:"Santa Inquisición", def:"Tribunales eclesiásticos encargados de perseguir herejías y creencias populares consideradas supersticiosas; penalizaban con multas, tortura y hasta la ejecución pública."},
+  {term:"Jesuitas (Compañía de Jesús)", def:"Orden religiosa fundada por san Ignacio de Loyola, clave en la evangelización católica de América, Asia y África durante la Contrarreforma."}
+];
+
+function buildGlossary(){
+  const grid = document.getElementById('glossary-grid');
+  GLOSSARY.forEach((item, i) => {
+    const card = document.createElement('div');
+    card.className = 'gloss-card';
+    card.innerHTML = `
+      <button class="gloss-btn" aria-expanded="false" aria-controls="gdef-${i}" onclick="toggleGloss(${i}, this)">
+        <span>${item.term}</span><span class="plus">+</span>
+      </button>
+      <div class="gloss-def" id="gdef-${i}">${item.def}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+function toggleGloss(i, btn){
+  const def = document.getElementById('gdef-'+i);
+  const open = def.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+buildGlossary();
+
+/* ======================= QUIZ ======================= */
+const QUIZ = [
+  {
+    q:"¿Qué práctica de la Iglesia funcionó como detonante directo de las críticas de Lutero?",
+    options:["La celebración de concilios","La venta de indulgencias","La fundación de órdenes mendicantes","La traducción de la Biblia"],
+    correct:1
+  },
+  {
+    q:"Según la doctrina de Lutero, ¿de qué dependía principalmente la salvación?",
+    options:["De las obras y penitencias del individuo","De la voluntad de Dios y la fe del individuo","De las peregrinaciones a lugares sagrados","De la aprobación del Papa"],
+    correct:1
+  },
+  {
+    q:"¿Qué evento formalizó la ruptura de la unidad religiosa de la cristiandad en 1521?",
+    options:["El Concilio de Trento","La fundación de la Compañía de Jesús","La excomunión de Lutero por el Papa","La creación de la Iglesia anglicana"],
+    correct:2
+  },
+  {
+    q:"¿Por qué Lutero tradujo la Biblia del latín al alemán?",
+    options:["Para venderla y financiar la reforma","Para facilitar la relación directa entre el hombre y Dios","Por pedido del Papa","Para reemplazar el rol de los concilios"],
+    correct:1
+  },
+  {
+    q:"¿Qué corriente protestante consideraba el éxito material como señal de elección divina?",
+    options:["El anglicanismo","El anabaptismo","El calvinismo","El puritanismo"],
+    correct:2
+  },
+  {
+    q:"¿Qué motivó a Enrique VIII a romper con Roma y crear la Iglesia anglicana?",
+    options:["El rechazo del Papa a anular su matrimonio con Catalina de Aragón","Su conversión al calvinismo","Una revuelta campesina","El Concilio de Trento"],
+    correct:0
+  },
+  {
+    q:"La proliferación de nuevas Iglesias estimuló principalmente...",
+    options:["la tolerancia religiosa generalizada","la existencia de persecuciones religiosas","la desaparición de la Iglesia católica","la unificación del dogma cristiano"],
+    correct:1
+  },
+  {
+    q:"Para evitar la difusión de las ideas protestantes, el Concilio de Trento decidió...",
+    options:["incorporar algunas ideas protestantes al dogma católico","reafirmar el dogma católico","adoptar la salvación por la fe","eliminar la Santa Inquisición"],
+    correct:1
+  },
+  {
+    q:"¿Qué orden religiosa tuvo un papel destacado en la evangelización de América, Asia y África durante la Contrarreforma?",
+    options:["Los dominicos","Los franciscanos","Los jesuitas (Compañía de Jesús)","Los agustinos"],
+    correct:2
+  }
+];
+
+let userAnswers = new Array(QUIZ.length).fill(null);
+
+function buildQuiz(){
+  const container = document.getElementById('quiz-container');
+  container.innerHTML = '';
+  QUIZ.forEach((item, qi) => {
+    const div = document.createElement('div');
+    div.className = 'quiz-item';
+    let optsHtml = item.options.map((opt, oi) =>
+      `<button class="quiz-opt" data-q="${qi}" data-o="${oi}" onclick="answerQuiz(${qi},${oi})">
+         <span class="icon"></span><span>${opt}</span>
+       </button>`
+    ).join('');
+    div.innerHTML = `
+      <div class="q-text">${qi+1}. ${item.q}</div>
+      <div class="quiz-options">${optsHtml}</div>
+      <div class="quiz-feedback" id="feedback-${qi}"></div>
+    `;
+    container.appendChild(div);
+  });
+  updateScore();
+}
+
+function answerQuiz(qi, oi){
+  if(userAnswers[qi] !== null) return; // ya respondida
+  userAnswers[qi] = oi;
+  const item = QUIZ[qi];
+  const buttons = document.querySelectorAll(`.quiz-opt[data-q="${qi}"]`);
+  buttons.forEach(b => {
+    const optIndex = parseInt(b.getAttribute('data-o'));
+    b.disabled = true;
+    const icon = b.querySelector('.icon');
+    if(optIndex === item.correct){
+      b.classList.add('correct');
+      icon.textContent = '✓';
+    } else if(optIndex === oi){
+      b.classList.add('incorrect');
+      icon.textContent = '✗';
+    }
+  });
+  const feedback = document.getElementById('feedback-'+qi);
+  if(oi === item.correct){
+    feedback.textContent = '✓ ¡Correcto!';
+    feedback.className = 'quiz-feedback ok';
+  } else {
+    feedback.textContent = '✗ Incorrecto. La respuesta correcta está marcada arriba.';
+    feedback.className = 'quiz-feedback no';
+  }
+  updateScore();
+}
+
+function updateScore(){
+  const answered = userAnswers.filter(a => a !== null).length;
+  const correct = userAnswers.filter((a,i) => a === QUIZ[i].correct).length;
+  document.getElementById('score-text').textContent = `Puntaje: ${correct} / ${QUIZ.length}  (respondidas: ${answered}/${QUIZ.length})`;
+}
+
+function resetQuiz(){
+  userAnswers = new Array(QUIZ.length).fill(null);
+  buildQuiz();
+}
+
+buildQuiz();
+</script>
+</body>
+</html>
