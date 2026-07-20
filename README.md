@@ -1,8 +1,8 @@
 # 📚 Recursos para el Aula
 
-Colección de recursos educativos interactivos para la educación secundaria, desarrollados por **Matias Ara**.
+Colección de recursos educativos interactivos para la educación secundaria, desarrollados por **Matías Aragone**.
 
-🌐 **Sitio web:** [https://MatiasAra.github.io/recursos-para-el-aula](https://MatiasAra.github.io/recursos-para-el-aula)
+🌐 **Sitio web:** [https://matiasaragone.github.io/recursos-para-el-aula](https://matiasaragone.github.io/recursos-para-el-aula)
 
 ---
 
@@ -19,6 +19,22 @@ Cada recurso está diseñado con criterio pedagógico: no es "gamificar por gami
 | Recurso | Materia | Nivel | Tipo |
 |---|---|---|---|
 | [Los Fundadores de la Comunidad](ciudadania/) | Trabajo y Ciudadanía | 6to año | Gamificación con adaptaciones |
+| [Arqueología del Trabajo](trabajo/) | Trabajo y Ciudadanía | 6to año | Gamificación con adaptaciones |
+| [El Caso del Origen de las Especies](pensamiento-cientifico/) | Pensamiento Científico | Secundaria | Gamificación |
+| [Desafío Babel: El Torneo de la Mente](pensamiento-cientifico/logica/) | Pensamiento Científico | 6to año | Torneo de lógica en equipos |
+| [El Camino de la Libertad · Revolución Francesa](historia/) | Historia | 3er año | Juego de facciones por equipos |
+| [Historia y Rock — Argentina 1966/2004](https://matiasaragone.github.io/Historia-y-rock) | Historia | 6to año | Proyecto de Aula |
+| [Conversión de Rugby](https://matiasaragone.github.io/juego-cuadratica/juego_mobile.html) | Matemática | 2do año | Gamificación |
+| [Carrera de Autos — MRU vs MRUV](https://matiasaragone.github.io/juego-cuadratica/carrera_autos.html) | Física | 1er año | Simulador |
+| [Simulador Artemis II](https://matiasaragone.github.io/juego-cuadratica/artemis_simulator.html) | Física · Matemática | Secundaria | Simulador |
+
+---
+
+## ♿ Recursos con Accesibilidad
+
+Materiales con modo dislexia, alto contraste y texto ajustable, organizados por año y materia.
+
+👉 [Ver sección de accesibilidad](accesibilidad/)
 
 ---
 
@@ -26,32 +42,28 @@ Cada recurso está diseñado con criterio pedagógico: no es "gamificar por gami
 
 ```
 recursos-para-el-aula/
-├── index.html              ← Catálogo principal
+├── index.html                          ← Catálogo principal
 ├── README.md
-├── ciudadania/
-│   └── index.html          ← "Los Fundadores de la Comunidad"
-├── historia/               ← (próximamente)
-└── ...
+├── ciudadania/index.html
+├── trabajo/index.html
+├── historia/index.html
+├── pensamiento-cientifico/
+│   ├── index.html
+│   └── logica/index.html
+└── accesibilidad/
+    ├── index.html
+    └── historia-2do/cisma/index.html
 ```
-
----
-
-## 🚀 Cómo usar
-
-Los recursos funcionan directamente en el navegador, sin instalación. Aptos para celular y computadora.
-
-1. Entrá al [sitio web](https://MatiasAra.github.io/recursos-para-el-aula)
-2. Elegí el recurso
-3. ¡Listo!
 
 ---
 
 ## 👤 Autor
 
-**Matias Ara** — Docente de Historia, Trabajo y Ciudadanía y otras materias en educación secundaria. Diplomado en IA y Educación.
+**Matías Aragone** — Licenciado y Profesor en Historia. Diplomado en Inteligencia Artificial y Educación. Docente de nivel secundario en Buenos Aires, Argentina.
 
-- Instagram: [@paideia.docente](https://instagram.com/paideia.docente)
-- GitHub: [@MatiasAra](https://github.com/MatiasAra)
+- 🌐 Sitio personal: [matiasaragone.github.io](https://matiasaragone.github.io)
+- 📸 Instagram: [@paideia.docente](https://instagram.com/paideia.docente)
+- ✉️ Email: matias.iadocente@gmail.com
 
 ---
 
